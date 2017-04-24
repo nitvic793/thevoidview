@@ -1,0 +1,25 @@
+{
+  "name": "the-void-view",
+  "description": "The Void View website",
+  "main": "index.js",
+  "authors": [
+    "Nitish Victor"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "void",
+    "view",
+    "void",
+    "view",
+    "swar"
+  ],
+  "homepage": "https://github.com/nitvic793/thevoidview",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

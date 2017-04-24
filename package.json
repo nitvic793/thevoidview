@@ -1,0 +1,26 @@
+{
+  "name": "the-void-view",
+  "version": "1.0.0",
+  "description": "The Void View website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nitvic793/thevoidview.git"
+  },
+  "keywords": [
+    "void",
+    "view",
+    "void",
+    "view",
+    "swar"
+  ],
+  "author": "Nitish Victor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nitvic793/thevoidview/issues"
+  },
+  "homepage": "https://github.com/nitvic793/thevoidview#readme"
+}
