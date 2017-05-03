@@ -1,19 +1,12 @@
 {
   "name": "the-void-view",
-  "description": "The Void View website",
-  "main": "index.js",
+  "description": "The Void View Website",
+  "main": "",
   "authors": [
     "Nitish Victor"
   ],
   "license": "ISC",
-  "keywords": [
-    "void",
-    "view",
-    "void",
-    "view",
-    "swar"
-  ],
-  "homepage": "https://github.com/nitvic793/thevoidview",
+  "homepage": "",
   "private": true,
   "ignore": [
     "**/.*",
@@ -21,5 +14,8 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "gsap": "greensock#^1.19.1"
+  }
 }
