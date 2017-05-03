@@ -41,8 +41,8 @@
         <div class="intro-body">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-8 col-md-offset-2">
-                        <h1 class="void-heading" id="introHeader">Fall Seven. Rise Eight</h1>
+                    <div class="col-md-10 col-md-offset-1">
+                        <h1 class="void-heading"> <span id="introHeader">Fall Seven. </span> <span id="introHeader2">Rise Eight</span></h1>
 
                     </div>
                 </div>
@@ -90,19 +90,27 @@
     <script>
         $(function () {
             var $demoText = $("#introHeader");
+            var $demoText2 = $("#introHeader2");
 
             //Split the text into characters and wrap every character into span element, then convert the whitespaces to whitespace characters.
             $demoText.html($demoText.html().replace(/./g, "<span>$&</span>").replace(/\s/g, "&nbsp;"));
-
+            $demoText2.html($demoText2.html().replace(/./g, "<span>$&</span>").replace(/\s/g, "&nbsp;"));
 
             function startAnimation() {
 
-                TweenMax.staggerFromTo($demoText.find("span"), 0.2, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.1, reset);
+                TweenMax.staggerFromTo($demoText.find("span"), 0.2, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.15, startAnimation2);
+                TweenMax.staggerFromTo($demoText2.find("span"), 0.2, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.15, reset);
+            }
+
+            function startAnimation2() {
+
+                
             }
 
             function reset() {
                 TweenMax.to(null, 1, { autoAlpha: 1 });
             }
+
             startAnimation();
 
         });
