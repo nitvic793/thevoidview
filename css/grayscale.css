@@ -120,14 +120,24 @@ a:focus {
 .void-heading {
   font-size: 70px;
 }
+@media (max-width: 768px) {
+  .void-heading {
+    font-size: 40px;
+  }
+}
 .right-bottom {
   position: absolute;
   top: 80%;
   right: 10%;
 }
+@media (max-width: 768px) {
+  .right-bottom {
+    right: 25%;
+  }
+}
 .bg {
-  content: ' ';
   display: block;
+  position: absolute;
   left: 0;
   top: 0;
   width: 100%;
@@ -140,7 +150,6 @@ a:focus {
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
-  position: absolute;
 }
 .intro {
   display: table;
