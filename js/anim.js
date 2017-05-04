@@ -40,10 +40,8 @@ $(function () {
         } else {
             captionLength = 0;
             caption = '';
-            typeRiseEight();
         }
     }
-
 
     function typeFallSeven() {
         caption = "Fall Seven. Rise Eight";
