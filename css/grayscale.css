@@ -22,8 +22,7 @@ h4,
 h5,
 h6 {
   margin: 0 0 35px;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
+  font-family: Georgia,Times,Times New Roman,serif;
   letter-spacing: 1px;
 }
 p {
