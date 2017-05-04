@@ -47,22 +47,27 @@ setTimeout(typeFallSeven, 2000);
 /**
  * b. The void way button - on hover animation
  */
+$('.hover').bind('touchstart touchend', function (e) {
+    e.preventDefault();
+    $(this).toggleClass('hover_effect');
+});
 
 $("#voidwaybtn").width($("#btnContent").width());
 
 $("#voidwaybtn").hover(function (e) {
-    $("#btnContent").text("the void way ->");
-    $("#voidwaybtn").animate({ width: "150px" }, 'fast');
+    $("#voidwaybtn").animate({ width: "150px" }, 'fast', function () {
+        $("#btnContent").html('<span class="fadein">the void way -><span>');
+    });
 },
     function (e) {
-        $("#btnContent").html('<div id="circle"></div>');
-        $("#voidwaybtn").animate({ width: "30px" }, 500);
+        $("#btnContent").html('<div id="circle" class="fadein"></div>').fadeIn('fast');
+        $("#voidwaybtn").animate({ width: "42px" }, 'fast');
     });
 
-$("#voidwaybtn").click(function(){
+$("#voidwaybtn").click(function () {
     currentPage = 2;
-    $("#first").animate({left:"-100%"}, 2000);
-    $("#second").animate({left:"0"},2000);
+    $("#first").animate({ left: "-100%" }, 2000);
+    $("#second").animate({ left: "0" }, 2000);
 });
 
 
