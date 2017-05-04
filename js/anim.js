@@ -1,30 +1,11 @@
 $(function () {
     /**
-     * First Page animations
+     * I. First Page animations
      */
-    var $demoText = $("#introHeader");
-    var $demoText2 = $("#introHeader2");
-    $demoText2.hide();
 
-    //Split the text into characters and wrap every character into span element, then convert the whitespaces to whitespace characters.
-    $demoText.html($demoText.html().replace(/./g, "<span>$&</span>").replace(/\s/g, "&nbsp;"));
-
-    function startAnimation() {
-        TweenMax.staggerFromTo($demoText.find("span"), 0.2, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.2, reset);
-    }
-
-    function startAnimation2() {
-        $demoText2.show();
-        $demoText2.html($demoText2.html().replace(/./g, "<span>$&</span>").replace(/\s/g, "&nbsp;"));
-        TweenMax.staggerFromTo($demoText2.find("span"), 0.2, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.15, reset);
-    }
-
-    function reset() {
-        TweenMax.to(null, 1, { autoAlpha: 1 });
-    }
-
-    //startAnimation();
-
+    /**
+     * a. Intro - Typewriter animation
+     */
     var captionLength = 0;
     var caption = '';
     var captionEl = $('#introHeader');
@@ -33,10 +14,9 @@ $(function () {
         captionEl.html(caption.substr(0, captionLength++));
         if (captionLength < caption.length + 1) {
             if (caption[captionLength - 2] == '.') {
-                console.log('test');
                 setTimeout(type, 1500);
             }
-            else setTimeout(type, 200);
+            else setTimeout(type, 80);
         } else {
             captionLength = 0;
             caption = '';
@@ -56,19 +36,21 @@ $(function () {
         }, 'fast', 'swing');
     }
 
-    setInterval(cursorAnimation, 600);
+    setTimeout(function () {
+        $("#cursor").text('|');
+        setInterval(cursorAnimation, 600)
+    }, 1000);
 
+    setTimeout(typeFallSeven, 2000);
 
-    typeFallSeven();
-
-
-
+    /**
+     * b. The void way button - on hover animation
+     */
 
     $("#voidwaybtn").width($("#btnContent").width());
 
     $("#voidwaybtn").hover(function (e) {
         $("#btnContent").text("the void way ->");
-        console.log($("#btnContent").width());
         $("#voidwaybtn").animate({ width: "150px" }, 'fast');
     },
         function (e) {
