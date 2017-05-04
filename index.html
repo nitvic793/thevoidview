@@ -36,21 +36,23 @@
 
 
     <!-- Intro Header -->
-    <div class="intro">
+    <div class="intro" id="first">
         <div class="bg"></div>
         <div class="intro-body">
             <div class="container">
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
-                        <h1 class="void-heading" id="introHeader"> Fall Seven. Rise Eight</h1>
+                        <h1 class="void-heading"> <span id="introHeader">Fall Seven. </span> <span id="cursor">|</span></h1>
 
                     </div>
                 </div>
             </div>
         </div>
-        <a href="#second" class="btn btn-circle right-bottom">
-                            The void way ->
-                        </a>
+        <a href="#second" id="voidwaybtn" class="btn btn-circle right-bottom">
+            <div id="btnContent">
+                <div id="circle"></div>
+            </div>
+        </a>
     </div>
 
     <div class="intro" id="second">
@@ -87,34 +89,7 @@
     <script src="bower_components\gsap\src\minified\TweenMax.min.js"></script>
     <script src="bower_components\gsap\src\minified\TimelineMax.min.js"></script>
 
-    <script>
-        $(function () {
-            var $demoText = $("#introHeader");
-            var $demoText2 = $("#introHeader2");
-            $demoText2.hide();
-
-            //Split the text into characters and wrap every character into span element, then convert the whitespaces to whitespace characters.
-            $demoText.html($demoText.html().replace(/./g, "<span>$&</span>").replace(/\s/g, "&nbsp;"));     
-
-            function startAnimation() {
-                TweenMax.staggerFromTo($demoText.find("span"), 0.2, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.2, reset);
-            }
-
-            function startAnimation2() {
-                $demoText2.show();
-                $demoText2.html($demoText2.html().replace(/./g, "<span>$&</span>").replace(/\s/g, "&nbsp;"));
-                TweenMax.staggerFromTo($demoText2.find("span"), 0.2, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.15, reset);
-            }
-
-            function reset() {
-                TweenMax.to(null, 1, { autoAlpha: 1 });
-            }
-
-            startAnimation();
-        });
-
-    </script
-
+    <script src="js/anim.js"></script>
 
 </body>
 

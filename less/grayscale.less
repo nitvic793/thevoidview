@@ -187,15 +187,27 @@ a {
     }
 }
 
+#circle {
+	width: 8px;
+	height: 8px;
+    align-content: center;
+	background:green;
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	border-radius: 50px;
+}
 
+#btnContent{
+    white-space:nowrap;
+}
 
-.btn-circle {
-  
+.btn-circle {  
+    overflow:hidden;
     margin-top: 15px;
-    padding: 7px 16px;
+    padding: 10px;
     border: 2px solid white;
-    border-radius: 25px!important;
- 
+    border-radius: 25px!important; 
+    align-content: center;
     color: white;
     background: transparent;
     -webkit-transition: background .3s ease-in-out;
@@ -203,6 +215,8 @@ a {
     transition: background .3s ease-in-out;
     &:hover,
     &:focus {
+        height: auto;
+        width: auto;               
         outline: none;
         color: white;
         background: fade(white, 10%);

@@ -181,11 +181,25 @@ a:focus {
     font-size: 26px;
   }
 }
+#circle {
+  width: 8px;
+  height: 8px;
+  align-content: center;
+  background: green;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+#btnContent {
+  white-space: nowrap;
+}
 .btn-circle {
+  overflow: hidden;
   margin-top: 15px;
-  padding: 7px 16px;
+  padding: 10px;
   border: 2px solid white;
   border-radius: 25px!important;
+  align-content: center;
   color: white;
   background: transparent;
   -webkit-transition: background 0.3s ease-in-out;
@@ -194,6 +208,8 @@ a:focus {
 }
 .btn-circle:hover,
 .btn-circle:focus {
+  height: auto;
+  width: auto;
   outline: none;
   color: white;
   background: rgba(255, 255, 255, 0.1);
