@@ -253,6 +253,31 @@ a:focus {
   /* Opera < 12.1 */
   animation: fadeinBg 3s;
 }
+.bg-second {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.3;
+  background: url(../img/c.jpg) no-repeat center scroll;
+  background-color: black;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  -webkit-animation: fadeinBg 3s;
+  /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadeinBg 3s;
+  /* Firefox < 16 */
+  -ms-animation: fadeinBg 3s;
+  /* Internet Explorer */
+  -o-animation: fadeinBg 3s;
+  /* Opera < 12.1 */
+  animation: fadeinBg 3s;
+}
 .intro {
   position: absolute;
   display: table;
@@ -283,6 +308,9 @@ a:focus {
   .intro .intro-body .intro-text {
     font-size: 26px;
   }
+}
+.non-default {
+  left: 100%;
 }
 #second {
   left: 100%;
