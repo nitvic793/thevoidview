@@ -72,20 +72,19 @@ $("#voidwaybtn").click(function () {
     route("second", "first");
 });
 
-
-
 var getCurrentPage = function () {
     var url = window.location.href;
     return url.indexOf('#!/') == -1 ? null : (url.substr(url.indexOf('#!/') + 3, url.length - url.indexOf('#')));
 }
 
 var route = function (toPage, fromPage) {
+    if (!toPage) toPage = 'first';
     if (!fromPage) {
         pageIds.forEach(function (v, i, arr) {
-            $("#" + v).animate({"left":"100%"});
+            $("#" + v).animate({ "left": "100%" });
             console.log(v, toPage);
         });
-         $("#" + toPage).css("left", "-100%");
+        $("#" + toPage).css("left", "-100%");
         $("#" + toPage).animate({ "left": "0px" }, 'slow');
     }
     else {
@@ -95,6 +94,7 @@ var route = function (toPage, fromPage) {
     }
     window.history.pushState('Object', toPage, '#!/' + toPage);
 }
+
 window.onpopstate = function (e) {
     console.log(window.history);
     console.log(e);
@@ -108,7 +108,35 @@ window.onhashchange = function () {
     else {
         route(getCurrentPage());
     }
+    if (pageRefreshPipeline[getCurrentPage]) {
+        pageRefreshPipeline[getCurrentPage]();
+    }
 }
+
+var onLoad = function () {
+    route(getCurrentPage());
+}
+
+var pageRefreshPipeline = [];
+
+var registerPageRefresh = function (page, fn) {
+    pageRefreshPipeline[page] = fn;
+}
+
+registerPageRefresh("first", onLoad);
+var hasLoadedOnce = false;
+
+window.onload = function () {
+    //onLoad();
+    if (!hasLoadedOnce) {
+        hasLoadedOnce = true;
+    }
+    else {
+        
+    }
+}
+
+
 
 
 
