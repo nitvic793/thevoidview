@@ -95,6 +95,14 @@ var route = function (toPage, fromPage) {
     window.history.pushState('Object', toPage, '#!/' + toPage);
 }
 
+var directLoad = function (page) {
+    pageIds.forEach(function (v, i, arr) {
+        $("#" + v).css("left", "100%");
+        console.log(v, page);
+    });
+    $("#" + page).css("left", "0px");
+}
+
 window.onpopstate = function (e) {
     console.log(window.history);
     console.log(e);
@@ -114,7 +122,12 @@ window.onhashchange = function () {
 }
 
 var onLoad = function () {
-    route(getCurrentPage());
+    if (getCurrentPage() == null) {
+        directLoad("first")
+    }
+    else {
+        directLoad(getCurrentPage());
+    }
 }
 
 var pageRefreshPipeline = [];
@@ -127,12 +140,12 @@ registerPageRefresh("first", onLoad);
 var hasLoadedOnce = false;
 
 window.onload = function () {
-    //onLoad();
+    onLoad();
     if (!hasLoadedOnce) {
         hasLoadedOnce = true;
     }
     else {
-        
+
     }
 }
 
