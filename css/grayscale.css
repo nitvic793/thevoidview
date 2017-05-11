@@ -216,7 +216,6 @@ a:focus {
 }
 #cursor {
   display: inline;
-  top: -100px;
 }
 .right-bottom {
   position: absolute;
