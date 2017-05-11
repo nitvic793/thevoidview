@@ -67,9 +67,11 @@ $("#voidwaybtn").hover(function (e) {
     });
 
 $("#voidwaybtn").click(function () {
-    currentPage = 2;
-
     route("second", "first");
+});
+
+$("#toProject").click(function () {
+    route("third", "second");
 });
 
 var getCurrentPage = function () {
@@ -77,11 +79,27 @@ var getCurrentPage = function () {
     return url.indexOf('#!/') == -1 ? null : (url.substr(url.indexOf('#!/') + 3, url.length - url.indexOf('#')));
 }
 
+var transition = function (anim, toPage, fromPage) {
+    var property;
+    switch (anim) {
+        case 'slide-left':
+            property = 'left';
+            break;
+        case 'slide-up':
+            property = 'top';
+            break;
+        default:
+            property = 'left';
+    }
+    var animObj = {};
+    animObj[property] = "-100%";
+};
+
 var route = function (toPage, fromPage) {
     if (!toPage) toPage = 'first';
     if (!fromPage) {
         pageIds.forEach(function (v, i, arr) {
-            $("#" + v).animate({ "left": "100%" });
+            $("#" + v).css( "left","-100%");
             console.log(v, toPage);
         });
         $("#" + toPage).css("left", "-100%");
@@ -89,10 +107,13 @@ var route = function (toPage, fromPage) {
     }
     else {
         $("#" + toPage).css("left", "100%");
-        $("#" + fromPage).animate({ left: "-100%" }, 2000);
-        $("#" + toPage).animate({ left: "0" }, 2000);
+        $("#" + fromPage).animate({ left: "-100%" }, 'slow');
+        $("#" + toPage).animate({ left: "0" }, 'slow');
     }
     window.history.pushState('Object', toPage, '#!/' + toPage);
+    if (pageRefreshPipeline[getCurrentPage()]) {
+        pageRefreshPipeline[getCurrentPage()]();
+    }
 }
 
 var directLoad = function (page) {
@@ -108,6 +129,7 @@ window.onpopstate = function (e) {
     console.log(e);
 };
 
+
 window.onhashchange = function () {
     console.log(getCurrentPage());
     if (getCurrentPage() == null) {
@@ -116,8 +138,9 @@ window.onhashchange = function () {
     else {
         route(getCurrentPage());
     }
-    if (pageRefreshPipeline[getCurrentPage]) {
-        pageRefreshPipeline[getCurrentPage]();
+    console.log('Hash change');
+    if (pageRefreshPipeline[getCurrentPage()]) {
+        pageRefreshPipeline[getCurrentPage()]();
     }
 }
 
@@ -130,6 +153,10 @@ var onLoad = function () {
     }
 }
 
+var onProjectPageLoad = function () {
+    console.log('Loaded page 2');
+}
+
 var pageRefreshPipeline = [];
 
 var registerPageRefresh = function (page, fn) {
@@ -137,6 +164,7 @@ var registerPageRefresh = function (page, fn) {
 }
 
 registerPageRefresh("first", onLoad);
+registerPageRefresh("second", onProjectPageLoad);
 var hasLoadedOnce = false;
 
 window.onload = function () {

@@ -6,7 +6,7 @@
 body {
   width: 100%;
   height: 100%;
-  font-family: "Lora", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: white;
   background-color: black;
   overflow: hidden;
@@ -278,6 +278,74 @@ a:focus {
   /* Opera < 12.1 */
   animation: fadeinBg 3s;
 }
+.bg-third {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.3;
+  background: url(../img/vv-pg3.png) no-repeat;
+  background-position: right   center;
+  background-color: black;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  background-size: contain;
+  -o-background-size: contain;
+  -webkit-animation: fadeinBg 3s;
+  /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadeinBg 3s;
+  /* Firefox < 16 */
+  -ms-animation: fadeinBg 3s;
+  /* Internet Explorer */
+  -o-animation: fadeinBg 3s;
+  /* Opera < 12.1 */
+  animation: fadeinBg 3s;
+}
+@media (max-width: 768px) {
+  .bg-third {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+  }
+}
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  20% {
+    transform: translate(-15%, 5%);
+  }
+  30% {
+    transform: translate(7%, -25%);
+  }
+  40% {
+    transform: translate(-5%, 25%);
+  }
+  50% {
+    transform: translate(-15%, 10%);
+  }
+  60% {
+    transform: translate(15%, 0%);
+  }
+  70% {
+    transform: translate(0%, 15%);
+  }
+  80% {
+    transform: translate(3%, 35%);
+  }
+  90% {
+    transform: translate(-10%, 10%);
+  }
+}
+/*End Grainy effect*/
 .middle-band {
   position: absolute;
   top: 10%;
@@ -304,18 +372,28 @@ a:focus {
   width: 100%;
 }
 .reflect {
-  -webkit-box-reflect: below 20px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(250, 250, 250, 0.1)));
+  -webkit-box-reflect: below 20px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(30%, transparent), to(rgba(250, 250, 250, 0.4)));
 }
 .project-card {
   float: left;
-  margin-top: 10%;
+  margin-top: 8%;
   margin-bottom: 10%;
   padding: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
-  width: 30%;
-  margin-left: 30px;
-  margin-right: 30px;
+  width: 27.5%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+}
+@media (max-width: 768px) {
+  .project-card {
+    width: 90%;
+    margin-top: 30%;
+    margin-bottom: 30%;
+  }
+}
+.hide {
+  visibility: hidden;
 }
 .project-card:hover {
   box-shadow: 0 8px 16px 0 rgba(169, 209, 142, 0.2);
