@@ -285,7 +285,7 @@ a:focus {
   width: 100%;
   height: 100%;
   z-index: -1;
-  opacity: 0.3;
+  opacity: 0.7;
   background: url(../img/vv-pg3.png) no-repeat;
   background-position: right   center;
   background-color: black;
@@ -312,40 +312,183 @@ a:focus {
     background-position: right -200px center;
   }
 }
+.grain {
+  width: inherit;
+}
+.grain:after {
+  background: url("//3.bp.blogspot.com/-VIcdc6-UELg/V2Trt4CWVWI/AAAAAAAAIhI/lqCVm0dgFs4X3r8j4CTHLlG070KHI7tWACLcB/s1600/");
+  content: "";
+  left: -100%;
+  top: -103%;
+  width: 300%;
+  height: 300%;
+  z-index: 1;
+  display: block;
+  position: absolute;
+  animation: grain 0.5s steps(1) infinite;
+  -webkit-animation: grain 0.5s steps(1) infinite;
+}
+.outer-scratch,
+.inner-scratch {
+  height: inherit;
+}
+.outer-scratch:after,
+.inner-scratch:after {
+  content: '';
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .09;
+  position: absolute;
+  padding-left: 100px;
+  animation: scratch 0.55s steps(1) infinite;
+  -webkit-animation: scratch 0.55s steps(1) infinite;
+  background: url("//1.bp.blogspot.com/-DyYX7TQ0lmg/V2Tru0GZTaI/AAAAAAAAIhQ/VjGVHqdV7TUq9tAVdVWyrjMM_1fbDjqowCLcB") repeat center center;
+}
+.inner-scratch:after {
+  left: 30%;
+  animation: inner-scratch 2s infinite;
+  -webkit-animation: inner-scratch 2s infinite;
+}
 @keyframes grain {
   0%,
   100% {
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
   }
   10% {
+    -moz-transform: translate(-5%, -10%);
+    -ms-transform: translate(-5%, -10%);
+    -webkit-transform: translate(-5%, -10%);
     transform: translate(-5%, -10%);
   }
   20% {
+    -moz-transform: translate(-15%, 5%);
+    -ms-transform: translate(-15%, 5%);
+    -webkit-transform: translate(-15%, 5%);
     transform: translate(-15%, 5%);
   }
   30% {
+    -moz-transform: translate(7%, -25%);
+    -ms-transform: translate(7%, -25%);
+    -webkit-transform: translate(7%, -25%);
     transform: translate(7%, -25%);
   }
   40% {
+    -moz-transform: translate(-5%, 25%);
+    -ms-transform: translate(-5%, 25%);
+    -webkit-transform: translate(-5%, 25%);
     transform: translate(-5%, 25%);
   }
   50% {
+    -moz-transform: translate(-15%, 10%);
+    -ms-transform: translate(-15%, 10%);
+    -webkit-transform: translate(-15%, 10%);
     transform: translate(-15%, 10%);
   }
   60% {
+    -moz-transform: translate(15%, 0%);
+    -ms-transform: translate(15%, 0%);
+    -webkit-transform: translate(15%, 0%);
     transform: translate(15%, 0%);
   }
   70% {
+    -moz-transform: translate(0%, 15%);
+    -ms-transform: translate(0%, 15%);
+    -webkit-transform: translate(0%, 15%);
     transform: translate(0%, 15%);
   }
   80% {
+    -moz-transform: translate(3%, 35%);
+    -ms-transform: translate(3%, 35%);
+    -webkit-transform: translate(3%, 35%);
     transform: translate(3%, 35%);
   }
   90% {
+    -moz-transform: translate(-10%, 10%);
+    -ms-transform: translate(-10%, 10%);
+    -webkit-transform: translate(-10%, 10%);
     transform: translate(-10%, 10%);
   }
 }
-/*End Grainy effect*/
+@keyframes scratch {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.075;
+  }
+  10% {
+    transform: translateX(-1%);
+  }
+  20% {
+    transform: translateX(1%);
+  }
+  30% {
+    transform: translateX(-2%);
+    opacity: 0.09;
+  }
+  40% {
+    transform: translateX(3%);
+  }
+  50% {
+    transform: translateX(-3%);
+    opacity: 0.05;
+  }
+  60% {
+    transform: translateX(8%);
+  }
+  70% {
+    transform: translateX(-3%);
+  }
+  80% {
+    transform: translateX(10%);
+    opacity: 0.02;
+  }
+  90% {
+    transform: translateX(-2%);
+  }
+}
+@keyframes inner-scratch {
+  0% {
+    transform: translateX(0);
+    opacity: 0.08;
+  }
+  10% {
+    transform: translateX(-1%);
+  }
+  20% {
+    transform: translateX(1%);
+  }
+  30% {
+    transform: translateX(-2%);
+  }
+  40% {
+    transform: translateX(3%);
+  }
+  50% {
+    transform: translateX(-3%);
+    opacity: 0.06;
+  }
+  60% {
+    transform: translateX(8%);
+  }
+  70% {
+    transform: translateX(-3%);
+  }
+  80% {
+    transform: translateX(10%);
+    opacity: 0.03;
+  }
+  90% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(30%);
+  }
+}
 .middle-band {
   position: absolute;
   top: 10%;

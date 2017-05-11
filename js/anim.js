@@ -99,7 +99,7 @@ var route = function (toPage, fromPage) {
     if (!toPage) toPage = 'first';
     if (!fromPage) {
         pageIds.forEach(function (v, i, arr) {
-            $("#" + v).css( "left","-100%");
+            $("#" + v).css("left", "-100%");
             console.log(v, toPage);
         });
         $("#" + toPage).css("left", "-100%");
@@ -132,7 +132,7 @@ window.onpopstate = function (e) {
 
 window.onhashchange = function () {
     console.log(getCurrentPage());
-    if (getCurrentPage() == null) {
+    if (getCurrentPage() == null || getCurrentPage() == '') {
         route("first")
     }
     else {
