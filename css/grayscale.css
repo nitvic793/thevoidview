@@ -399,7 +399,12 @@ a:focus {
   text-align: center;
 }
 .project {
-  width: 100%;
+  margin-top: 7.5%;
+}
+@media (max-width: 768px) {
+  .project {
+    margin-top: 15%;
+  }
 }
 .middle-band {
   position: absolute;
