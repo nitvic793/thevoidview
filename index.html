@@ -22,6 +22,7 @@
 
     <!-- Theme CSS -->
     <link href="css/grayscale.min.css" rel="stylesheet">
+    <link href="vendor/jquery-flipster/jquery.flipster.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,10 +38,10 @@
 
 
     <!-- Intro Header -->
-    
+
     <div class="intro" id="first">
-        
-        <div class="bg grain"></div>        
+
+        <div class="bg grain"></div>
         <div class="intro-body">
             <div class="container">
                 <div class="row">
@@ -81,12 +82,26 @@
         <div class="bg-second"></div>
         <div class="middle-band"></div>
         <div class="void-container">
-            <div class="project-card"><img src="img/face.png" alt="Avatar" class="reflect" style="width:100%"></div>
-            <div class="project-card"><img src="img/face.png" alt="Avatar" class="reflect" style="width:100%"></div>
-            <div class="project-card"><img src="img/face.png" alt="Avatar" class="reflect" style="width:100%"></div>
-            <div class="project-card"><img src="img/face.png" alt="Avatar" class="reflect" style="width:100%"></div>
-            <div class="project-card"><img src="img/face.png" alt="Avatar" class="reflect" style="width:100%"></div>
-            <div class="project-card"><img src="img/face.png" alt="Avatar" class="reflect" style="width:100%"></div>
+            <div class="col-md-8">
+                <div class="my-flipster">
+                    <ul>
+                        <li><img src="img/face.png" class="reflect" /></li>
+                        <li class="activeProject"><img src="img/face.png" class="reflect" /></li>
+                        <li><img src="img/face.png" class="reflect" /></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="project">
+                    <h3>Details</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent mollis purus orci, aliquet maximus
+                        nibh lobortis vel. Curabitur tempor arcu fermentum odio tempor, vitae congue lorem lacinia. Praesent
+                        fermentum euismod risus. Suspendisse vitae ante leo. Vivamus facilisis consectetur porta. Pellentesque
+                        et justo placerat, auctor sem accumsan, dignissim arcu. Integer eget interdum velit, vel molestie
+                        dolor. Nam sit amet urna tellus. Sed tincidunt porttitor tristique. Etiam consequat, massa molestie
+                        ornare porttitor, nisl nulla lacinia nisl, nec eleifend diam arcu vitae lorem. </p>
+                </div>
+            </div>
         </div>
         <span id="title" class="title">Projects</span>
     </div>
@@ -109,9 +124,24 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
 
     <!-- Theme JavaScript -->
-
+    <script src="vendor\jquery-flipster\jquery.flipster.min.js"></script>
+    <script>
+        $('.my-flipster').flipster({
+            style: 'carousel',
+            spacing: -0.5,
+            fadeIn: 400,
+            nav: true,
+            buttons: true,
+            onItemSwitch: function (current, prev) {
+                console.log(current, prev);
+                $(current).addClass('activeProject');
+                $(prev).removeClass('activeProject');
+            }
+        });
+    </script>
     <script src="bower_components\gsap\src\minified\TweenMax.min.js"></script>
     <script src="bower_components\gsap\src\minified\TimelineMax.min.js"></script>
+
 
     <script src="js/anim.js"></script>
 
