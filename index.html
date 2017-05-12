@@ -20,6 +20,8 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <!-- Theme CSS -->
     <link href="css/grayscale.min.css" rel="stylesheet">
     <link href="vendor/jquery-flipster/jquery.flipster.css" rel="stylesheet">
@@ -97,14 +99,14 @@
         </div>
         <span id="title" class="title">Projects</span>
     </div>
-
+    <div id="projectDialog">Replace this with any modal/page/dialog</div>
 
 
 
 
     <!-- jQuery -->
     <script src="vendor/jquery/jquery.js"></script>
-
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -125,7 +127,6 @@
 
             buttons: true,
             onItemSwitch: function (current, prev) {
-                console.log(current, prev);
                 $(current).addClass('activeProject');
                 $(prev).removeClass('activeProject');
                 $("#projectTitle").fadeOut("fast", function () {
@@ -134,7 +135,13 @@
 
             }
         });
-
+        $("#projectDialog").dialog({
+            autoOpen: false
+        });
+        $(".reflect").click(() => {
+            console.log("Open");
+            $("#projectDialog").dialog("open");
+        });
         $("#projectTitle").text("Emotion");
     </script>
     <script src="bower_components\gsap\src\minified\TweenMax.min.js"></script>
