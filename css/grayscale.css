@@ -400,6 +400,7 @@ a:focus {
 }
 .project {
   width: 100%;
+  overflow-y: scroll;
 }
 .middle-band {
   position: absolute;
@@ -425,6 +426,7 @@ a:focus {
   bottom: 10%;
   height: 80%;
   width: 100%;
+  overflow: hidden;
 }
 .reflect {
   -webkit-box-reflect: below 20px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(30%, transparent), to(rgba(250, 250, 250, 0.4)));
