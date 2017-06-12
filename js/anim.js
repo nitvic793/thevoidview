@@ -23,6 +23,7 @@ function type() {
     } else {
         captionLength = 0;
         caption = '';
+        doneTypingCallback();
     }
 }
 
@@ -37,6 +38,10 @@ function cursorAnimation() {
     }, 'fast', 'swing').animate({
         opacity: 1
     }, 'fast', 'swing');
+}
+
+function doneTypingCallback() {
+    console.log('Done Typing...');
 }
 
 setTimeout(function () {
