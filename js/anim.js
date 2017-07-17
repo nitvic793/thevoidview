@@ -221,25 +221,40 @@ var menuItems = [
     {
         id: 1,
         top: 25,
-        text: "Project #1",
+        text: "Drone",
         middle: false,
         element: null
     },
     {
         id: 2,
         top: 50,
-        text: "Project #2",
+        text: "Emoi",
         middle: true,
         element: null
     },
     {
         id: 3,
         top: 75,
-        text: "Project #3",
+        text: "Testimonial Map",
         middle: false,
         element: null
     }
-]
+];
+
+var projects = {
+    Drone: {
+        image: "../img/drone1.png",
+        description: "Drone project description here."
+    },
+    Emoi: {
+        image: "../img/b.jpg",
+        description: "Emotion based feedback"
+    },
+    "Testimonial Map": {
+        image: "../img/a.jpg",
+        description: "Service Center testimonial feedback"
+    }
+};
 
 var loadProjectMenu = function () {
     console.log("Project Menu loading");
@@ -250,6 +265,7 @@ var loadProjectMenu = function () {
         if (val.middle) {
             $("#project-title").text(val.text);
             element.css("font-size", "22pt");
+            loadProject(val.text);
         }
         element.css("top", val.top + '%');
         menuItems.element = element;
@@ -296,9 +312,7 @@ var menuDown = function () {
                 element.animate(animations, 400, function (e) {
                     menuItem.middle = false;
                     animStack.pop();
-
                 });
-
             }
             if (menuItem.nextMiddle) {
                 $("#project-title").text(menuItem.text);
@@ -309,6 +323,7 @@ var menuDown = function () {
                     menuItem.nextMiddle = false;
                     animStack.pop();
                 });
+                loadProject(menuItem.text);
             }
 
         }
@@ -360,6 +375,7 @@ var menuUp = function () {
                     menuItem.nextMiddle = false;
                     animStack.pop();
                 });
+                loadProject(menuItem.text);
             }
 
         }
@@ -387,6 +403,18 @@ var keyHandlers = {
         }
     }
 }
+
+var loadProject = function (projectName) {
+    var project = projects[projectName];
+    $("#project-details").text(project.description);
+    animStack.push(true);
+    $("#project-image").fadeOut(100, function (e) {
+        $("#project-image").css("background-image", "url(" + project.image + ")");
+        $("#project-image").fadeIn(200, function (e) {
+            animStack.pop();
+        });
+    });
+};
 
 loadProjectMenu();
 
