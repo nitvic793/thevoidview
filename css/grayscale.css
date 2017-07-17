@@ -710,3 +710,38 @@ img::-moz-selection {
 body {
   webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
 }
+/**
+Page 3 CSS
+*/
+.project-menu {
+  position: absolute;
+  width: 10%;
+  left: 45%;
+  height: 100%;
+  text-align: center;
+}
+.projectName {
+  text-align: center;
+  margin: 5px;
+  padding: 5px;
+  position: fixed;
+  font-family: Courier New, Courier, monospace;
+}
+.vertical-line {
+  color: white;
+  width: 1px;
+  /* Line width */
+  background-color: white;
+  /* Line color */
+  height: 100%;
+  /* Override in-line if you want specific height. */
+  /* Causes the line to float to left of content. 
+        You can instead use position:absolute or display:inline-block
+        if this fits better with your design */
+}
+#project-title {
+  position: absolute;
+  top: 10%;
+  font-family: Courier New, Courier, monospace;
+  left: 10%;
+}

@@ -159,7 +159,7 @@ var onLoad = function () {
 }
 
 var onProjectPageLoad = function () {
-    console.log('Loaded page 2');
+    console.log('Loaded page 3');
 }
 
 var pageRefreshPipeline = [];
@@ -169,7 +169,7 @@ var registerPageRefresh = function (page, fn) {
 }
 
 registerPageRefresh("first", onLoad);
-registerPageRefresh("second", onProjectPageLoad);
+registerPageRefresh("third", onProjectPageLoad);
 var hasLoadedOnce = false;
 
 window.onload = function () {
@@ -181,6 +181,194 @@ window.onload = function () {
 
     }
 }
+
+/**
+ * Third Page 
+ */
+
+var MOUSE_OVER = false;
+$('body').bind('mousewheel', function (e) {
+    if (MOUSE_OVER) {
+        if (e.preventDefault) { e.preventDefault(); }
+        e.returnValue = false;
+        return false;
+    }
+});
+
+$('#third').mouseenter(function () { MOUSE_OVER = true; });
+$('#third').mouseleave(function () { MOUSE_OVER = false; });
+
+$('#third').bind('mousewheel', function (e) {
+    var delta;
+    if (e.wheelDelta)
+        delta = e.wheelDelta;
+    else delta = e.originalEvent.wheelDelta;
+    if (delta > 0) {
+        //go up
+        console.log("Up");
+        if (animStack.length == 0)
+            menuUp();
+    }
+    else {
+        //go down
+        console.log("Down", animStack);
+        if (animStack.length == 0)
+            menuDown();
+    }
+});
+
+var menuItems = [
+    {
+        id: 1,
+        top: 25,
+        text: "Project #1",
+        middle: false,
+        element: null
+    },
+    {
+        id: 2,
+        top: 50,
+        text: "Project #2",
+        middle: true,
+        element: null
+    },
+    {
+        id: 3,
+        top: 75,
+        text: "Project #3",
+        middle: false,
+        element: null
+    }
+]
+
+var loadProjectMenu = function () {
+    console.log("Project Menu loading");
+    var idName = "#pname";
+    menuItems.forEach(function (val) {
+        var element = $(idName + val.id);
+        element.text(val.text);
+        if (val.middle) {
+            $("#project-title").text(val.text);
+            element.css("font-size", "22pt");
+        }
+        element.css("top", val.top + '%');
+        menuItems.element = element;
+    });
+
+    for (var i = 1; i <= 4; ++i) {
+        var line = $("line" + i);
+        
+    }
+}
+
+var animStack = [];
+
+var menuDown = function () {
+    var idName = "#pname";
+    menuItems.forEach(function (menuItem) {
+        var element = $(idName + menuItem.id);
+        if (menuItem.top >= 75) {
+            animStack.push(true);
+            menuItem.top = 25;
+            element.animate({
+                top: "100%"
+            }, 200, function (ele) {
+                element.css("top", "0%");
+                element.animate({
+                    top: "25%"
+                }, 200);
+                animStack.pop();
+            })
+        }
+        else {
+
+            menuItem.top = menuItem.top + 25;
+            if (menuItem.top == 50) {
+                menuItem.nextMiddle = true;
+            }
+
+            var animations = {
+                top: menuItem.top + "%"
+            };
+            if (menuItem.middle) {
+                animations["font-size"] = "12pt";
+                animStack.push(true);
+                element.animate(animations, 400, function (e) {
+                    menuItem.middle = false;
+                    animStack.pop();
+
+                });
+
+            }
+            if (menuItem.nextMiddle) {
+                 $("#project-title").text(menuItem.text);
+                animStack.push(true);
+                animations["font-size"] = "22pt";
+                element.animate(animations, 400, function (e) {
+                    menuItem.middle = true;
+                    menuItem.nextMiddle = false;
+                    animStack.pop();
+                });
+            }
+
+        }
+    });
+}
+
+var menuUp = function () {
+    var idName = "#pname";
+    menuItems.forEach(function (menuItem) {
+        var element = $(idName + menuItem.id);
+        if (menuItem.top <= 25) {
+            animStack.push(true);
+            menuItem.top = 75;
+            element.animate({
+                top: "0%"
+            }, 200, function (ele) {
+                element.css("top", "100%");
+                element.animate({
+                    top: "75%"
+                }, 200);
+                animStack.pop();
+            })
+        }
+        else {
+
+            menuItem.top = menuItem.top - 25;
+            if (menuItem.top == 50) {
+                menuItem.nextMiddle = true;
+            }
+
+            var animations = {
+                top: menuItem.top + "%"
+            };
+            if (menuItem.middle) {
+                animations["font-size"] = "12pt";
+                animStack.push(true);
+                element.animate(animations, 400, function (e) {
+                    menuItem.middle = false;
+                    animStack.pop();
+                });
+            }
+
+            if (menuItem.nextMiddle) {
+                $("#project-title").text(menuItem.text);
+                animStack.push(true);
+                animations["font-size"] = "22pt";
+                element.animate(animations, 400, function (e) {
+                    menuItem.middle = true;
+                    menuItem.nextMiddle = false;
+                    animStack.pop();
+                });
+            }
+
+        }
+    });
+}
+
+loadProjectMenu();
+
+
 
 
 

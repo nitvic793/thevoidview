@@ -81,25 +81,20 @@
     </div>
 
     <div class="void-page  non-default" id="third">
-        <div class="bg-second"></div>
-        <div class="middle-band"></div>
-        <div class="void-container">
-            <div class="col-md-12">
-                <div class="my-flipster project">
-                    <ul>
-                        <li><img src="img/face.png" class="reflect" /></li>
-                        <li class="activeProject"><img src="img/face.png" class="reflect" /></li>
-                        <li><img src="img/face.png" class="reflect" /></li>
-                    </ul>
-
-                    <h3 id="projectTitle"></h3>
-                </div>
-
-            </div>
+        <!-- <div class="bg-second"></div> -->
+        <h2 id="project-title">Test</h2>
+        <div class="project-menu" id="project-menu">
+            <div class="vertical-line" id="line1"></div>
+            <div class="projectName" id="pname1"></div>
+            <div class="vertical-line" id="line2"></div>
+            <div class="projectName" id="pname2"></div>
+            <div class="vertical-line" id="line3"></div>
+            <div class="projectName" id="pname3"></div>
+            <div class="vertical-line" id="line4"></div>
         </div>
         <span id="title" class="title">Projects</span>
     </div>
-    <div id="projectDialog">Replace this with any modal/page/dialog</div>
+
 
 
 
@@ -118,34 +113,13 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
 
     <!-- Theme JavaScript -->
-    <script src="vendor\jquery-flipster\jquery.flipster.min.js"></script>
-    <script>
-        $('.my-flipster').flipster({
-            style: 'flat',
-            spacing: -0.25,
-            fadeIn: 400,
 
-            buttons: true,
-            onItemSwitch: function (current, prev) {
-                $(current).addClass('activeProject');
-                $(prev).removeClass('activeProject');
-                $("#projectTitle").fadeOut("fast", function () {
-                    $("#projectTitle").fadeIn("fast");
-                });
-
-            }
-        });
-        $("#projectDialog").dialog({
-            autoOpen: false
-        });
-        $(".reflect").click(() => {
-            console.log("Open");
-            $("#projectDialog").dialog("open");
-        });
-        $("#projectTitle").text("Emotion");
-    </script>
     <script src="bower_components\gsap\src\minified\TweenMax.min.js"></script>
     <script src="bower_components\gsap\src\minified\TimelineMax.min.js"></script>
+
+    <!-- ScrollMagic -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
 
 
     <script src="js/anim.js"></script>
