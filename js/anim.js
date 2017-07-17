@@ -257,7 +257,7 @@ var loadProjectMenu = function () {
 
     for (var i = 1; i <= 4; ++i) {
         var line = $("line" + i);
-        
+
     }
 }
 
@@ -301,7 +301,7 @@ var menuDown = function () {
 
             }
             if (menuItem.nextMiddle) {
-                 $("#project-title").text(menuItem.text);
+                $("#project-title").text(menuItem.text);
                 animStack.push(true);
                 animations["font-size"] = "22pt";
                 element.animate(animations, 400, function (e) {
@@ -364,6 +364,28 @@ var menuUp = function () {
 
         }
     });
+}
+
+$(document).keyup(function (e) {
+    if (keyHandlers[getCurrentPage()])
+        keyHandlers[getCurrentPage()].onKeyPress(e);
+});
+
+var keyHandlers = {
+    third: {
+        onKeyPress: function (e) {
+            switch (e.which) {
+                case 38: //Up
+                    if (animStack.length == 0)
+                        menuUp();
+                    break;
+                case 40: //Down
+                    if (animStack.length == 0)
+                        menuDown();
+                    break;
+            }
+        }
+    }
 }
 
 loadProjectMenu();
