@@ -265,6 +265,7 @@ var loadProjectMenu = function () {
         if (val.middle) {
             $("#project-title").text(val.text);
             element.css("font-size", "22pt");
+            element.css("color", "white");
             loadProject(val.text);
         }
         element.css("top", val.top + '%');
@@ -291,7 +292,8 @@ var menuDown = function () {
             }, 200, function (ele) {
                 element.css("top", "0%");
                 element.animate({
-                    top: "25%"
+                    top: "25%",
+                    color: "#808080"
                 }, 200);
                 animStack.pop();
             })
@@ -304,10 +306,12 @@ var menuDown = function () {
             }
 
             var animations = {
-                top: menuItem.top + "%"
+                top: menuItem.top + "%",
+                color: "#808080"
             };
             if (menuItem.middle) {
                 animations["font-size"] = "12pt";
+                animations["color"] = "#808080";
                 animStack.push(true);
                 element.animate(animations, 400, function (e) {
                     menuItem.middle = false;
@@ -318,6 +322,7 @@ var menuDown = function () {
                 $("#project-title").text(menuItem.text);
                 animStack.push(true);
                 animations["font-size"] = "22pt";
+                animations["color"] = "white";
                 element.animate(animations, 400, function (e) {
                     menuItem.middle = true;
                     menuItem.nextMiddle = false;
@@ -342,7 +347,8 @@ var menuUp = function () {
             }, 200, function (ele) {
                 element.css("top", "100%");
                 element.animate({
-                    top: "75%"
+                    top: "75%",
+                    color: "#808080"
                 }, 200);
                 animStack.pop();
             })
@@ -355,7 +361,8 @@ var menuUp = function () {
             }
 
             var animations = {
-                top: menuItem.top + "%"
+                top: menuItem.top + "%",
+                color: "#808080"
             };
             if (menuItem.middle) {
                 animations["font-size"] = "12pt";
@@ -370,6 +377,7 @@ var menuUp = function () {
                 $("#project-title").text(menuItem.text);
                 animStack.push(true);
                 animations["font-size"] = "22pt";
+                animations["color"] = "white";
                 element.animate(animations, 400, function (e) {
                     menuItem.middle = true;
                     menuItem.nextMiddle = false;
