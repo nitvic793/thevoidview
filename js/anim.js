@@ -75,7 +75,7 @@ $("#voidwaybtn").click(function () {
     route("second", "first");
 });
 
-$("#toProject").click(function () {
+$("#menu-projects").click(function () {
     route("third", "second");
 });
 
@@ -425,6 +425,33 @@ var loadProject = function (projectName) {
 };
 
 loadProjectMenu();
+
+/**
+ * Menu page
+ */
+
+var menuPageItems = ['menu-home', 'menu-about', 'menu-projects', 'menu-dance', 'menu-art', 'menu-contact'];
+
+menuPageItems.forEach(function (val, i) {
+    var menu = $("#" + val);
+    menu.hover(function (e) {
+        if (animStack.length == 0 && $("#menu-image").css("background-image").indexOf(val) == -1) {
+            animStack.push(true);
+            $("#menu-image").fadeOut(100, function (el) {
+                $("#menu-image").css("background-image", "url(../img/" + val + ".png)");
+                animStack.push(true);
+                $("#menu-image").animate({
+                    left: i * 15 + "%"
+                }, 200, function(){
+                    animStack.pop();
+                });
+                $("#menu-image").fadeIn(100, function () {
+                    animStack.pop();
+                });
+            });
+        };
+    });
+});
 
 
 
