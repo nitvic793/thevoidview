@@ -38,7 +38,7 @@ p {
   }
 }
 a {
-  color: #42DCA3;
+  color: grey;
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
@@ -46,7 +46,7 @@ a {
 a:hover,
 a:focus {
   text-decoration: none;
-  color: #1d9b6c;
+  color: white;
 }
 .light {
   font-weight: 400;
@@ -784,17 +784,29 @@ Page 3 CSS
 About page
 **/
 .horizontal-line {
-  margin-top: 0.5em;
+  margin-top: 1.25em;
   margin-bottom: 0.5em;
   margin-left: auto;
   margin-right: auto;
   border-style: inset;
   border-width: 1px;
   float: left;
-  width: 100%;
+  width: 10em;
+  color: grey;
 }
 .about-container {
-  width: 100%;
+  left: 10%;
+  width: 80%;
+  right: 10%;
   position: absolute;
   top: 50%;
+}
+.about-menu {
+  font-size: 22pt;
+  float: left;
+  font-family: Courier New, Courier, monospace;
+  color: grey;
+}
+a > i {
+  color: grey;
 }
