@@ -26,6 +26,8 @@
     <link href="css/grayscale.min.css" rel="stylesheet">
     <link href="vendor/jquery-flipster/jquery.flipster.css" rel="stylesheet">
 
+    <script src="bower_components\paper\dist\paper-full.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -69,33 +71,31 @@
             <div class="about-menu"><a id="menu-home" href="#first"><i class="glyphicon glyphicon-home"></i></a></div>
             <div class="horizontal-line"></div>
             <div class="about-menu"><a id="menu-about">About</a></div>
-            <div class="horizontal-line"></div>            
-            <div class="about-menu"><a id="menu-projects" href="#third" onclick="return false;">Projects</a></div>
-            <div class="horizontal-line"></div>            
-            <div class="about-menu"><a id="menu-dance">Dance</a></div>
-            <div class="horizontal-line"></div>            
-            <div class="about-menu"><a id="menu-art">Art</a></div>
             <div class="horizontal-line"></div>
-            <div class="about-menu"><a id="menu-contact">Contact</a></div>            
+            <div class="about-menu"><a id="menu-projects" href="#third" onclick="return false;">Projects</a></div>
+            <div class="horizontal-line"></div>
+            <div class="about-menu"><a id="menu-dance">Dance</a></div>
+            <div class="horizontal-line"></div>
+            <div class="about-menu"><a id="menu-art">Misc</a></div>
+            <div class="horizontal-line"></div>
+            <div class="about-menu"><a id="menu-contact">Contact</a></div>
         </div>
     </div>
 
     <div class="void-page  non-default" id="third">
+        <canvas class="canvas" id="project-canvas" resize></canvas>
         <div class="project-image" id="project-image"></div>
         <div class="project-details" id="project-details"> </div>
         <h2 id="project-title">Test</h2>
         <div class="project-menu" id="project-menu">
-            <div class="projectName" id="pname1"></div>
-            <div class="projectName" id="pname2"></div>
-            <div class="projectName" id="pname3"></div>
-            <div class="vertical-line" id="line4"></div>
+
+            <!-- <div class="vertical-line" id="line4"></div> -->
         </div>
         <span id="title" class="title">Projects</span>
     </div>
-
-
-
-
+    <script type="text/javascript">
+        paper.install(window);
+    </script>
 
     <!-- jQuery -->
     <script src="vendor/jquery/jquery.js"></script>
@@ -111,15 +111,17 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
 
     <!-- Theme JavaScript -->
-
+    <!-- 
     <script src="bower_components\gsap\src\minified\TweenMax.min.js"></script>
-    <script src="bower_components\gsap\src\minified\TimelineMax.min.js"></script>
+    <script src="bower_components\gsap\src\minified\TimelineMax.min.js"></script> -->
+
 
     <!-- ScrollMagic -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
 
 
+    <script src="js/queue.min.js"></script>
     <script src="js/anim.js"></script>
 
 </body>

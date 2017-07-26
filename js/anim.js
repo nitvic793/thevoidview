@@ -238,6 +238,13 @@ var menuItems = [
         text: "Testimonial Map",
         middle: false,
         element: null
+    },
+    {
+        id: 4,
+        top: 100,
+        text: "Other",
+        middle: false,
+        element: null
     }
 ];
 
@@ -253,23 +260,36 @@ var projects = {
     "Testimonial Map": {
         image: "../img/a.jpg",
         description: "Service Center testimonial feedback"
-    }
+    },
+    Other: {
+        image: "../img/c.jpg",
+        description: "Other"
+    },
 };
 
+var queue = new Queue();
+var currentProject = {};
 var loadProjectMenu = function () {
     console.log("Project Menu loading");
     var idName = "#pname";
     menuItems.forEach(function (val) {
+        $("#project-menu").append(`<div class="projectName" id="pname${val.id}"></div>`);
+    });
+    menuItems.forEach(function (val, index) {
         var element = $(idName + val.id);
         element.text(val.text);
-        if (val.middle) {
-            $("#project-title").text(val.text);
-            element.css("font-size", "22pt");
-            element.css("color", "white");
-            loadProject(val.text);
-        }
+        menuItems[index].top = (index + 1) * 25;
         element.css("top", val.top + '%');
         menuItems.element = element;
+        if (val.top > 75) {
+            //Queue all extra project items
+            if (val.top == 100) {
+                $("#project-title").text(val.text);
+                currentProject = val;
+                loadProject(val.text);
+            }
+            queue.enqueue(index);
+        }
     });
 
     for (var i = 1; i <= 4; ++i) {
@@ -280,114 +300,143 @@ var loadProjectMenu = function () {
 
 var animStack = [];
 
+var lastDeqeue = null;
+var lastUpDeqeue = null;
+
+var processed = {};
+
 var menuDown = function () {
+    console.log('MenuDown', lastDeqeue, queue.peek(), processed);
     var idName = "#pname";
-    menuItems.forEach(function (menuItem) {
+    menuItems.forEach(function (menuItem, index) {
+        if (processed[index]) return;
         var element = $(idName + menuItem.id);
-        if (menuItem.top >= 75) {
+        if (menuItem.top == 75) {
+            currentProject = menuItem;
+            loadProject(currentProject.text);
+
             animStack.push(true);
-            menuItem.top = 25;
-            element.animate({
-                top: "100%"
-            }, 200, function (ele) {
-                element.css("top", "0%");
+            if (!queue.isEmpty()) {
+                var currentTop = queue.dequeue();
+                lastDeqeue = currentTop;
+                queue.enqueue(index);
                 element.animate({
+                    top: "100%",
+                    color: "#808080"
+                }, 400, function (e) {
+                    animStack.pop();
+                });
+                menuItem.top = 100;
+                var currentElement = $(idName + menuItems[currentTop].id);
+                currentElement.css("top", "0%");
+                animStack.push(true);
+                currentElement.animate({
                     top: "25%",
                     color: "#808080"
-                }, 200);
-                animStack.pop();
-            })
-        }
-        else {
-
-            menuItem.top = menuItem.top + 25;
-            if (menuItem.top == 50) {
-                menuItem.nextMiddle = true;
+                }, 400, function () {
+                    animStack.pop();
+                });
+                menuItems[currentTop].top = 25;
+                processed[currentTop] = true;
             }
-
+            else {
+                menuItem.top = 25;
+                element.animate({
+                    top: "100%",
+                    color: "#808080"
+                }, 200, function (ele) {
+                    element.css("top", "0%");
+                    element.animate({
+                        top: "25%",
+                        color: "#808080"
+                    }, 200);
+                    animStack.pop();
+                });
+            }
+        }
+        else if (menuItem.top < 100) {
+            menuItem.top = menuItem.top + 25;
             var animations = {
                 top: menuItem.top + "%",
                 color: "#808080"
             };
-            if (menuItem.middle) {
-                animations["font-size"] = "12pt";
-                animations["color"] = "#808080";
-                animStack.push(true);
-                element.animate(animations, 400, function (e) {
-                    menuItem.middle = false;
-                    animStack.pop();
-                });
-            }
-            if (menuItem.nextMiddle) {
-                $("#project-title").text(menuItem.text);
-                animStack.push(true);
-                animations["font-size"] = "22pt";
-                animations["color"] = "white";
-                element.animate(animations, 400, function (e) {
-                    menuItem.middle = true;
-                    menuItem.nextMiddle = false;
-                    animStack.pop();
-                });
-                loadProject(menuItem.text);
-            }
 
+            animStack.push(true);
+            element.animate(animations, 400, function (e) {
+                menuItem.middle = false;
+                animStack.pop();
+            });
         }
+        processed[index] = true;
     });
+    processed = {};
 }
 
 var menuUp = function () {
+    console.log('MenuDown', lastUpDeqeue, queue.peek(), processed);
     var idName = "#pname";
-    menuItems.forEach(function (menuItem) {
+    menuItems.forEach(function (menuItem, index) {
+        if (processed[index]) return;
         var element = $(idName + menuItem.id);
-        if (menuItem.top <= 25) {
+        if (menuItem.top == 25) {
+            currentProject = menuItem;
+            loadProject(currentProject.text);
             animStack.push(true);
-            menuItem.top = 75;
-            element.animate({
-                top: "0%"
-            }, 200, function (ele) {
-                element.css("top", "100%");
+            if (!queue.isEmpty()) {
+                var currentTop = queue.dequeue();
+                lastUpDeqeue = currentTop;
+                queue.enqueue(index);
                 element.animate({
+                    top: "-10%",
+                    color: "#808080"
+                }, 400, function (e) {
+                    element.css("top", "100%");
+                    animStack.pop();
+                });
+                menuItem.top = 100;
+                var currentElement = $(idName + menuItems[currentTop].id);
+                currentElement.css("top", "100%");
+                animStack.push(true);
+                currentElement.animate({
                     top: "75%",
                     color: "#808080"
-                }, 200);
-                animStack.pop();
-            })
+                }, 400, function () {
+                    animStack.pop();
+                });
+                menuItems[currentTop].top = 75;
+                processed[currentTop] = true;
+            }
+            else {
+                menuItem.top = 25;
+                element.animate({
+                    top: "100%",
+                    color: "#808080"
+                }, 200, function (ele) {
+                    element.css("top", "0%");
+                    element.animate({
+                        top: "25%",
+                        color: "#808080"
+                    }, 200);
+                    animStack.pop();
+                });
+            }
         }
         else {
-
             menuItem.top = menuItem.top - 25;
-            if (menuItem.top == 50) {
-                menuItem.nextMiddle = true;
-            }
-
             var animations = {
                 top: menuItem.top + "%",
                 color: "#808080"
             };
-            if (menuItem.middle) {
-                animations["font-size"] = "12pt";
-                animStack.push(true);
-                element.animate(animations, 400, function (e) {
-                    menuItem.middle = false;
-                    animStack.pop();
-                });
-            }
 
-            if (menuItem.nextMiddle) {
-                $("#project-title").text(menuItem.text);
-                animStack.push(true);
-                animations["font-size"] = "22pt";
-                animations["color"] = "white";
-                element.animate(animations, 400, function (e) {
-                    menuItem.middle = true;
-                    menuItem.nextMiddle = false;
-                    animStack.pop();
-                });
-                loadProject(menuItem.text);
-            }
-
+            animStack.push(true);
+            element.animate(animations, 400, function (e) {
+                menuItem.middle = false;
+                animStack.pop();
+            });
         }
+        processed[index] = true;
     });
+    processed = {};
 }
 
 $(document).keyup(function (e) {
@@ -414,6 +463,7 @@ var keyHandlers = {
 
 var loadProject = function (projectName) {
     var project = projects[projectName];
+    $("#project-title").text(projectName);
     $("#project-details").text(project.description);
     animStack.push(true);
     $("#project-image").fadeOut(100, function (e) {
@@ -426,6 +476,33 @@ var loadProject = function (projectName) {
 
 loadProjectMenu();
 
+var canvas = document.getElementById('project-canvas');
+paper.setup(canvas);
+var path = new paper.Path();
+path.strokeColor = 'white';
+var start = new paper.Point(400, 0);
+var end = new paper.Point(400, 800);
+
+// Draw the view now:
+path.moveTo(start);
+path.lineTo(end);
+view.draw();
+var paths = [new paper.Path(), new paper.Path(), new paper.Path(), new paper.Path()];
+view.onFrame = function (event) {
+
+}
+
+var getDrawPoints = function () {
+    var elements = [];
+    menuItems.forEach(function (item) {
+        elements.push($("#pname" + item.id));
+    });
+    elements.forEach(function (e) {
+        var y = e.position().top;
+        var x = e.position().left;
+    });
+}
+
 /**
  * Menu page
  */
@@ -437,18 +514,16 @@ menuPageItems.forEach(function (val, i) {
     menu.hover(function (e) {
         if (animStack.length == 0 && $("#menu-image").css("background-image").indexOf(val) == -1) {
             animStack.push(true);
-            $("#menu-image").fadeOut(100, function (el) {
-                $("#menu-image").css("background-image", "url(../img/" + val + ".png)");
-                animStack.push(true);
-                $("#menu-image").animate({
-                    left: i * 15 + "%"
-                }, 200, function(){
-                    animStack.pop();
-                });
-                $("#menu-image").fadeIn(100, function () {
-                    animStack.pop();
-                });
+
+            $("#menu-image").css("background-image", "url(../img/" + val + ".png)");
+
+            $("#menu-image").css({
+                left: i * 14 + "%"
             });
+            $("#menu-image").fadeIn(100, function () {
+                animStack.pop();
+            });
+
         };
     });
 });
