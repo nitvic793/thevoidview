@@ -373,6 +373,7 @@ var menuDown = function () {
 }
 
 var menuUp = function () {
+
     console.log('MenuDown', lastUpDeqeue, queue.peek(), processed);
     var idName = "#pname";
     menuItems.forEach(function (menuItem, index) {
@@ -480,16 +481,24 @@ var canvas = document.getElementById('project-canvas');
 paper.setup(canvas);
 var path = new paper.Path();
 path.strokeColor = 'white';
-var start = new paper.Point(400, 0);
-var end = new paper.Point(400, 800);
 
 // Draw the view now:
-path.moveTo(start);
-path.lineTo(end);
-view.draw();
-var paths = [new paper.Path(), new paper.Path(), new paper.Path(), new paper.Path()];
-view.onFrame = function (event) {
 
+view.draw();
+var paths = [new paper.Path(), new paper.Path(), new paper.Path(), new paper.Path(), new paper.Path()];
+view.onFrame = function (event) {
+    drawLines();
+}
+
+var drawLines = function () {
+    var points = getDrawPoints();
+    points.forEach(function (p, i) {
+        paths[i].strokeColor = 'white';
+        if (!p.start || !p.end) return;
+        paths[i].removeSegments();
+        paths[i].moveTo(p.start);
+        paths[i].lineTo(p.end);
+    });
 }
 
 var getDrawPoints = function () {
@@ -497,10 +506,28 @@ var getDrawPoints = function () {
     menuItems.forEach(function (item) {
         elements.push($("#pname" + item.id));
     });
+    var points = [];
+    var paperPoints = [];
+    points.push(0);
     elements.forEach(function (e) {
-        var y = e.position().top;
-        var x = e.position().left;
+        if (e.position().top > 0) {
+            points.push(e.position().top);
+            var y2 = e.position().top + e.height() + 20;
+            points.push(y2);
+        }
     });
+    points.sort();
+    points.forEach(function (point, index) {
+        paperPoints.push(new paper.Point($("#pname1").position().left + $("#pname1").width() / 2 + 10, point));
+    });
+    var finalPoints = [];
+    for (var i = 0; i < paperPoints.length; i += 2) {
+        finalPoints.push({
+            start: paperPoints[i],
+            end: paperPoints[i + 1]
+        });
+    }
+    return finalPoints;
 }
 
 /**
