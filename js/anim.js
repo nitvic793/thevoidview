@@ -48,7 +48,9 @@ var registerOnPageLoad = function (page, fn) {
     pageRefreshPipeline[page] = fn;
 }
 
-//registerOnPageLoad("first", onLoad);
+registerOnPageLoad("first", function () {
+    setTimeout(typeFallSeven, 2000);
+});
 registerOnPageLoad("third", onProjectPageLoad);
 registerOnPageLoad("second", onMenuPageLoad);
 var hasLoadedOnce = false;
@@ -120,7 +122,6 @@ setTimeout(function () {
     setInterval(cursorAnimation, 600)
 }, 1000);
 
-setTimeout(typeFallSeven, 2000);
 
 /**
  * b. The void way button - on hover animation
@@ -148,7 +149,11 @@ $("#voidwaybtn").click(function () {
 
 var getCurrentPage = function () {
     var url = window.location.href;
-    return url.indexOf('#!/') == -1 ? null : (url.substr(url.indexOf('#!/') + 3, url.length - url.indexOf('#')));
+    var currentPage = url.indexOf('#!/') == -1 ? null : (url.substr(url.indexOf('#!/') + 3, url.length - url.indexOf('#')));
+    if (!currentPage) {
+        return "first";
+    }
+    return currentPage;
 }
 
 var transition = function (anim, toPage, fromPage) {
