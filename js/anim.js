@@ -1,7 +1,78 @@
+/**
+ * Common
+ */
+
+window.onpopstate = function (e) {
+    console.log(window.history);
+    console.log(e);
+};
+
+window.onhashchange = function () {
+    console.log("Hash change", getCurrentPage());
+    if (getCurrentPage() == null || getCurrentPage() == '') {
+        route("first")
+    }
+    else {
+        route(getCurrentPage());
+    }
+    if (pageRefreshPipeline[getCurrentPage()]) {
+        pageRefreshPipeline[getCurrentPage()]();
+    }
+    removeLoader();
+}
+
+var onLoad = function () {
+    if (getCurrentPage() == null) {
+        directLoad("first")
+    }
+    else {
+        directLoad(getCurrentPage());
+    }
+    if (pageRefreshPipeline[getCurrentPage()]) {
+        pageRefreshPipeline[getCurrentPage()]();
+    }
+    removeLoader();
+}
+
+var onProjectPageLoad = function () {
+    console.log('Loaded page 3');
+}
+
+var onMenuPageLoad = function () {
+    console.log('Loaded menu page');
+}
+
+var pageRefreshPipeline = [];
+
+var registerOnPageLoad = function (page, fn) {
+    pageRefreshPipeline[page] = fn;
+}
+
+//registerOnPageLoad("first", onLoad);
+registerOnPageLoad("third", onProjectPageLoad);
+registerOnPageLoad("second", onMenuPageLoad);
+var hasLoadedOnce = false;
+
+window.onload = function () {
+    console.log("onload(): Current Page", getCurrentPage());
+    onLoad();
+    if (!hasLoadedOnce) {
+        hasLoadedOnce = true;
+    }
+    else {
+
+    }
+}
 
 /**
  * I. First Page animations
  */
+
+var removeLoader = function () {
+    $("#loaderPage").fadeOut(400, function (e) {
+        $("#loaderPage").remove();
+    });
+};
 
 /**
  * a. Intro - Typewriter animation
@@ -96,12 +167,11 @@ var transition = function (anim, toPage, fromPage) {
     animObj[property] = "-100%";
 };
 
-var route = function (toPage, fromPage) {
+var route = function (toPage, fromPage, cb) {
     if (!toPage) toPage = 'first';
     if (!fromPage) {
         pageIds.forEach(function (v, i, arr) {
             $("#" + v).css("left", "-100%");
-            console.log(v, toPage);
         });
         $("#" + toPage).css("left", "-100%");
         $("#" + toPage).animate({ "left": "0px" }, 'slow');
@@ -120,63 +190,10 @@ var route = function (toPage, fromPage) {
 var directLoad = function (page) {
     pageIds.forEach(function (v, i, arr) {
         $("#" + v).css("left", "100%");
-        console.log(v, page);
     });
     $("#" + page).css("left", "0px");
 }
 
-window.onpopstate = function (e) {
-    console.log(window.history);
-    console.log(e);
-};
-
-
-window.onhashchange = function () {
-    console.log(getCurrentPage());
-    if (getCurrentPage() == null || getCurrentPage() == '') {
-        route("first")
-    }
-    else {
-        route(getCurrentPage());
-    }
-    console.log('Hash change');
-    if (pageRefreshPipeline[getCurrentPage()]) {
-        pageRefreshPipeline[getCurrentPage()]();
-    }
-}
-
-var onLoad = function () {
-    if (getCurrentPage() == null) {
-        directLoad("first")
-    }
-    else {
-        directLoad(getCurrentPage());
-    }
-}
-
-var onProjectPageLoad = function () {
-    console.log('Loaded page 3');
-}
-
-var pageRefreshPipeline = [];
-
-var registerPageRefresh = function (page, fn) {
-    pageRefreshPipeline[page] = fn;
-}
-
-registerPageRefresh("first", onLoad);
-registerPageRefresh("third", onProjectPageLoad);
-var hasLoadedOnce = false;
-
-window.onload = function () {
-    onLoad();
-    if (!hasLoadedOnce) {
-        hasLoadedOnce = true;
-    }
-    else {
-
-    }
-}
 
 /**
  * Third Page 
@@ -550,7 +567,6 @@ menuPaper.view.onFrame = function (e) {
                 //do nothing
             }
         }
-        console.log(path.segments[1].point.y);
     }
 }
 
