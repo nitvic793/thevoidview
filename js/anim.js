@@ -15,9 +15,9 @@ window.onhashchange = function () {
     else {
         route(getCurrentPage());
     }
-    if (pageRefreshPipeline[getCurrentPage()]) {
-        pageRefreshPipeline[getCurrentPage()]();
-    }
+    // if (pageRefreshPipeline[getCurrentPage()]) {
+    //     pageRefreshPipeline[getCurrentPage()]();
+    // }
     removeLoader();
 }
 
