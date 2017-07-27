@@ -75,10 +75,6 @@ $("#voidwaybtn").click(function () {
     route("second", "first");
 });
 
-$("#menu-projects").click(function () {
-    route("third", "second");
-});
-
 var getCurrentPage = function () {
     var url = window.location.href;
     return url.indexOf('#!/') == -1 ? null : (url.substr(url.indexOf('#!/') + 3, url.length - url.indexOf('#')));
@@ -185,6 +181,7 @@ window.onload = function () {
 /**
  * Third Page 
  */
+
 
 var MOUSE_OVER = false;
 $('body').bind('mousewheel', function (e) {
@@ -484,7 +481,6 @@ path.strokeColor = 'white';
 
 // Draw the view now:
 
-view.draw();
 var paths = [new paper.Path(), new paper.Path(), new paper.Path(), new paper.Path(), new paper.Path()];
 view.onFrame = function (event) {
     drawLines();
@@ -534,7 +530,52 @@ var getDrawPoints = function () {
  * Menu page
  */
 
-var menuPageItems = ['menu-home', 'menu-about', 'menu-projects', 'menu-dance', 'menu-art', 'menu-contact'];
+var menuCanvas = document.getElementById('menu-canvas');
+var menuPaper = new paper.PaperScope();
+menuPaper.setup(menuCanvas);
+var path = new menuPaper.Path();
+path.strokeColor = 'white';
+var animateLine = false;
+var menuItemClicked = null;
+menuPaper.view.onFrame = function (e) {
+    if (animateLine) {
+        path.segments[1].point = path.segments[1].point.add(new Point(0, 10));
+        if (path.segments[1].point.y > window.innerHeight) {
+            animateLine = false;
+            switch (menuItemClicked) {
+                case 'menu-projects':
+                    route("third", "second");
+                    break;
+                default:
+                //do nothing
+            }
+        }
+        console.log(path.segments[1].point.y);
+    }
+}
+
+var menuPageItems = ['menu-home', 'menu-projects', 'menu-about', 'menu-dance', 'menu-art', 'menu-contact'];
+
+$("#menu-projects").click(function () {
+    //route("third", "second");
+});
+
+menuPageItems.forEach(function (item) {
+    $("#" + item).click(function (e) {
+        var element = $("#" + item);
+        if (!animateLine) {
+            path.add(new Point(element.offset().left + element.width() / 2, element.offset().top + element.height()));
+            path.add(new Point($("#" + item).offset().left + element.width() / 2, $("#menu-home").offset().top + element.height()));
+        }
+        animateLine = true;
+        menuItemClicked = item;
+    });
+
+    $("#" + item).hover(function () {
+        animateLine = false;
+        path.removeSegments();
+    });
+});
 
 menuPageItems.forEach(function (val, i) {
     var menu = $("#" + val);
