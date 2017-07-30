@@ -2,6 +2,8 @@
  * Common
  */
 
+var pageIds = ["first", "second", "third", "misc"];
+
 window.onpopstate = function (e) {
     console.log(window.history);
     console.log(e);
@@ -10,10 +12,10 @@ window.onpopstate = function (e) {
 window.onhashchange = function () {
     console.log("Hash change", getCurrentPage());
     if (getCurrentPage() == null || getCurrentPage() == '') {
-        route("first")
+        routeTo("first")
     }
     else {
-        route(getCurrentPage());
+        routeTo(getCurrentPage());
     }
     // if (pageRefreshPipeline[getCurrentPage()]) {
     //     pageRefreshPipeline[getCurrentPage()]();
@@ -32,6 +34,9 @@ var onLoad = function () {
         pageRefreshPipeline[getCurrentPage()]();
     }
     removeLoader();
+    pageIds.forEach(function (page) {
+
+    });
 }
 
 var onProjectPageLoad = function () {
@@ -66,6 +71,56 @@ window.onload = function () {
     }
 }
 
+window.onresize = function () {
+    if (pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onPageResize) {
+        pageHandlers[getCurrentPage()].onPageResize();
+    }
+}
+
+var routeTo = function (toPage, fromPage, cb) {
+    if (!toPage) toPage = 'first';
+    if (!fromPage) {
+        pageIds.forEach(function (v, i, arr) {
+            $("#" + v).css("left", "-100%");
+            $("#" + v).css("top", "0");
+        });
+        $("#" + toPage).css("left", "-100%");
+        $("#" + toPage).animate({ "left": "0px" }, 'slow');
+    }
+    else {
+        $("#" + toPage).css("left", "100%");
+        $("#" + toPage).css("top", "0");
+        $("#" + fromPage).animate({ left: "-100%" }, 'slow');
+        $("#" + toPage).animate({ left: "0" }, 'slow');
+    }
+    window.history.pushState('Object', toPage, '#!/' + toPage);
+    if (pageRefreshPipeline[getCurrentPage()]) {
+        pageRefreshPipeline[getCurrentPage()]();
+    }
+}
+
+var routeToSlideUp = function (toPage, fromPage, cb) {
+    if (!toPage) toPage = 'first';
+    if (!fromPage) {
+        pageIds.forEach(function (v, i, arr) {
+            $("#" + v).css("top", "100%");
+            $("#" + v).css("left", "0");
+        });
+        $("#" + toPage).css("top", "100%");
+        $("#" + toPage).animate({ "top": "0px" }, 'slow');
+    }
+    else {
+        $("#" + toPage).css("top", "100%");
+        $("#" + toPage).css("left", "0");
+        $("#" + fromPage).animate({ top: "-100%" }, 'slow');
+        $("#" + toPage).animate({ top: "0" }, 'slow');
+    }
+    window.history.pushState('Object', toPage, '#!/' + toPage);
+    if (pageRefreshPipeline[getCurrentPage()]) {
+        pageRefreshPipeline[getCurrentPage()]();
+    }
+}
+
 /**
  * I. First Page animations
  */
@@ -83,8 +138,6 @@ var captionLength = 0;
 var caption = '';
 var captionEl = $('#introHeader');
 var currentPage = 0;
-
-var pageIds = ["first", "second", "third"];
 
 function type() {
     captionEl.html(caption.substr(0, captionLength++));
@@ -113,8 +166,15 @@ function cursorAnimation() {
     }, 'fast', 'swing');
 }
 
+var typingCallbackCalled = false;
+
 function doneTypingCallback() {
     console.log('Done Typing...');
+
+    if (getCurrentPage() == 'first' && !typingCallbackCalled) {
+        typingCallbackCalled = true;
+        setTimeout(routeTo.bind(routeTo, 'second', 'first'), 400);
+    }
 }
 
 setTimeout(function () {
@@ -144,7 +204,7 @@ $("#voidwaybtn").hover(function (e) {
     });
 
 $("#voidwaybtn").click(function () {
-    route("second", "first");
+    routeTo("second", "first");
 });
 
 var getCurrentPage = function () {
@@ -172,25 +232,7 @@ var transition = function (anim, toPage, fromPage) {
     animObj[property] = "-100%";
 };
 
-var route = function (toPage, fromPage, cb) {
-    if (!toPage) toPage = 'first';
-    if (!fromPage) {
-        pageIds.forEach(function (v, i, arr) {
-            $("#" + v).css("left", "-100%");
-        });
-        $("#" + toPage).css("left", "-100%");
-        $("#" + toPage).animate({ "left": "0px" }, 'slow');
-    }
-    else {
-        $("#" + toPage).css("left", "100%");
-        $("#" + fromPage).animate({ left: "-100%" }, 'slow');
-        $("#" + toPage).animate({ left: "0" }, 'slow');
-    }
-    window.history.pushState('Object', toPage, '#!/' + toPage);
-    if (pageRefreshPipeline[getCurrentPage()]) {
-        pageRefreshPipeline[getCurrentPage()]();
-    }
-}
+
 
 var directLoad = function (page) {
     pageIds.forEach(function (v, i, arr) {
@@ -225,14 +267,14 @@ $('#third').bind('mousewheel', function (e) {
     if (delta > 0) {
         //go up
         console.log("Up");
-        if (animStack.length == 0)
-            menuUp();
+        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onUpScroll)
+            pageHandlers[getCurrentPage()].onUpScroll();
     }
     else {
         //go down
         console.log("Down", animStack);
-        if (animStack.length == 0)
-            menuDown();
+        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onDownScroll)
+            pageHandlers[getCurrentPage()].onDownScroll();
     }
 });
 
@@ -300,13 +342,13 @@ var loadProjectMenu = function () {
         menuItems[index].top = (index + 1) * 25;
         element.css("top", val.top + '%');
         menuItems.element = element;
+        if (val.top == 50) {
+            $("#project-title").text(val.text);
+            currentProject = val;
+            loadProject(val.text);
+        }
         if (val.top > 75) {
             //Queue all extra project items
-            if (val.top == 100) {
-                $("#project-title").text(val.text);
-                currentProject = val;
-                loadProject(val.text);
-            }
             queue.enqueue(index);
         }
     });
@@ -332,7 +374,6 @@ var menuDown = function () {
         var element = $(idName + menuItem.id);
         if (menuItem.top == 75) {
             currentProject = menuItem;
-            loadProject(currentProject.text);
 
             animStack.push(true);
             if (!queue.isEmpty()) {
@@ -380,6 +421,14 @@ var menuDown = function () {
                 color: "#808080"
             };
 
+            if (menuItem.top == 50) {
+                loadProject(menuItem.text);
+                animations.color = 'white';
+            }
+            else {
+                animations.color = '#808080';
+            }
+
             animStack.push(true);
             element.animate(animations, 400, function (e) {
                 menuItem.middle = false;
@@ -400,7 +449,6 @@ var menuUp = function () {
         var element = $(idName + menuItem.id);
         if (menuItem.top == 25) {
             currentProject = menuItem;
-            loadProject(currentProject.text);
             animStack.push(true);
             if (!queue.isEmpty()) {
                 var currentTop = queue.dequeue();
@@ -443,10 +491,18 @@ var menuUp = function () {
         }
         else {
             menuItem.top = menuItem.top - 25;
+
             var animations = {
                 top: menuItem.top + "%",
                 color: "#808080"
             };
+            if (menuItem.top == 50) {
+                loadProject(menuItem.text);
+                animations.color = 'white';
+            }
+            else {
+                animations.color = '#808080';
+            }
 
             animStack.push(true);
             element.animate(animations, 400, function (e) {
@@ -460,11 +516,18 @@ var menuUp = function () {
 }
 
 $(document).keyup(function (e) {
-    if (keyHandlers[getCurrentPage()])
-        keyHandlers[getCurrentPage()].onKeyPress(e);
+    if (pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onKeyPress)
+        pageHandlers[getCurrentPage()].onKeyPress(e);
 });
 
-var keyHandlers = {
+var basicHandler = {
+    onKeyPress: function () { },
+    onUpScroll: function () { },
+    onDownScroll: function () { },
+    onPageResize: function () { }
+};
+
+var pageHandlers = {
     third: {
         onKeyPress: function (e) {
             switch (e.which) {
@@ -477,7 +540,13 @@ var keyHandlers = {
                         menuDown();
                     break;
             }
-        }
+        },
+        onUpScroll: menuUp,
+        onDownScroll: menuDown
+    },
+
+    misc: {
+        onPageResize: () => { }
     }
 }
 
@@ -566,8 +635,10 @@ menuPaper.view.onFrame = function (e) {
             animateLine = false;
             switch (menuItemClicked) {
                 case 'menu-projects':
-                    route("third", "second");
+                    routeToSlideUp("third", "second");
                     break;
+                case 'menu-art':
+                    routeToSlideUp('misc', 'second');
                 default:
                 //do nothing
             }
@@ -603,23 +674,43 @@ menuPageItems.forEach(function (val, i) {
     menu.hover(function (e) {
         if (animStack.length == 0 && $("#menu-image").css("background-image").indexOf(val) == -1) {
             animStack.push(true);
-
-            $("#menu-image").css("background-image", "url(../img/" + val + ".png)");
-
-            $("#menu-image").css({
-                left: i * 14 + "%"
-            });
-            $("#menu-image").fadeIn(100, function () {
-                animStack.pop();
+            $("#menu-image").fadeOut(100, function () {
+                $("#menu-image").css("background-image", "url(../img/" + val + ".png)");
+                $("#menu-image").fadeIn(400, function () {
+                    animStack.pop();
+                });
             });
 
         };
     });
 });
 
+/**
+ * Misc Page
+ */
 
+registerOnPageLoad("misc", function () {
+    var miscCanvas = document.getElementById('misc-canvas');
+    var miscPaper = new paper.PaperScope();
+    miscPaper.setup(miscCanvas);
+    var path = new miscPaper.Path();
+    path.moveTo(window.innerWidth * (0.671), 0);
+    path.lineTo(window.innerWidth * (0.671), window.innerHeight);
+    path.strokeColor = 'grey';
+    miscPaper.view.onFrame = function () {
 
+    };
+    pageHandlers.misc.onPageResize = function () {
+        path.removeSegments();
+        path.moveTo(window.innerWidth * (0.671), 0);
+        path.lineTo(window.innerWidth * (0.671), window.innerHeight);
+    };
 
+    $('#grid').masonry({
+        itemSelector: '.grid-item'
+    });
+
+});
 
 
 
