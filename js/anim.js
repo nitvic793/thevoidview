@@ -345,6 +345,7 @@ var loadProjectMenu = function () {
         if (val.top == 50) {
             $("#project-title").text(val.text);
             currentProject = val;
+            element.css("color","white");
             loadProject(val.text);
         }
         if (val.top > 75) {
