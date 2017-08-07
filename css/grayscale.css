@@ -989,7 +989,7 @@ Misc. Page
   font-size: 22pt;
   text-align: center;
 }
-#misc-photos {
+.misc-section {
   position: absolute;
   width: 60%;
   margin-top: 100px;
@@ -999,6 +999,12 @@ Misc. Page
   float: left;
   width: 17%;
   margin: 5px;
+}
+#misc-menu-heading {
+  font-family: Courier New, Courier, monospace;
+  top: 15%;
+  color: grey;
+  position: absolute;
 }
 .grid-item--width2 {
   width: 19%;
