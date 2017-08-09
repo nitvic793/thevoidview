@@ -2,7 +2,7 @@
  * Common
  */
 
-var pageIds = ["first", "second", "third", "misc"];
+var pageIds = ["first", "second", "third", "misc", "about", "dance"];
 
 window.onpopstate = function (e) {
     console.log(window.history);
@@ -65,11 +65,26 @@ var registerPagePostLoad = function (page, fn) {
     pagePostLoaders[page] = fn;
 }
 
+var runOnPageLoadFunctions = function () {
+    $("#footer").fadeIn('slow');
+    if (pageRefreshPipeline[getCurrentPage()]) {
+        pageRefreshPipeline[getCurrentPage()]();
+    }
+}
+
+var runOnPagePostLoadFunctions = function () {
+    if (pagePostLoaders[getCurrentPage()]) {
+        pagePostLoaders[getCurrentPage()]();
+    }
+}
+
 registerOnPageLoad("first", function () {
+    $("#footer").hide();
     setTimeout(typeFallSeven, 2000);
 });
 registerOnPageLoad("third", onProjectPageLoad);
 registerOnPageLoad("second", onMenuPageLoad);
+
 var hasLoadedOnce = false;
 
 window.onload = function () {
@@ -107,9 +122,7 @@ var routeTo = function (toPage, fromPage, cb) {
         $("#" + toPage).animate({ left: "0" }, 900);
     }
     window.history.pushState('Object', toPage, '#!/' + toPage);
-    if (pageRefreshPipeline[getCurrentPage()]) {
-        pageRefreshPipeline[getCurrentPage()]();
-    }
+    runOnPageLoadFunctions();
     setTimeout(function () {
         animStack.pop();
         if (pagePostLoaders[getCurrentPage()]) {
@@ -136,9 +149,7 @@ var routeToSlideUp = function (toPage, fromPage, cb) {
         $("#" + toPage).animate({ top: "0" }, 'slow');
     }
     window.history.pushState('Object', toPage, '#!/' + toPage);
-    if (pageRefreshPipeline[getCurrentPage()]) {
-        pageRefreshPipeline[getCurrentPage()]();
-    }
+    runOnPageLoadFunctions();
     setTimeout(function () {
         animStack.pop();
         if (pageRefreshPipeline[getCurrentPage()]) {
@@ -673,6 +684,12 @@ menuPaper.view.onFrame = function (e) {
                     break;
                 case 'menu-art':
                     routeToSlideUp('misc', 'second');
+                    break;
+                case 'menu-about':
+                    routeToSlideUp('about', 'second');
+                    break;
+                case 'menu-dance':
+                    routeToSlideUp('dance', 'second');
                 default:
                 //do nothing
             }
@@ -784,7 +801,9 @@ registerOnPageLoad("misc", function () {
     var topPath = new miscPaper.Path();
     var bottomPath = new miscPaper.Path();
     var xPosition = xPositions["menu-art"] ? xPositions["menu-art"] : window.innerWidth * (0.671);
-    $("#misc-side-image").css({ left: xPosition });
+    $("#misc-side-image").css({ left: (window.innerWidth - $("#misc-side-image").width()) });
+    $("#misc-side-title").css({ right: (window.innerWidth - xPosition) / 2 - 100});
+    
     topPath.strokeColor = 'grey';
     bottomPath.strokeColor = 'grey';
     miscPaper.view.onFrame = function () {
@@ -807,7 +826,7 @@ registerOnPageLoad("misc", function () {
             animStack.push(true);
             $(id).fadeOut(200, function () {
                 $("#misc-menu-heading").text(headings[nextHeading]);
-                $("#misc-menu-heading").css("left", xPosition - $("#misc-menu-heading").width() / 2 );
+                $("#misc-menu-heading").css("left", xPosition - $("#misc-menu-heading").width() / 2);
                 $("#misc-side-title").text(headings[currentHeading]);
                 $(id).fadeIn(400, function () {
                     animStack.pop();
@@ -816,7 +835,7 @@ registerOnPageLoad("misc", function () {
         });
         var currentSection = headingIdMap[headings[currentHeading]];
         sections.forEach(function (section) {
-            if(currentSection == section) return;
+            if (currentSection == section) return;
             $(section).fadeOut(200);
         });
         $(currentSection).fadeIn(400);
@@ -830,8 +849,8 @@ registerOnPageLoad("misc", function () {
 
     var miscPageMenuUp = function () {
         nextHeading = currentHeading;
-        currentHeading = (currentHeading + 1) % headings.length;        
-        negativeCounter = currentHeading;        
+        currentHeading = (currentHeading + 1) % headings.length;
+        negativeCounter = currentHeading;
         setMenuHeading();
     }
 
@@ -839,7 +858,7 @@ registerOnPageLoad("misc", function () {
         negativeCounter = negativeCounter - 1;
         if (Math.abs(negativeCounter) == headings.length) {
             negativeCounter = 0;
-        }        
+        }
         currentHeading = Math.abs(negativeCounter);
         nextHeading = (currentHeading + 1) % headings.length;
         setMenuHeading();
