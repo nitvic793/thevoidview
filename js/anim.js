@@ -798,6 +798,7 @@ registerOnPageLoad("misc", function () {
     };
     var currentHeading = 0;
     var negativeCounter = 0;
+    var nextHeading = 1;
     var sections = ["#misc-photos", "#misc-art", "#misc-writing"];
     var setMenuHeading = function () {
         var ids = ["#misc-menu-heading", "#misc-side-title"];
@@ -805,7 +806,7 @@ registerOnPageLoad("misc", function () {
         ids.forEach(function (id) {
             animStack.push(true);
             $(id).fadeOut(200, function () {
-                $("#misc-menu-heading").text(headings[currentHeading]);
+                $("#misc-menu-heading").text(headings[nextHeading]);
                 $("#misc-menu-heading").css("left", xPosition - $("#misc-menu-heading").width() / 2 );
                 $("#misc-side-title").text(headings[currentHeading]);
                 $(id).fadeIn(400, function () {
@@ -828,8 +829,9 @@ registerOnPageLoad("misc", function () {
     bottomPath.lineTo(xPosition, window.innerHeight);
 
     var miscPageMenuUp = function () {
-        currentHeading = (currentHeading + 1) % headings.length;
-        negativeCounter = currentHeading;
+        nextHeading = currentHeading;
+        currentHeading = (currentHeading + 1) % headings.length;        
+        negativeCounter = currentHeading;        
         setMenuHeading();
     }
 
@@ -837,8 +839,9 @@ registerOnPageLoad("misc", function () {
         negativeCounter = negativeCounter - 1;
         if (Math.abs(negativeCounter) == headings.length) {
             negativeCounter = 0;
-        }
+        }        
         currentHeading = Math.abs(negativeCounter);
+        nextHeading = (currentHeading + 1) % headings.length;
         setMenuHeading();
     }
     pageHandlers.misc = {
