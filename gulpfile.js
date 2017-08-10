@@ -6,18 +6,17 @@ var cleanCSS = require('gulp-clean-css');
 var rename = require("gulp-rename");
 var uglify = require('gulp-uglify');
 var pkg = require('./package.json');
+var gulpUtil = require('gulp-util');
 
 // Set the banner content
 var banner = ['/*!\n',
-    ' * Start Bootstrap - <%= pkg.title %> v<%= pkg.version %> (<%= pkg.homepage %>)\n',
-    ' * Copyright 2013-' + (new Date()).getFullYear(), ' <%= pkg.author %>\n',
-    ' * Licensed under <%= pkg.license.type %> (<%= pkg.license.url %>)\n',
-    ' */\n',
-    ''
+    ' * Personal Website - the.void.view \n',
+    ' * Author - Nitish Victor (nithishvictor@gmail.com)\n',
+    '*/\n'
 ].join('');
 
 // Compile LESS files from /less into /css
-gulp.task('less', function() {
+gulp.task('less', function () {
     return gulp.src('less/grayscale.less')
         .pipe(less())
         .pipe(header(banner, { pkg: pkg }))
@@ -28,7 +27,7 @@ gulp.task('less', function() {
 });
 
 // Minify compiled CSS
-gulp.task('minify-css', ['less'], function() {
+gulp.task('minify-css', ['less'], function () {
     return gulp.src('css/grayscale.css')
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
@@ -39,9 +38,9 @@ gulp.task('minify-css', ['less'], function() {
 });
 
 // Minify JS
-gulp.task('minify-js', function() {
+gulp.task('minify-js', function () {
     return gulp.src('js/anim.js')
-        .pipe(uglify())
+        .pipe(uglify().on('error', gulpUtil.log))
         .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('js'))
@@ -51,7 +50,7 @@ gulp.task('minify-js', function() {
 });
 
 // Copy vendor libraries from /node_modules into /vendor
-gulp.task('copy', function() {
+gulp.task('copy', function () {
     gulp.src(['bower_components/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
         .pipe(gulp.dest('vendor/bootstrap'))
 
@@ -59,13 +58,13 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('vendor/jquery'))
 
     gulp.src([
-            'bower_components/font-awesome/**',
-            '!bower_components/font-awesome/**/*.map',
-            '!bower_components/font-awesome/.npmignore',
-            '!bower_components/font-awesome/*.txt',
-            '!bower_components/font-awesome/*.md',
-            '!bower_components/font-awesome/*.json'
-        ])
+        'bower_components/font-awesome/**',
+        '!bower_components/font-awesome/**/*.map',
+        '!bower_components/font-awesome/.npmignore',
+        '!bower_components/font-awesome/*.txt',
+        '!bower_components/font-awesome/*.md',
+        '!bower_components/font-awesome/*.json'
+    ])
         .pipe(gulp.dest('vendor/font-awesome'))
 })
 
@@ -73,7 +72,7 @@ gulp.task('copy', function() {
 gulp.task('default', ['less', 'minify-css', 'minify-js', 'copy']);
 
 // Configure the browserSync task
-gulp.task('browserSync', function() {
+gulp.task('browserSync', function () {
     browserSync.init({
         server: {
             baseDir: ''
@@ -82,7 +81,7 @@ gulp.task('browserSync', function() {
 })
 
 // Dev task with browserSync
-gulp.task('dev', ['browserSync', 'less', 'minify-css'], function() {
+gulp.task('dev', ['browserSync', 'less', 'minify-css'], function () {
     gulp.watch('less/*.less', ['less']);
     gulp.watch('css/*.css', ['minify-css']);
     //gulp.watch('js/*.js', ['minify-js']);

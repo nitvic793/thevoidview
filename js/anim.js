@@ -129,10 +129,10 @@ registerCustomFunctionPostPageLoad(function () {
 });
 
 registerCustomFunctionPrePageLoad(function () {
- 
+
     if (getCurrentPage() == aboutPage) {
         console.log('fadein');
-      
+
     }
 });
 
@@ -798,7 +798,8 @@ registerOnPageLoad("about", function () {
             window.location.reload();
         }
     };
-    registerPagePostLoad(aboutPage, () => {
+    
+    registerPagePostLoad(aboutPage, function () {
         console.log("Test");
         xPosition = window.innerWidth / 2 - 20;
         topPath.removeSegments();
