@@ -131,7 +131,10 @@
 
     <div class="void-page  non-default" id="about">
         <canvas class="canvas" id="about-canvas" resize></canvas>
-        <!-- <div class="project-image" id="about-image"></div> -->
+        <video id="about-bg-video" playsinline autoplay muted loop>
+            <source src="../img/bg-about.mp4" type="video/mp4">
+        </video>
+        <!-- <div class="about-image" id="about-image"></div> -->
         <div class="project-details" id="about-details"> </div>
         <span class="title">About</span>
     </div>
@@ -145,7 +148,11 @@
     </div>
 
     <div id="main-menu">
-        <a href="#!/menu">Home</a> | <a href="#!/project">Projects</a> | <a href="#!/about">About</a> | <a href="#!/dance">Dance</a> | <a href="#!/misc">Misc</a>
+        <a href="#!/menu">Home</a> | <a href="#!/project">Projects</a> | <a href="#!/about">About</a> | <a href="#!/dance">Dance</a>        | <a href="#!/misc">Misc</a>
+    </div>
+
+    <div id="help-context">
+        <div id="scroll-help"></div>
     </div>
 
     <footer id="footer">

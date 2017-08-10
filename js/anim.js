@@ -22,14 +22,23 @@ pageIds.forEach(function (p) {
     pageHandlers[p] = basicHandler;
 });
 
-var customLogic = [];
+var customLogicPostLoad = [];
+var customLogicPreLoad = [];
 
 var registerCustomFunctionPostPageLoad = function (fn) {
     if (typeof fn !== "function") {
         console.error("Cannot register non-function");
         return;
     }
-    customLogic.push(fn);
+    customLogicPostLoad.push(fn);
+}
+
+var registerCustomFunctionPrePageLoad = function (fn) {
+    if (typeof fn !== "function") {
+        console.error("Cannot register non-function");
+        return;
+    }
+    customLogicPreLoad.push(fn);
 }
 
 window.onpopstate = function (e) {
@@ -90,11 +99,14 @@ var registerPagePostLoad = function (page, fn) {
 }
 
 var runOnPageLoadFunctions = function () {
+    customLogicPreLoad.forEach(function (fn) {
+        fn();
+    });
     $("#footer").fadeIn('slow');
     if (pageRefreshPipeline[getCurrentPage()]) {
         pageRefreshPipeline[getCurrentPage()]();
     }
-    customLogic.forEach(function (fn) {
+    customLogicPostLoad.forEach(function (fn) {
         fn();
     });
 }
@@ -114,7 +126,15 @@ registerCustomFunctionPostPageLoad(function () {
         default:
             $("#main-menu").fadeIn('slow');
     }
-})
+});
+
+registerCustomFunctionPrePageLoad(function () {
+ 
+    if (getCurrentPage() == aboutPage) {
+        console.log('fadein');
+      
+    }
+});
 
 registerOnPageLoad(landingPage, function () {
     $("#footer").hide();
@@ -190,7 +210,7 @@ var routeToSlideUp = function (toPage, fromPage, cb) {
     runOnPageLoadFunctions();
     setTimeout(function () {
         animStack.pop();
-        runOnPageLoadFunctions();
+
         runOnPagePostLoadFunctions();
     }, 600);
 }
@@ -423,7 +443,6 @@ registerOnPageLoad(projectPage, function () {
     var currentHeading = 0;
     var negativeCounter = 0;
     var nextHeading = 1;
-    var ids = ["#misc-menu-heading", "#misc-side-title"];
     projectPaper.view.onFrame = function (event) {
     }
     var loadProject = function (projectName) {
@@ -504,8 +523,14 @@ registerOnPageLoad(projectPage, function () {
         }
     }
 
-    registerPagePostLoad(menuPage, function () {
-
+    registerPagePostLoad(projectPage, function () {
+        //Re draw lines because the next project element 
+        topPath.removeSegments();
+        bottomPath.removeSegments();
+        topPath.moveTo(xPosition, 0);
+        topPath.lineTo(xPosition, $("#next-project").offset().top - 10);
+        bottomPath.moveTo(xPosition, $("#next-project").offset().top + $("#next-project").height() + 10);
+        bottomPath.lineTo(xPosition, window.innerHeight);
     });
 });
 
@@ -687,11 +712,11 @@ registerOnPageLoad(miscPage, function () {
         $(currentSection).fadeIn(400);
     }
     setMenuHeading();
-
     topPath.moveTo(xPosition, 0);
     topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);
     bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
     bottomPath.lineTo(xPosition, window.innerHeight);
+
 
     var miscPageMenuUp = function () {
         nextHeading = currentHeading;
@@ -734,7 +759,12 @@ registerOnPageLoad(miscPage, function () {
     });
 
     registerPagePostLoad(miscPage, function () {
-
+        topPath.removeSegments();
+        bottomPath.removeSegments();
+        topPath.moveTo(xPosition, 0);
+        topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);
+        bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
+        bottomPath.lineTo(xPosition, window.innerHeight);
     });
 });
 
