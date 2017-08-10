@@ -1023,3 +1023,10 @@ footer {
 footer i {
   padding-right: 3px;
 }
+#main-menu {
+  color: grey;
+  top: 2%;
+  position: absolute;
+  font-family: Courier New, Courier, monospace;
+  right: 10px;
+}
