@@ -673,7 +673,7 @@ registerOnPageLoad(miscPage, function () {
     var topPath = new miscPaper.Path();
     var bottomPath = new miscPaper.Path();
     var xPosition = xPositions["menu-art"] ? xPositions["menu-art"] : window.innerWidth * (0.671);
-    $("#misc-side-image").css({ left: (window.innerWidth - $("#misc-side-image").width()) });
+    $("#misc-side-image").css({ width: window.innerWidth - xPosition });
     $("#misc-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
 
     topPath.strokeColor = 'grey';
