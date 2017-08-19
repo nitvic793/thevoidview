@@ -682,6 +682,7 @@ registerOnPageLoad(miscPage, function () {
     };
 
     var headings = ["Photography", "Art", "Writing"];
+    var sideImages = ["../img/side-image.png", "../img/side-image-art.png", "../img/side-image-writing.png"]
     var headingIdMap = {
         Photography: "#misc-photos",
         Art: "#misc-art",
@@ -703,6 +704,12 @@ registerOnPageLoad(miscPage, function () {
                     animStack.pop();
                 });
             })
+        });
+
+        $("#misc-side-image").fadeOut(100, function(){
+            $("#misc-side-image").css("background-image", "url(" + sideImages[currentHeading] + ")");
+            $("#misc-side-image").fadeIn(400, function (e) {                
+            });
         });
         var currentSection = headingIdMap[headings[currentHeading]];
         sections.forEach(function (section) {
@@ -828,7 +835,7 @@ registerOnPageLoad("dance", function () {
 
         $("#dance-main-image").fadeOut(100, function (e) {
             $("#dance-main-image").css("background-image", "url(" + danceImages[currentHeading] + ")");
-            $("#dance-main-image").fadeIn(100, function (e) {                
+            $("#dance-main-image").fadeIn(400, function (e) {                
             });
         });
 
