@@ -706,9 +706,9 @@ registerOnPageLoad(miscPage, function () {
             })
         });
 
-        $("#misc-side-image").fadeOut(100, function(){
+        $("#misc-side-image").fadeOut(100, function () {
             $("#misc-side-image").css("background-image", "url(" + sideImages[currentHeading] + ")");
-            $("#misc-side-image").fadeIn(400, function (e) {                
+            $("#misc-side-image").fadeIn(400, function (e) {
             });
         });
         var currentSection = headingIdMap[headings[currentHeading]];
@@ -814,7 +814,7 @@ registerOnPageLoad("dance", function () {
     var xPosition = xPositions["menu-dance"] ? xPositions["menu-dance"] : window.innerWidth * (0.671);
     $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2 - 30);
     $("#dance-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
-    $("#dance-main-image").css({ width: window.innerWidth - (window.innerWidth - xPosition)});
+    $("#dance-main-image").css({ width: window.innerWidth - (window.innerWidth - xPosition) });
     $("#dance-side-description").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
     topPath.moveTo(xPosition, 0);
     topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
@@ -835,7 +835,7 @@ registerOnPageLoad("dance", function () {
 
         $("#dance-main-image").fadeOut(100, function (e) {
             $("#dance-main-image").css("background-image", "url(" + danceImages[currentHeading] + ")");
-            $("#dance-main-image").fadeIn(400, function (e) {                
+            $("#dance-main-image").fadeIn(400, function (e) {
             });
         });
 
@@ -845,9 +845,12 @@ registerOnPageLoad("dance", function () {
             $("#dance-side-title").fadeIn(400);
         });
 
+        animStack.push(true);
         $("#dance-side-description").fadeOut(100, function () {
             $("#dance-side-description").text(danceDescriptions[currentHeading]);
-            $("#dance-side-description").fadeIn(400);
+            $("#dance-side-description").fadeIn(400, function () {
+                animStack.pop();
+            });
         });
     }
 
@@ -905,23 +908,48 @@ registerOnPageLoad("about", function () {
     var aboutPaper = new paper.PaperScope();
     aboutPaper.setup(aboutCanvas);
     var topPath = new aboutPaper.Path();
-    var bottomPath = new aboutPaper.Path();
+    var path1 = new aboutPaper.Path();
+    var path2 = new aboutPaper.Path();
+    var path3 = new aboutPaper.Path();
+    var path4 = new aboutPaper.Path();
     var xPosition = xPositions["menu-about"] ? xPositions["menu-about"] : window.innerWidth / 2;
     console.log(xPosition, window.innerWidth);
     topPath.moveTo(xPosition, 0);
     topPath.lineTo(xPosition, window.innerHeight);
-    topPath.strokeColor = 'grey';
+    topPath.strokeColor = 'grey'
+    path1.strokeColor = 'grey';
+    path2.strokeColor = path3.strokeColor = path4.strokeColor = 'grey';
     pageHandlers[aboutPage] = {
         onPageResize: function () {
             window.location.reload();
         }
     };
+    var clearPaths = function(){
+        path1.removeSegments();
+        path2.removeSegments();
+        path3.removeSegments();
+        path4.removeSegments();
+    }
+    var drawGoldenRatio = function () {
+        path1.moveTo(xPosition, window.innerHeight / 2);
+        path1.lineTo(window.innerWidth, window.innerHeight / 2);
+        path2.moveTo(xPosition + window.innerWidth / 4, window.innerHeight / 2);
+        path2.lineTo(xPosition + window.innerWidth / 4, window.innerHeight);
+        path3.moveTo(xPosition + window.innerWidth / 4, 3 * window.innerHeight / 4);
+        path3.lineTo(xPosition, 3 * window.innerHeight / 4);
+        path4.moveTo(xPosition + window.innerWidth / 8, 3 * window.innerHeight / 4);
+        path4.lineTo(xPosition + window.innerWidth / 8, window.innerHeight / 2);
+    }
+
+    drawGoldenRatio();
 
     registerPagePostLoad(aboutPage, function () {
         xPosition = window.innerWidth / 2 - 20;
         topPath.removeSegments();
         topPath.moveTo(xPosition, 0);
         topPath.lineTo(xPosition, window.innerHeight);
+        clearPaths();
+        drawGoldenRatio();
     });
 });
 
