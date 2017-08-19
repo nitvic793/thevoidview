@@ -1,6 +1,6 @@
 /*!
  * Personal Website - the.void.view 
- * Author- Nitish Victor
+ * Author - Nitish Victor (nithishvictor@gmail.com)
 */
 body {
   width: 100%;
@@ -420,7 +420,8 @@ a:focus {
   margin: 5px;
   padding: 5px;
   font-family: "Courier New";
-  font-size: 28pt;
+  font-size: 22pt;
+  opacity: 0.7;
   color: "grey";
 }
 .void-container {
@@ -827,8 +828,7 @@ a > i {
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
-  opacity: 0.7;
+  z-index: -2;
   background: url('') no-repeat center scroll;
   background-color: black;
   -webkit-background-size: cover;
@@ -1083,4 +1083,50 @@ About Page
   -o-animation: fadeinBg 3s;
   /* Opera < 12.1 */
   animation: fadeinBg 3s;
+}
+#dance-menu-heading {
+  font-family: Courier New, Courier, monospace;
+  top: 15%;
+  color: grey;
+  position: absolute;
+}
+#dance-side-title {
+  top: 20%;
+  right: 0;
+  font-family: Courier New, Courier, monospace;
+  color: grey;
+  font-size: 16pt;
+  text-align: center;
+  position: absolute;
+}
+#dance-side-description {
+  top: 27%;
+  right: 0;
+  font-family: Courier New, Courier, monospace;
+  color: grey;
+  text-align: center;
+  position: absolute;
+  padding: 20px;
+}
+#dance-main-image {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: url(../img/perf-a.jpg) no-repeat center scroll;
+  background-color: black;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  -webkit-animation: fadeinBg 3s;
+  /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 3s;
+  /* Firefox < 16 */
+  -ms-animation: fadein 3s;
+  /* Internet Explorer */
+  -o-animation: fadein 3s;
+  /* Opera < 12.1 */
+  animation: fadein 3s;
 }

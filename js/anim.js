@@ -734,7 +734,7 @@ registerOnPageLoad(miscPage, function () {
         nextHeading = (currentHeading + 1) % headings.length;
         setMenuHeading();
     }
-    pageHandlers["misc"] = {
+    pageHandlers[miscPage] = {
         onPageResize: function () {
             window.location.reload(true);
         },
@@ -764,11 +764,35 @@ registerOnPageLoad(miscPage, function () {
         topPath.moveTo(xPosition, 0);
         topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);
         bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
+
         bottomPath.lineTo(xPosition, window.innerHeight);
     });
 });
 
+$('#dance').bind('mousewheel', function (e) {
+    var delta;
+    if (e.wheelDelta)
+        delta = e.wheelDelta;
+    else delta = e.originalEvent.wheelDelta;
+    if (delta > 0) {
+        //go up
+        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onUpScroll && !preventMainMouseBind)
+            pageHandlers[getCurrentPage()].onUpScroll();
+    }
+    else {
+        //go down
+        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onDownScroll && !preventMainMouseBind)
+            pageHandlers[getCurrentPage()].onDownScroll();
+    }
+});
 
+$('#dance').mouseenter(function () { MOUSE_OVER = true; });
+$('#dance').mouseleave(function () { MOUSE_OVER = false; });
+
+var fireDescription = `I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
+I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
+I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
+`;
 
 registerOnPageLoad("dance", function () {
     var danceCanvas = document.getElementById('dance-canvas');
@@ -776,10 +800,97 @@ registerOnPageLoad("dance", function () {
     dancePaper.setup(danceCanvas);
     var topPath = new dancePaper.Path();
     var bottomPath = new dancePaper.Path();
+    topPath.strokeColor = bottomPath.strokeColor = 'grey';
+    var currentHeading = 0;
+    var negativeCounter = 0;
+    var nextHeading = 1;
     var xPosition = xPositions["menu-dance"] ? xPositions["menu-dance"] : window.innerWidth * (0.671);
+    $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2 - 30);
+    $("#dance-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
+    $("#dance-main-image").css({ width: window.innerWidth - (window.innerWidth - xPosition)});
+    $("#dance-side-description").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
     topPath.moveTo(xPosition, 0);
-    topPath.lineTo(xPosition, window.innerHeight);
-    topPath.strokeColor = 'grey';
+    topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
+    bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
+    bottomPath.lineTo(xPosition, window.innerHeight);
+    var danceSections = ["Performance A", "Performance B", "Performance C"];
+    var danceDescriptions = [fireDescription, fireDescription, fireDescription];
+    var danceImages = ["../img/perf-a.jpg", "../img/perf-a.jpg", "../img/perf-a.jpg"];
+    var setMenuHeading = function () {
+        animStack.push();
+        $("#dance-menu-heading").fadeOut(100, function () {
+            var heading = danceSections[nextHeading];
+            $("#dance-menu-heading").text(heading);
+            $("#dance-menu-heading").fadeIn(400, function () {
+                animStack.pop();
+            });
+        });
+
+        $("#dance-main-image").fadeOut(100, function (e) {
+            $("#dance-main-image").css("background-image", "url(" + danceImages[currentHeading] + ")");
+            $("#dance-main-image").fadeIn(100, function (e) {                
+            });
+        });
+
+
+        $("#dance-side-title").fadeOut(100, function () {
+            $("#dance-side-title").text(danceSections[currentHeading]);
+            $("#dance-side-title").fadeIn(400);
+        });
+
+        $("#dance-side-description").fadeOut(100, function () {
+            $("#dance-side-description").text(danceDescriptions[currentHeading]);
+            $("#dance-side-description").fadeIn(400);
+        });
+    }
+
+    setMenuHeading();
+
+    var dancePageMenuUp = function () {
+        nextHeading = currentHeading;
+        currentHeading = (currentHeading + 1) % danceSections.length;
+        negativeCounter = currentHeading;
+        setMenuHeading();
+    }
+    var dancePageMenuDown = function () {
+        negativeCounter = negativeCounter - 1;
+        if (Math.abs(negativeCounter) == danceSections.length) {
+            negativeCounter = 0;
+        }
+        currentHeading = Math.abs(negativeCounter);
+        nextHeading = (currentHeading + 1) % danceSections.length;
+        setMenuHeading();
+    }
+
+    pageHandlers[dancePage] = {
+        onPageResize: function () {
+            window.location.reload(true);
+        },
+        onKeyPress: function (e) {
+            switch (e.which) {
+                case 38: //Up
+                    if (animStack.length == 0)
+                        dancePageMenuUp();
+                    break;
+                case 40: //Down
+                    if (animStack.length == 0)
+                        dancePageMenuDown();
+                    break;
+            }
+        },
+        onUpScroll: dancePageMenuUp,
+        onDownScroll: dancePageMenuDown
+    }
+
+    registerPagePostLoad(dancePage, function () {
+        topPath.removeSegments();
+        bottomPath.removeSegments();
+        topPath.moveTo(xPosition, 0);
+        topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
+        bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
+        bottomPath.lineTo(xPosition, window.innerHeight);
+    });
+
 });
 
 registerOnPageLoad("about", function () {
@@ -798,9 +909,8 @@ registerOnPageLoad("about", function () {
             window.location.reload();
         }
     };
-    
+
     registerPagePostLoad(aboutPage, function () {
-        console.log("Test");
         xPosition = window.innerWidth / 2 - 20;
         topPath.removeSegments();
         topPath.moveTo(xPosition, 0);
