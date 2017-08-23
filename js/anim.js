@@ -397,7 +397,15 @@ $(document).keyup(function (e) {
 });
 
 
-
+var drawArrow = function (x, y, paperScope) {
+    var leftLine = new paperScope.Path();
+    var rightLine = new paperScope.Path();
+    rightLine.strokeColor = leftLine.strokeColor = 'grey';
+    leftLine.moveTo(x - 5, y - 5);
+    leftLine.lineTo(x, y);
+    rightLine.moveTo(x + 5, y - 5);
+    rightLine.lineTo(x, y);
+}
 
 registerOnPageLoad(projectPage, function () {
     var menuItems = [
@@ -525,12 +533,15 @@ registerOnPageLoad(projectPage, function () {
 
     registerPagePostLoad(projectPage, function () {
         //Re draw lines because the next project element 
+        drawArrow(xPosition, $("#next-project").offset().top - 10, projectPaper);
         topPath.removeSegments();
         bottomPath.removeSegments();
-        topPath.moveTo(xPosition, 0);
+        topPath.moveTo(xPosition, 20);
         topPath.lineTo(xPosition, $("#next-project").offset().top - 10);
+        
         bottomPath.moveTo(xPosition, $("#next-project").offset().top + $("#next-project").height() + 10);
-        bottomPath.lineTo(xPosition, window.innerHeight);
+        bottomPath.lineTo(xPosition, window.innerHeight - 60);
+
     });
 });
 
@@ -766,13 +777,13 @@ registerOnPageLoad(miscPage, function () {
     });
 
     registerPagePostLoad(miscPage, function () {
+        drawArrow(xPosition, $("#misc-menu-heading").offset().top - 10, miscPaper);
         topPath.removeSegments();
         bottomPath.removeSegments();
-        topPath.moveTo(xPosition, 0);
+        topPath.moveTo(xPosition, 20);
         topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);
         bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
-
-        bottomPath.lineTo(xPosition, window.innerHeight);
+        bottomPath.lineTo(xPosition, window.innerHeight - 60);
     });
 });
 
@@ -812,7 +823,7 @@ registerOnPageLoad("dance", function () {
     var negativeCounter = 0;
     var nextHeading = 1;
     var xPosition = xPositions["menu-dance"] ? xPositions["menu-dance"] : window.innerWidth * (0.671);
-    $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2 - 30);
+    $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
     $("#dance-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
     $("#dance-main-image").css({ width: window.innerWidth - (window.innerWidth - xPosition) });
     $("#dance-side-description").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
@@ -893,12 +904,15 @@ registerOnPageLoad("dance", function () {
     }
 
     registerPagePostLoad(dancePage, function () {
+        drawArrow(xPosition, $("#dance-menu-heading").offset().top - 10, dancePaper); //Not working from menu page. 
+        $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
+        console.log("Drawing arrow");        
         topPath.removeSegments();
-        bottomPath.removeSegments();
-        topPath.moveTo(xPosition, 0);
-        topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
+        bottomPath.removeSegments();       
+        topPath.moveTo(xPosition, 20);
+        topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);        
         bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
-        bottomPath.lineTo(xPosition, window.innerHeight);
+        bottomPath.lineTo(xPosition, window.innerHeight - 60);        
     });
 
 });
@@ -924,7 +938,7 @@ registerOnPageLoad("about", function () {
             window.location.reload();
         }
     };
-    var clearPaths = function(){
+    var clearPaths = function () {
         path1.removeSegments();
         path2.removeSegments();
         path3.removeSegments();

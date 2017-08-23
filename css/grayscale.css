@@ -1069,9 +1069,9 @@ About Page
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
-  opacity: 0.3;
+  z-index: -2;
   background-color: black;
+  background: url(../img/menu-about.png) no-repeat center scroll;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -1086,11 +1086,19 @@ About Page
   /* Opera < 12.1 */
   animation: fadeinBg 3s;
 }
+#about-canvas {
+  opacity: 0.3;
+}
+/**
+Dance Page
+**/
 #dance-menu-heading {
   font-family: Courier New, Courier, monospace;
   top: 15%;
   color: grey;
   position: absolute;
+  text-align: center;
+  width: 200px;
 }
 #dance-side-title {
   top: 20%;
@@ -1115,7 +1123,7 @@ About Page
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: -2;
   background: url(../img/perf-a.jpg) no-repeat center scroll;
   background-color: black;
   -webkit-background-size: cover;
@@ -1131,4 +1139,7 @@ About Page
   -o-animation: fadein 3s;
   /* Opera < 12.1 */
   animation: fadein 3s;
+}
+#dance-canvas {
+  opacity: 0.8;
 }
