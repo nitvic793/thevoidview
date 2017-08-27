@@ -52,9 +52,19 @@ var removeLoader = function () {
     });
 };
 
+var getCurrentPage = function () {
+    var url = window.location.href;
+    var currentPage = url.indexOf('#!/') == -1 ? null : (url.substr(url.indexOf('#!/') + 3, url.length - url.indexOf('#')));
+    if (!currentPage) {
+        return landingPage;
+    }
+    return currentPage;
+}
 
+var previousPage = getCurrentPage();
 window.onhashchange = function () {
     console.log("Hash change", getCurrentPage());
+    if (previousPage == getCurrentPage()) return;
     if (getCurrentPage() == null || getCurrentPage() == '') {
         routeToSlideUp(landingPage)
     }
@@ -215,6 +225,34 @@ var routeToSlideUp = function (toPage, fromPage, cb) {
     }, 600);
 }
 
+var registerModal = function (modalId, buttonId) {
+    // Get the modal
+    var modal = document.getElementById(modalId);
+
+    // Get the button that opens the modal
+    var btn = document.getElementById(buttonId);
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+};
+
 /**
  * I. First Page animations
  */
@@ -295,14 +333,7 @@ $("#voidwaybtn").click(function () {
     routeTo(menuPage, landingPage);
 });
 
-var getCurrentPage = function () {
-    var url = window.location.href;
-    var currentPage = url.indexOf('#!/') == -1 ? null : (url.substr(url.indexOf('#!/') + 3, url.length - url.indexOf('#')));
-    if (!currentPage) {
-        return landingPage;
-    }
-    return currentPage;
-}
+
 
 var transition = function (anim, toPage, fromPage) {
     var property;
@@ -367,25 +398,28 @@ $('#' + projectPage).bind('mousewheel', function (e) {
 });
 
 
-
+var fireDescription = `<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
+I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
+I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>
+`;
 
 
 var projects = {
     Drone: {
         image: "../img/drone1.png",
-        description: "Drone project description here."
+        description: fireDescription + "</p>Some random drone text. </p>" + fireDescription + fireDescription
     },
     Emoi: {
         image: "../img/b.jpg",
-        description: "Emotion based feedback"
+        description: fireDescription + "<p> New paragraph, for testing </p>"
     },
     "Testimonial Map": {
         image: "../img/a.jpg",
-        description: "Service Center testimonial feedback"
+        description: fireDescription + "<p> New paragraph, for testing </p>"
     },
     Other: {
         image: "../img/c.jpg",
-        description: "Other"
+        description: fireDescription + "<p> New paragraph, for testing </p>"
     },
 };
 
@@ -438,6 +472,7 @@ registerOnPageLoad(projectPage, function () {
             element: null
         }
     ];
+
     var canvas = document.getElementById('project-canvas');
     var projectPaper = new paper.PaperScope();
     projectPaper.setup(canvas);
@@ -451,6 +486,7 @@ registerOnPageLoad(projectPage, function () {
     var currentHeading = 0;
     var negativeCounter = 0;
     var nextHeading = 1;
+
     projectPaper.view.onFrame = function (event) {
     }
     var loadProject = function (projectName) {
@@ -469,7 +505,7 @@ registerOnPageLoad(projectPage, function () {
             });
         });
         $("#project-details").fadeOut(100, function () {
-            $("#project-details").text(project.description);
+            $("#project-details").html(project.description);
             $("#project-details").fadeIn(200, function (e) {
             });
         });
@@ -533,15 +569,13 @@ registerOnPageLoad(projectPage, function () {
 
     registerPagePostLoad(projectPage, function () {
         //Re draw lines because the next project element 
-        drawArrow(xPosition, $("#next-project").offset().top - 10, projectPaper);
         topPath.removeSegments();
         bottomPath.removeSegments();
         topPath.moveTo(xPosition, 20);
         topPath.lineTo(xPosition, $("#next-project").offset().top - 10);
-        
         bottomPath.moveTo(xPosition, $("#next-project").offset().top + $("#next-project").height() + 10);
-        bottomPath.lineTo(xPosition, window.innerHeight - 60);
-
+        bottomPath.lineTo(xPosition, window.innerHeight - 30);
+        $("#project-title").css("width", xPosition);
     });
 });
 
@@ -676,8 +710,59 @@ $('#misc-photos').mouseleave(function () { preventMainMouseBind = false; });
 $('#misc').mouseenter(function () { MOUSE_OVER = true; });
 $('#misc').mouseleave(function () { MOUSE_OVER = false; });
 
-
+var galleryLoaded = {};
 registerOnPageLoad(miscPage, function () {
+    var loadGallery = function (galleryId, data) {
+        $(galleryId).galereya({
+            wave: false,
+           // disableSliderOnClick: true,
+            onCellClick: function (e) {
+                console.log("Gallery", e);
+            },
+            load: function (next) {
+                next(data);
+            }
+        });
+    }
+    
+    var loadSectionGallery = function (section) {
+        if (galleryLoaded[section]) return;
+        switch (section) {
+            case "#misc-photos":                
+                var data = [
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/b.jpg", "fullsrc": "img/b.jpg", "description": "Sample" },
+                    { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
+                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
+                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                ];
+                loadGallery("#misc-gallery", data);
+                break;
+            case "#misc-art":
+                var data = [
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/b.jpg", "fullsrc": "img/b.jpg", "description": "Sample" },
+                    { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
+                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/b.jpg", "fullsrc": "img/b.jpg", "description": "Sample" },
+                    { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
+                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                ];
+                loadGallery("#misc-art-gallery", data);
+                break;
+        }
+        galleryLoaded[section] = true;
+    }
+
     var miscCanvas = document.getElementById('misc-canvas');
     var miscPaper = new paper.PaperScope();
     miscPaper.setup(miscCanvas);
@@ -727,7 +812,9 @@ registerOnPageLoad(miscPage, function () {
             if (currentSection == section) return;
             $(section).fadeOut(200);
         });
-        $(currentSection).fadeIn(400);
+        $(currentSection).fadeIn(400, function () {
+            loadSectionGallery(currentSection);
+        });
     }
     setMenuHeading();
     topPath.moveTo(xPosition, 0);
@@ -772,18 +859,16 @@ registerOnPageLoad(miscPage, function () {
         onDownScroll: miscPageMenuDown
     }
 
-    $('#grid').masonry({
-        itemSelector: '.grid-item'
-    });
+
 
     registerPagePostLoad(miscPage, function () {
-        drawArrow(xPosition, $("#misc-menu-heading").offset().top - 10, miscPaper);
+        //loadSectionGallery("#misc-photos");
         topPath.removeSegments();
         bottomPath.removeSegments();
         topPath.moveTo(xPosition, 20);
         topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);
         bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
-        bottomPath.lineTo(xPosition, window.innerHeight - 60);
+        bottomPath.lineTo(xPosition, window.innerHeight - 25);
     });
 });
 
@@ -807,10 +892,7 @@ $('#dance').bind('mousewheel', function (e) {
 $('#dance').mouseenter(function () { MOUSE_OVER = true; });
 $('#dance').mouseleave(function () { MOUSE_OVER = false; });
 
-var fireDescription = `I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
-I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
-I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
-`;
+
 
 registerOnPageLoad("dance", function () {
     var danceCanvas = document.getElementById('dance-canvas');
@@ -858,7 +940,7 @@ registerOnPageLoad("dance", function () {
 
         animStack.push(true);
         $("#dance-side-description").fadeOut(100, function () {
-            $("#dance-side-description").text(danceDescriptions[currentHeading]);
+            $("#dance-side-description").html(danceDescriptions[currentHeading]);
             $("#dance-side-description").fadeIn(400, function () {
                 animStack.pop();
             });
@@ -904,15 +986,14 @@ registerOnPageLoad("dance", function () {
     }
 
     registerPagePostLoad(dancePage, function () {
-        drawArrow(xPosition, $("#dance-menu-heading").offset().top - 10, dancePaper); //Not working from menu page. 
         $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
-        console.log("Drawing arrow");        
+        console.log("Drawing arrow");
         topPath.removeSegments();
-        bottomPath.removeSegments();       
+        bottomPath.removeSegments();
         topPath.moveTo(xPosition, 20);
-        topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);        
+        topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
         bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
-        bottomPath.lineTo(xPosition, window.innerHeight - 60);        
+        bottomPath.lineTo(xPosition, window.innerHeight - 25);
     });
 
 });
