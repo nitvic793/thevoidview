@@ -663,6 +663,28 @@ menuPageItems.forEach(function (val, i) {
  * Misc Page
  */
 var preventMainMouseBind = false;
+var defaultMouseWheelHandler = function (e) {
+    var delta;
+    if (e.wheelDelta)
+        delta = e.wheelDelta;
+    else delta = e.originalEvent.wheelDelta;
+    if (delta > 0) {
+        //go up
+        console.log("Up", animStack);
+        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onUpScroll && !preventMainMouseBind)
+            pageHandlers[getCurrentPage()].onUpScroll();
+    }
+    else {
+        //go down
+        console.log("Down");
+        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onDownScroll && !preventMainMouseBind)
+            pageHandlers[getCurrentPage()].onDownScroll();
+    }
+};
+
+var bindMouseWheel = function (page, handler) {
+    $('#' + page).bind('mousewheel', handler);
+};
 
 $('#misc').bind('mousewheel', function (e) {
     var delta;
@@ -710,12 +732,13 @@ $('#misc-photos').mouseleave(function () { preventMainMouseBind = false; });
 $('#misc').mouseenter(function () { MOUSE_OVER = true; });
 $('#misc').mouseleave(function () { MOUSE_OVER = false; });
 
-var galleryLoaded = {};
+var galleryLoaded = {}; //Variable to store the loaded galleries(photos, art) so as to not load them again.
 registerOnPageLoad(miscPage, function () {
+    var xPosition = xPositions["menu-art"] ? xPositions["menu-art"] : window.innerWidth * (0.671); //!!IMPORTANT 
     var loadGallery = function (galleryId, data) {
         $(galleryId).galereya({
             wave: false,
-           // disableSliderOnClick: true,
+            // disableSliderOnClick: true,
             onCellClick: function (e) {
                 console.log("Gallery", e);
             },
@@ -723,12 +746,75 @@ registerOnPageLoad(miscPage, function () {
                 next(data);
             }
         });
+    };
+
+    var loadWriting = function (item) {
+        hideAllSections();
+        animStack.push(true);
+        var writing = writings[item.id];
+        console.log(writing, item);
+        $("#writing-desk-title").text(item.title);
+        $("#writing-desk").width(xPosition);
+        $("#writing-content").html(writing);
+        $("#writing-desk").fadeIn(200);
+        $("#writing-desk-close").click(function () {
+            animStack.pop();
+            $("#writing-desk").fadeOut(400);
+            loadCurrentSection();
+            bindMouseWheel(miscPage, defaultMouseWheelHandler);
+        })
+    };
+
+
+
+    var transformToIdMap = function (data) {
+        var returnObj = {};
+        data.forEach(function (item) {
+            returnObj[item.id] = item;
+        });
+        return returnObj;
     }
-    
+    var writingData = [
+        { title: "Hue You", image: "../img/writing-hue.png", id: "hue" },
+        { title: "2 Dots", image: "../img/writing-2-dots.png", id: "dots" },
+    ];
+
+    var sampleWriting = `<p>What you think,  what you feel. <br>
+    What you believe in and what believes in you.  <br>
+    Where your heart goes and where you take your heart.  <br>
+    Whether you are here or there.. Or nowhere.. Or maybe everywhere.  <br>
+    Whether you are a myth or reality. <br>
+    It doesn’t Matter. <br>
+    Whether you live for someone or allow somebody to live for you.<br>
+    It doesn’t Matter.  <br>
+    Actually, that's not too apt. All these things do matter. <br>
+    You don't. <br>
+    What can happen if you leave today, right at this moment? <br>
+    Sure, some will be hurt. But how many?  3? 4?<br>
+    And for how long? Should they even suffer for whatever duration they force on themselves? What could be lost?<br>
+    Two daughters? Two sisters? 4 gaping holes?<br>
+    And for those 4 holes, these 4 people will push themselves in pain.. For what? </p> `;
+
+    var writings = {
+        "hue": sampleWriting,
+        "dots": sampleWriting
+    };
+
+    var loadWritingDeck = function (data) {
+        data.forEach(function (item) {
+            var html = `<div class="module mid" id="${item.id}">
+                <h2>${item.title}</h2>
+                </div>`;
+            $("#writing-deck").append(html);
+            $('#' + item.id).css("background-image", "url(" + item.image + ")");
+            $('#' + item.id).click(e => loadWriting(item));
+        });
+    };
+
     var loadSectionGallery = function (section) {
         if (galleryLoaded[section]) return;
         switch (section) {
-            case "#misc-photos":                
+            case "#misc-photos":
                 var data = [
                     { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
                     { "lowsrc": "img/b.jpg", "fullsrc": "img/b.jpg", "description": "Sample" },
@@ -759,6 +845,12 @@ registerOnPageLoad(miscPage, function () {
                 ];
                 loadGallery("#misc-art-gallery", data);
                 break;
+            case "#misc-writing":
+                var data = writingData;
+                loadWritingDeck(data);
+                break;
+            default:
+                break;
         }
         galleryLoaded[section] = true;
     }
@@ -768,7 +860,7 @@ registerOnPageLoad(miscPage, function () {
     miscPaper.setup(miscCanvas);
     var topPath = new miscPaper.Path();
     var bottomPath = new miscPaper.Path();
-    var xPosition = xPositions["menu-art"] ? xPositions["menu-art"] : window.innerWidth * (0.671);
+
     $("#misc-side-image").css({ width: window.innerWidth - xPosition });
     $("#misc-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
 
@@ -788,6 +880,18 @@ registerOnPageLoad(miscPage, function () {
     var negativeCounter = 0;
     var nextHeading = 1;
     var sections = ["#misc-photos", "#misc-art", "#misc-writing"];
+    var hideAllSections = function () {
+        sections.forEach(function (section) {
+            $(section).fadeOut(200);
+        });
+    };
+
+    var loadCurrentSection = function () {
+        var currentSection = headingIdMap[headings[currentHeading]];
+        $(currentSection).fadeIn(400, function () {
+            loadSectionGallery(currentSection);
+        });
+    }
     var setMenuHeading = function () {
         var ids = ["#misc-menu-heading", "#misc-side-title"];
         ids.forEach(function (id) {
@@ -815,7 +919,8 @@ registerOnPageLoad(miscPage, function () {
         $(currentSection).fadeIn(400, function () {
             loadSectionGallery(currentSection);
         });
-    }
+    };
+
     setMenuHeading();
     topPath.moveTo(xPosition, 0);
     topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);
