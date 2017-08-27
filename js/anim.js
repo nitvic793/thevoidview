@@ -25,7 +25,11 @@ pageIds.forEach(function (p) {
 var customLogicPostLoad = [];
 var customLogicPreLoad = [];
 
-var registerCustomFunctionPostPageLoad = function (fn) {
+/**
+ * Register global post page load function
+ * @param {function} fn 
+ */
+var registerGlobalFunctionPostPageLoad = function (fn) {
     if (typeof fn !== "function") {
         console.error("Cannot register non-function");
         return;
@@ -33,7 +37,11 @@ var registerCustomFunctionPostPageLoad = function (fn) {
     customLogicPostLoad.push(fn);
 }
 
-var registerCustomFunctionPrePageLoad = function (fn) {
+/**
+ * Register global pre page load function
+ * @param {function} fn 
+ */
+var registerGlobalFunctionPrePageLoad = function (fn) {
     if (typeof fn !== "function") {
         console.error("Cannot register non-function");
         return;
@@ -46,12 +54,18 @@ window.onpopstate = function (e) {
     console.log(e);
 };
 
+/**
+ * Removes loader
+ */
 var removeLoader = function () {
     $("#loaderPage").fadeOut(400, function (e) {
         $("#loaderPage").remove();
     });
 };
 
+/**
+ * Get current loaded page
+ */
 var getCurrentPage = function () {
     var url = window.location.href;
     var currentPage = url.indexOf('#!/') == -1 ? null : (url.substr(url.indexOf('#!/') + 3, url.length - url.indexOf('#')));
@@ -65,6 +79,7 @@ var previousPage = getCurrentPage();
 window.onhashchange = function () {
     console.log("Hash change", getCurrentPage());
     if (previousPage == getCurrentPage()) return;
+    previousPage = getCurrentPage();
     if (getCurrentPage() == null || getCurrentPage() == '') {
         routeToSlideUp(landingPage)
     }
@@ -100,14 +115,27 @@ var onMenuPageLoad = function () {
 var pageRefreshPipeline = [];
 var pagePostLoaders = [];
 
+/**
+ * Register function callback on page load
+ * @param {string} page 
+ * @param {function} fn 
+ */
 var registerOnPageLoad = function (page, fn) {
     pageRefreshPipeline[page] = fn;
 }
 
+/**
+ * Register function callback on page post load
+ * @param {string} page 
+ * @param {function} fn 
+ */
 var registerPagePostLoad = function (page, fn) {
     pagePostLoaders[page] = fn;
 }
 
+/**
+ * Runs all page load functions
+ */
 var runOnPageLoadFunctions = function () {
     customLogicPreLoad.forEach(function (fn) {
         fn();
@@ -121,13 +149,16 @@ var runOnPageLoadFunctions = function () {
     });
 }
 
+/**
+ * Runs all page post load functions
+ */
 var runOnPagePostLoadFunctions = function () {
     if (pagePostLoaders[getCurrentPage()]) {
         pagePostLoaders[getCurrentPage()]();
     }
 };
 
-registerCustomFunctionPostPageLoad(function () {
+registerGlobalFunctionPostPageLoad(function () {
     switch (getCurrentPage()) {
         case "menu":
         case "home":
@@ -138,7 +169,7 @@ registerCustomFunctionPostPageLoad(function () {
     }
 });
 
-registerCustomFunctionPrePageLoad(function () {
+registerGlobalFunctionPrePageLoad(function () {
 
     if (getCurrentPage() == aboutPage) {
         console.log('fadein');
@@ -199,6 +230,12 @@ var routeTo = function (toPage, fromPage, cb) {
     }, 600);
 }
 
+/**
+ * Routes to given page from current page with transition animation
+ * @param {string} toPage 
+ * @param {string} fromPage 
+ * @param {function} cb Callback
+ */
 var routeToSlideUp = function (toPage, fromPage, cb) {
     if (!toPage) toPage = landingPage;
     animStack.push(true);
@@ -225,6 +262,11 @@ var routeToSlideUp = function (toPage, fromPage, cb) {
     }, 600);
 }
 
+/**
+ * Register modal
+ * @param {string} modalId 
+ * @param {string} buttonId 
+ */
 var registerModal = function (modalId, buttonId) {
     // Get the modal
     var modal = document.getElementById(modalId);
@@ -362,40 +404,48 @@ var directLoad = function (page) {
 
 
 /**
- * Third Page 
+ * Project Page 
  */
 
+var PREVENT_MAIN_MOUSE_BIND = false;
 
-var MOUSE_OVER = false;
-$('body').bind('mousewheel', function (e) {
-    if (MOUSE_OVER) {
-        if (e.preventDefault) { e.preventDefault(); }
-        e.returnValue = false;
-        return false;
-    }
-});
-
-$('#' + projectPage).mouseenter(function () { MOUSE_OVER = true; });
-$('#' + projectPage).mouseleave(function () { MOUSE_OVER = false; });
-
-$('#' + projectPage).bind('mousewheel', function (e) {
+var defaultMouseWheelHandler = function (e) {
     var delta;
     if (e.wheelDelta)
         delta = e.wheelDelta;
     else delta = e.originalEvent.wheelDelta;
     if (delta > 0) {
         //go up
-        console.log("Up");
-        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onUpScroll)
+        console.log("Up", animStack);
+        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onUpScroll && !PREVENT_MAIN_MOUSE_BIND)
             pageHandlers[getCurrentPage()].onUpScroll();
     }
     else {
         //go down
-        console.log("Down", animStack);
-        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onDownScroll)
+        console.log("Down");
+        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onDownScroll && !PREVENT_MAIN_MOUSE_BIND)
             pageHandlers[getCurrentPage()].onDownScroll();
     }
+};
+
+/**
+ * Prevents default scroll behavior on given element
+ * @param {string} id Element ID 
+ */
+var preventScrollBehaviorOnElement = function (id) {
+    $('#' + id).mouseenter(function () { PREVENT_MAIN_MOUSE_BIND = true; });
+    $('#' + id).mouseleave(function () { PREVENT_MAIN_MOUSE_BIND = false; });
+}
+
+var MOUSE_OVER = false;
+$('body').bind('mousewheel', function (e) {
+    return true;
 });
+
+$('#' + projectPage).mouseenter(function () { MOUSE_OVER = true; });
+$('#' + projectPage).mouseleave(function () { MOUSE_OVER = false; });
+
+$('#' + projectPage).bind('mousewheel', defaultMouseWheelHandler);
 
 
 var fireDescription = `<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
@@ -442,6 +492,7 @@ var drawArrow = function (x, y, paperScope) {
 }
 
 registerOnPageLoad(projectPage, function () {
+    preventScrollBehaviorOnElement("project-details");
     var menuItems = [
         {
             id: 1,
@@ -662,48 +713,14 @@ menuPageItems.forEach(function (val, i) {
 /**
  * Misc Page
  */
-var preventMainMouseBind = false;
-var defaultMouseWheelHandler = function (e) {
-    var delta;
-    if (e.wheelDelta)
-        delta = e.wheelDelta;
-    else delta = e.originalEvent.wheelDelta;
-    if (delta > 0) {
-        //go up
-        console.log("Up", animStack);
-        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onUpScroll && !preventMainMouseBind)
-            pageHandlers[getCurrentPage()].onUpScroll();
-    }
-    else {
-        //go down
-        console.log("Down");
-        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onDownScroll && !preventMainMouseBind)
-            pageHandlers[getCurrentPage()].onDownScroll();
-    }
-};
+
+
 
 var bindMouseWheel = function (page, handler) {
     $('#' + page).bind('mousewheel', handler);
 };
 
-$('#misc').bind('mousewheel', function (e) {
-    var delta;
-    if (e.wheelDelta)
-        delta = e.wheelDelta;
-    else delta = e.originalEvent.wheelDelta;
-    if (delta > 0) {
-        //go up
-        console.log("Up", animStack);
-        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onUpScroll && !preventMainMouseBind)
-            pageHandlers[getCurrentPage()].onUpScroll();
-    }
-    else {
-        //go down
-        console.log("Down");
-        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onDownScroll && !preventMainMouseBind)
-            pageHandlers[getCurrentPage()].onDownScroll();
-    }
-});
+bindMouseWheel(miscPage, defaultMouseWheelHandler);
 
 $('#misc-photos').bind('mousewheel', function (e) {
     var delta;
@@ -726,11 +743,13 @@ $('#misc-photos').bind('mousewheel', function (e) {
     animStack.pop();
 });
 
-$('#misc-photos').mouseenter(function () { preventMainMouseBind = true; });
-$('#misc-photos').mouseleave(function () { preventMainMouseBind = false; });
+$('#misc-photos').mouseenter(function () { PREVENT_MAIN_MOUSE_BIND = true; });
+$('#misc-photos').mouseleave(function () { PREVENT_MAIN_MOUSE_BIND = false; });
 
 $('#misc').mouseenter(function () { MOUSE_OVER = true; });
 $('#misc').mouseleave(function () { MOUSE_OVER = false; });
+
+
 
 var galleryLoaded = {}; //Variable to store the loaded galleries(photos, art) so as to not load them again.
 registerOnPageLoad(miscPage, function () {
@@ -738,6 +757,7 @@ registerOnPageLoad(miscPage, function () {
     var loadGallery = function (galleryId, data) {
         $(galleryId).galereya({
             wave: false,
+            slideShowSpeed: 4000,
             // disableSliderOnClick: true,
             onCellClick: function (e) {
                 console.log("Gallery", e);
@@ -750,7 +770,7 @@ registerOnPageLoad(miscPage, function () {
 
     var loadWriting = function (item) {
         hideAllSections();
-        animStack.push(true);
+        animStack.push(true); //Hacky way to disable scrolling behavior
         var writing = writings[item.id];
         console.log(writing, item);
         $("#writing-desk-title").text(item.title);
@@ -758,7 +778,7 @@ registerOnPageLoad(miscPage, function () {
         $("#writing-content").html(writing);
         $("#writing-desk").fadeIn(200);
         $("#writing-desk-close").click(function () {
-            animStack.pop();
+            animStack.pop(); //Enable scrolling again
             $("#writing-desk").fadeOut(400);
             loadCurrentSection();
             bindMouseWheel(miscPage, defaultMouseWheelHandler);
@@ -853,7 +873,14 @@ registerOnPageLoad(miscPage, function () {
                 break;
         }
         galleryLoaded[section] = true;
-    }
+    };
+
+    $('body').unbind('mousewheel');
+    $('body').bind('mousewheel', function (e) {
+        return true;
+    });
+
+    preventScrollBehaviorOnElement("misc-art-gallery");
 
     var miscCanvas = document.getElementById('misc-canvas');
     var miscPaper = new paper.PaperScope();
@@ -964,8 +991,6 @@ registerOnPageLoad(miscPage, function () {
         onDownScroll: miscPageMenuDown
     }
 
-
-
     registerPagePostLoad(miscPage, function () {
         //loadSectionGallery("#misc-photos");
         topPath.removeSegments();
@@ -977,29 +1002,13 @@ registerOnPageLoad(miscPage, function () {
     });
 });
 
-$('#dance').bind('mousewheel', function (e) {
-    var delta;
-    if (e.wheelDelta)
-        delta = e.wheelDelta;
-    else delta = e.originalEvent.wheelDelta;
-    if (delta > 0) {
-        //go up
-        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onUpScroll && !preventMainMouseBind)
-            pageHandlers[getCurrentPage()].onUpScroll();
-    }
-    else {
-        //go down
-        if (animStack.length == 0 && pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onDownScroll && !preventMainMouseBind)
-            pageHandlers[getCurrentPage()].onDownScroll();
-    }
-});
+bindMouseWheel(dancePage, defaultMouseWheelHandler);
 
 $('#dance').mouseenter(function () { MOUSE_OVER = true; });
 $('#dance').mouseleave(function () { MOUSE_OVER = false; });
 
-
-
-registerOnPageLoad("dance", function () {
+var slideShowTimer = null;
+registerOnPageLoad(dancePage, function () {
     var danceCanvas = document.getElementById('dance-canvas');
     var dancePaper = new paper.PaperScope();
     dancePaper.setup(danceCanvas);
@@ -1020,7 +1029,23 @@ registerOnPageLoad("dance", function () {
     bottomPath.lineTo(xPosition, window.innerHeight);
     var danceSections = ["Performance A", "Performance B", "Performance C"];
     var danceDescriptions = [fireDescription, fireDescription, fireDescription];
-    var danceImages = ["../img/perf-a.jpg", "../img/perf-a.jpg", "../img/perf-a.jpg"];
+    var danceImages = ["../img/perf-a.jpg", "../img/profile.jpg", "../img/perf-a.jpg"];
+    var danceImagesArray = [["../img/perf-a.jpg", "../img/menu-dance.png"], ["../img/profile.jpg", "../img/menu-dance.png"], ["../img/perf-a.jpg", "../img/menu-dance.png"]]
+    
+    clearInterval(slideShowTimer);
+    var setDanceImageSlideShow = function (headerPosition) {
+        var images = danceImagesArray[headerPosition];
+        var currentIndex = 0;
+        slideShowTimer = setInterval(function () {
+            currentIndex = (currentIndex + 1) % images.length;
+            var image = images[currentIndex];
+            $("#dance-main-image").fadeOut(100, function (e) {
+                $("#dance-main-image").css("background-image", "url(" + image + ")");
+                $("#dance-main-image").fadeIn(400, function (e) {
+                });
+            });
+        }, 4000);
+    }
     var setMenuHeading = function () {
         animStack.push();
         $("#dance-menu-heading").fadeOut(100, function () {
@@ -1035,6 +1060,8 @@ registerOnPageLoad("dance", function () {
             $("#dance-main-image").css("background-image", "url(" + danceImages[currentHeading] + ")");
             $("#dance-main-image").fadeIn(400, function (e) {
             });
+            clearInterval(slideShowTimer);
+            setDanceImageSlideShow(currentHeading);
         });
 
 
@@ -1053,13 +1080,14 @@ registerOnPageLoad("dance", function () {
     }
 
     setMenuHeading();
-
+    //On scroll up
     var dancePageMenuUp = function () {
         nextHeading = currentHeading;
         currentHeading = (currentHeading + 1) % danceSections.length;
         negativeCounter = currentHeading;
         setMenuHeading();
     }
+    //On scroll down
     var dancePageMenuDown = function () {
         negativeCounter = negativeCounter - 1;
         if (Math.abs(negativeCounter) == danceSections.length) {
@@ -1069,7 +1097,7 @@ registerOnPageLoad("dance", function () {
         nextHeading = (currentHeading + 1) % danceSections.length;
         setMenuHeading();
     }
-
+    //Defining page handlers for currentPage
     pageHandlers[dancePage] = {
         onPageResize: function () {
             window.location.reload(true);
