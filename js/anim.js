@@ -457,18 +457,22 @@ I am writing this because I needed to give an impression of some random text. Ju
 var projects = {
     Drone: {
         image: "../img/drone1.png",
+        images: ["img/drone1.png", "img/c.jpg"],
         description: fireDescription + "</p>Some random drone text. </p>" + fireDescription + fireDescription
     },
     Emoi: {
         image: "../img/b.jpg",
+        images: ["img/a.jpg", "img/c.jpg"],
         description: fireDescription + "<p> New paragraph, for testing </p>"
     },
     "Testimonial Map": {
         image: "../img/a.jpg",
+        images: ["img/a.jpg", "img/c.jpg"],
         description: fireDescription + "<p> New paragraph, for testing </p>"
     },
     Other: {
         image: "../img/c.jpg",
+        images: ["img/a.jpg", "img/c.jpg"],
         description: fireDescription + "<p> New paragraph, for testing </p>"
     },
 };
@@ -492,6 +496,7 @@ var drawArrow = function (x, y, paperScope) {
 }
 
 registerOnPageLoad(projectPage, function () {
+    //lightGallery(document.getElementById('project-images'));
     preventScrollBehaviorOnElement("project-details");
     var menuItems = [
         {
@@ -540,6 +545,22 @@ registerOnPageLoad(projectPage, function () {
 
     projectPaper.view.onFrame = function (event) {
     }
+
+    var setGalleryImages = function (images) {
+        $("#project-images").fadeOut(100, function () {
+            $("#project-images").html('');
+            images.forEach(function (image) {
+                var html = `<a href="${image}">
+                <img class="thumb" src="${image}">
+                </a>`;
+                $("#project-images").append(html);
+            });
+            $("#project-images").fadeIn(400, function () {
+                lightGallery(document.getElementById('project-images'));
+            });
+        });
+    };
+
     var loadProject = function (projectName) {
         var project = projects[projectName];
         animStack.push(true);
@@ -560,6 +581,8 @@ registerOnPageLoad(projectPage, function () {
             $("#project-details").fadeIn(200, function (e) {
             });
         });
+
+        setGalleryImages(project.images);
 
         $("#next-project").fadeOut(100, function () {
             $("#next-project").text(menuItems[nextHeading].text);
@@ -1030,11 +1053,25 @@ registerOnPageLoad(dancePage, function () {
     var danceSections = ["Performance A", "Performance B", "Performance C"];
     var danceDescriptions = [fireDescription, fireDescription, fireDescription];
     var danceImages = ["../img/perf-a.jpg", "../img/profile.jpg", "../img/perf-a.jpg"];
-    var danceImagesArray = [["../img/perf-a.jpg", "../img/menu-dance.png"], ["../img/profile.jpg", "../img/menu-dance.png"], ["../img/perf-a.jpg", "../img/menu-dance.png"]]
-    
+    var danceImagesArray = [["../img/perf-a.jpg", "../img/menu-dance.png", "../img/drone1.png"], ["../img/profile.jpg", "../img/menu-dance.png"], ["../img/perf-a.jpg", "../img/menu-dance.png"]]
+    var setGalleryImages = function (images) {
+        $("#dance-images").html('See Images:');
+        images.forEach(function (image, index) {
+            var html = `<a href="${image}">${index + 1}
+                </a>`;
+            if(index>1){
+                var html = `<a href="${image}" class="hidden">${index + 1}
+                </a>`;
+            }
+            $("#dance-images").append(html);
+        });
+        $("#dance-images").append("..");
+        lightGallery(document.getElementById('dance-images'));;
+    };
     clearInterval(slideShowTimer);
     var setDanceImageSlideShow = function (headerPosition) {
         var images = danceImagesArray[headerPosition];
+        setGalleryImages(images);
         var currentIndex = 0;
         slideShowTimer = setInterval(function () {
             currentIndex = (currentIndex + 1) % images.length;
@@ -1120,7 +1157,6 @@ registerOnPageLoad(dancePage, function () {
 
     registerPagePostLoad(dancePage, function () {
         $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
-        console.log("Drawing arrow");
         topPath.removeSegments();
         bottomPath.removeSegments();
         topPath.moveTo(xPosition, 20);

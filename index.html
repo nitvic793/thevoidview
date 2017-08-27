@@ -22,6 +22,7 @@
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="vendor\galereya\css\jquery.galereya.css">
+    <link rel="stylesheet" href="bower_components\lightgallery.js\dist\css\lightgallery.min.css">
 
     <!-- Theme CSS -->
     <link href="css/grayscale.min.css" rel="stylesheet">
@@ -97,6 +98,14 @@
         <h2 id="project-title">Test</h2>
         <div class="projectName" id="next-project">Test</div>
         <span id="title" class="title">Projects</span>
+        <div id="project-images">
+            <a href="img/a.jpg">
+                <img class="thumb" src="img/a.jpg">
+                </a>
+            <a href="img/c.jpg">
+                    <img class="thumb" src="img/c.jpg">
+                </a>
+        </div>
     </div>
 
     <div class="void-page  non-default" id="misc">
@@ -140,22 +149,22 @@
         <div id="about-details">
             <div id="about-details-container">
                 <h3 id="name">Swar Gujrania</h3>
-                <p>Hello there! This is my about page. I am a dancer-artist-writer-techie. 
-                    The order doesn't matter (or does it?). Anyway, I am an alien sent from outer space to observe all human beings. 
-                    I also have a lot of minions (Gru said it was okay if I took a few of them).   </p>
+                <p>Hello there! This is my about page. I am a dancer-artist-writer-techie. The order doesn't matter (or does
+                    it?). Anyway, I am an alien sent from outer space to observe all human beings. I also have a lot of minions
+                    (Gru said it was okay if I took a few of them). </p>
             </div>
             <div id="about-details-container">
-                    <h3>Work Experience</h3>
-                    <ul>
-                        <li>Microsoft (June 2015 - Current)</li>
-                    </ul>
-                    <br>
-                    <h3>Academics</h3>
-                    <ul>
-                        <li>DPS</li>
-                        <li>...other stuff</li>
-                    </ul>
-                </div>
+                <h3>Work Experience</h3>
+                <ul>
+                    <li>Microsoft (June 2015 - Current)</li>
+                </ul>
+                <br>
+                <h3>Academics</h3>
+                <ul>
+                    <li>DPS</li>
+                    <li>...other stuff</li>
+                </ul>
+            </div>
         </div>
         <span class="title">About</span>
     </div>
@@ -169,6 +178,7 @@
         <div id="dance-main-image"></div>
         <div id="dance-menu-heading">test</div>
         <span class="title">Dance</span>
+        <span id="dance-images"></span>
     </div>
 
     <div id="main-menu">
@@ -202,6 +212,7 @@
 
     <!--Dependencies-->
     <script src="vendor\galereya\js\jquery.galereya.min.js"></script>
+    <script src="bower_components\lightgallery.js\dist\js\lightgallery.min.js"></script>
 
     <!--Core Logic-->
     <script src="js/anim.js"></script>

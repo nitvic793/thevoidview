@@ -846,6 +846,20 @@ Page 3 CSS
   height: 100%;
   width: 100%;
 }
+.thumb {
+  height: 100px;
+  width: 160px;
+  box-shadow: 2px;
+  margin: 5px;
+  float: left;
+}
+#project-images {
+  position: absolute;
+  bottom: 0;
+  right: 50px;
+  bottom: 50px;
+  width: 50%;
+}
 /**
 Menu page
 **/
@@ -1310,6 +1324,25 @@ Dance Page
   -o-animation: fadein 3s;
   /* Opera < 12.1 */
   animation: fadein 3s;
+}
+#dance-images-button {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  color: grey;
+  cursor: pointer;
+}
+#dance-images-button:hover {
+  color: white;
+}
+.hidden {
+  display: none;
+}
+#dance-images {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  color: grey;
 }
 #dance-canvas {
   opacity: 0.7;
