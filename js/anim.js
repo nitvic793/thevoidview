@@ -78,7 +78,7 @@ var getCurrentPage = function () {
 var previousPage = getCurrentPage();
 window.onhashchange = function () {
     console.log("Hash change", getCurrentPage());
-    if (previousPage == getCurrentPage()) return;
+    if (previousPage == getCurrentPage() && previousPage != landingPage) return;
     previousPage = getCurrentPage();
     if (getCurrentPage() == null || getCurrentPage() == '') {
         routeToSlideUp(landingPage)
@@ -1059,7 +1059,7 @@ registerOnPageLoad(dancePage, function () {
         images.forEach(function (image, index) {
             var html = `<a href="${image}">${index + 1}
                 </a>`;
-            if(index>1){
+            if (index > 1) {
                 var html = `<a href="${image}" class="hidden">${index + 1}
                 </a>`;
             }
