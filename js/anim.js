@@ -216,7 +216,7 @@ window.onresize = function () {
 
 var pushStateHistory = function (toPage) {
     previousPage = getCurrentPage();
-    if(previousPage == toPage) return;
+    if (previousPage == toPage) return;
     window.history.pushState('Object', toPage, '#!/' + toPage);
 }
 
@@ -1110,18 +1110,22 @@ registerOnPageLoad(dancePage, function () {
     var danceImages = ["../img/perf-a.jpg", "../img/profile.jpg", "../img/perf-a.jpg"];
     var danceImagesArray = [["../img/perf-a.jpg", "../img/menu-dance.png", "../img/drone1.png"], ["../img/profile.jpg", "../img/menu-dance.png"], ["../img/perf-a.jpg", "../img/menu-dance.png"]]
     var setGalleryImages = function (images) {
-        $("#dance-images").html('See Images:');
+        $("#dance-images").html('');
         images.forEach(function (image, index) {
-            var html = `<a href="${image}">${index + 1}
+            if (index == 0) {
+                var html = `<a href="${image}"><span class="glyphicon glyphicon-th"></span>
                 </a>`;
-            if (index > 1) {
+            }
+            else {
                 var html = `<a href="${image}" class="hidden">${index + 1}
                 </a>`;
             }
             $("#dance-images").append(html);
+
         });
-        $("#dance-images").append("..");
-        lightGallery(document.getElementById('dance-images'));;
+        lightGallery(document.getElementById('dance-images'), {
+            download: false
+        });
     };
     clearInterval(slideShowTimer);
     var setDanceImageSlideShow = function (headerPosition) {
