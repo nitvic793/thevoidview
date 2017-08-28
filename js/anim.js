@@ -76,15 +76,17 @@ var getCurrentPage = function () {
 }
 
 var previousPage = getCurrentPage();
+
+/**
+ * On url change. Usually called when back button is pressed.
+ */
 window.onhashchange = function () {
     console.log("Hash change", getCurrentPage());
-    if (previousPage == getCurrentPage() && previousPage != landingPage) return;
-    previousPage = getCurrentPage();
     if (getCurrentPage() == null || getCurrentPage() == '') {
-        routeToSlideUp(landingPage)
+        routeToFade(landingPage)
     }
     else {
-        routeToSlideUp(getCurrentPage());
+        routeToFade(getCurrentPage());
     }
     removeLoader();
 }
@@ -199,30 +201,57 @@ window.onload = function () {
     }
 }
 
+var directLoad = function (page) {
+    pageIds.forEach(function (v, i, arr) {
+        $("#" + v).css("left", "100%");
+    });
+    $("#" + page).css("left", "0px");
+}
+
 window.onresize = function () {
     if (pageHandlers[getCurrentPage()] && pageHandlers[getCurrentPage()].onPageResize) {
         pageHandlers[getCurrentPage()].onPageResize();
     }
 }
 
+var pushStateHistory = function (toPage) {
+    previousPage = getCurrentPage();
+    if(previousPage == toPage) return;
+    window.history.pushState('Object', toPage, '#!/' + toPage);
+}
+
+var resetPages = function () {
+    pageIds.forEach(function (v, i, arr) {
+        $("#" + v).css("left", "-100%");
+        $("#" + v).css("top", "0");
+        $("#" + v).fadeIn(100);
+    });
+}
+
+var resetPagesForSlideUp = function () {
+    pageIds.forEach(function (v, i, arr) {
+        $("#" + v).css("top", "100%");
+        $("#" + v).css("left", "0");
+        $("#" + v).fadeIn(100);
+    });
+}
+
 var routeTo = function (toPage, fromPage, cb) {
     if (!toPage) toPage = landingPage;
     animStack.push(true);
     if (!fromPage) {
-        pageIds.forEach(function (v, i, arr) {
-            $("#" + v).css("left", "-100%");
-            $("#" + v).css("top", "0");
-        });
+        resetPages();
         $("#" + toPage).css("left", "-100%");
         $("#" + toPage).animate({ "left": "0px" }, 900);
     }
     else {
+        resetPages();
         $("#" + toPage).css("left", "100%");
         $("#" + toPage).css("top", "0");
         $("#" + fromPage).animate({ left: "-100%" }, 900);
         $("#" + toPage).animate({ left: "0" }, 900);
     }
-    window.history.pushState('Object', toPage, '#!/' + toPage);
+    pushStateHistory(toPage);
     runOnPageLoadFunctions();
     setTimeout(function () {
         animStack.pop();
@@ -240,24 +269,57 @@ var routeToSlideUp = function (toPage, fromPage, cb) {
     if (!toPage) toPage = landingPage;
     animStack.push(true);
     if (!fromPage) {
-        pageIds.forEach(function (v, i, arr) {
-            $("#" + v).css("top", "100%");
-            $("#" + v).css("left", "0");
-        });
+        resetPagesForSlideUp();
         $("#" + toPage).css("top", "100%");
         $("#" + toPage).animate({ "top": "0px" }, 'slow');
     }
     else {
+        $("#" + toPage).css("display", "unset");
         $("#" + toPage).css("top", "100%");
         $("#" + toPage).css("left", "0");
         $("#" + fromPage).animate({ top: "-100%" }, 'slow');
         $("#" + toPage).animate({ top: "0" }, 'slow');
     }
-    window.history.pushState('Object', toPage, '#!/' + toPage);
+    pushStateHistory(toPage);
     runOnPageLoadFunctions();
     setTimeout(function () {
         animStack.pop();
 
+        runOnPagePostLoadFunctions();
+    }, 600);
+}
+
+/**
+ * Routes to given page from current page with transition animation
+ * @param {string} toPage 
+ * @param {string} fromPage 
+ * @param {function} cb Callback
+ */
+var routeToFade = function (toPage, fromPage, cb) {
+    if (!toPage) toPage = landingPage;
+    animStack.push(true);
+    if (!fromPage) {
+        pageIds.forEach(function (v, i, arr) {
+            $("#" + v).css("top", "100%");
+            $("#" + v).css("left", "0");
+        });
+        $("#" + toPage).css("display", "none");
+        $("#" + toPage).css("top", "0px");
+        $("#" + toPage).fadeIn(400);
+    }
+    else {
+        $("#" + fromPage).fadeOut(400, function () {
+            $("#" + fromPage).css({ top: "-100%" });
+            $("#" + toPage).css("display", "none");
+            $("#" + toPage).css("left", "0");
+            $("#" + toPage).css("top", "0");
+            $("#" + toPage).fadeIn(400);
+        });
+    };
+    pushStateHistory(toPage);
+    runOnPageLoadFunctions();
+    setTimeout(function () {
+        animStack.pop();
         runOnPagePostLoadFunctions();
     }, 600);
 }
@@ -309,14 +371,14 @@ var currentPage = 0;
 
 function type() {
     captionEl.html(caption.substr(0, captionLength++));
-    if (captionLength < caption.length + 1) {
+    if (captionLength < caption.length + 1 && !typingCallbackCalled) {
         if (caption[captionLength - 2] == '.') {
             setTimeout(type, 1500);
         }
         else setTimeout(type, 80);
     } else {
-        captionLength = 0;
-        caption = '';
+        caption = 'Fall Seven. Rise Eight';
+        captionLength = caption.length;
         doneTypingCallback();
     }
 }
@@ -341,7 +403,7 @@ function doneTypingCallback() {
 
     if (getCurrentPage() == landingPage && !typingCallbackCalled) {
         typingCallbackCalled = true;
-        setTimeout(routeTo.bind(routeTo, menuPage, landingPage), 800);
+        setTimeout(routeToFade.bind(routeToFade, menuPage, landingPage), 800);
     }
 }
 
@@ -372,7 +434,7 @@ $("#voidwaybtn").hover(function (e) {
     });
 
 $("#voidwaybtn").click(function () {
-    routeTo(menuPage, landingPage);
+    routeToFade(menuPage, landingPage);
 });
 
 
@@ -394,13 +456,6 @@ var transition = function (anim, toPage, fromPage) {
 };
 
 
-
-var directLoad = function (page) {
-    pageIds.forEach(function (v, i, arr) {
-        $("#" + v).css("left", "100%");
-    });
-    $("#" + page).css("left", "0px");
-}
 
 
 /**
