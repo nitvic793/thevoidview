@@ -611,7 +611,9 @@ registerOnPageLoad(projectPage, function () {
                 $("#project-images").append(html);
             });
             $("#project-images").fadeIn(400, function () {
-                lightGallery(document.getElementById('project-images'));
+                lightGallery(document.getElementById('project-images'), {
+                    download: false
+                });
             });
         });
     };
@@ -836,9 +838,22 @@ registerOnPageLoad(miscPage, function () {
         $(galleryId).galereya({
             wave: false,
             slideShowSpeed: 4000,
-            // disableSliderOnClick: true,
+            disableSliderOnClick: true,
             onCellClick: function (e) {
-                console.log("Gallery", e);
+                animStack.push(true);
+                hideAllSections();
+                $("#misc-photo-container").fadeIn(200);
+                console.log("Gallery", e.target.parentNode.getElementsByTagName("img")[0].src);
+                $("#misc-photo").width(xPosition - 60);
+                $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
+                var closePhoto = function () {
+                    animStack.pop(); //Enable scrolling again
+                    $("#misc-photo-container").fadeOut(400);
+                    loadCurrentSection();
+                    bindMouseWheel(miscPage, defaultMouseWheelHandler);
+                };
+                $("#misc-photo-close").click(closePhoto);
+                $("#misc-photo-container").click(closePhoto);
             },
             load: function (next) {
                 next(data);
@@ -860,7 +875,7 @@ registerOnPageLoad(miscPage, function () {
             $("#writing-desk").fadeOut(400);
             loadCurrentSection();
             bindMouseWheel(miscPage, defaultMouseWheelHandler);
-        })
+        });
     };
 
 
@@ -928,7 +943,7 @@ registerOnPageLoad(miscPage, function () {
                 break;
             case "#misc-art":
                 var data = [
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
+                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample", id: "test" },
                     { "lowsrc": "img/b.jpg", "fullsrc": "img/b.jpg", "description": "Sample" },
                     { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
                     { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
