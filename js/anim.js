@@ -90,7 +90,7 @@ window.onhashchange = function () {
     }
     removeLoader();
 }
-
+var apiUrl = "http://thevoidview-backend.azurewebsites.net/data";
 var onLoad = function () {
     if (getCurrentPage() == null) {
         directLoad(landingPage)
@@ -98,9 +98,21 @@ var onLoad = function () {
     else {
         directLoad(getCurrentPage());
     }
-    runOnPageLoadFunctions();
-    removeLoader();
-    runOnPagePostLoadFunctions();
+
+    $.get(apiUrl)
+        .then(function (data) {
+            webData = data;
+            runOnPageLoadFunctions();
+            removeLoader();
+            runOnPagePostLoadFunctions();
+            console.log("API call:", webData);
+        })
+        .fail(function (err) {
+            alert("Error: Could not load data.");
+            console.error(err);
+        });
+
+
     pageIds.forEach(function (page) {
 
     });
@@ -190,8 +202,10 @@ registerOnPageLoad(menuPage, onMenuPageLoad);
 
 var hasLoadedOnce = false;
 
+var webData = null;
+
 window.onload = function () {
-    console.log("onload(): Current Page", getCurrentPage());
+    console.log("onload(): Current Page", getCurrentPage(), "HasLoadedOnce:", hasLoadedOnce);
     onLoad();
     if (!hasLoadedOnce) {
         hasLoadedOnce = true;
@@ -583,6 +597,16 @@ registerOnPageLoad(projectPage, function () {
             element: null
         }
     ];
+    projects = webData.projects;
+    menuItems = [];
+    var idIndex = 1;
+    for (var key in projects) {
+        menuItems.push({
+            id: idIndex,
+            text: key
+        });
+        idIndex++;
+    }
 
     var canvas = document.getElementById('project-canvas');
     var projectPaper = new paper.PaperScope();
@@ -835,6 +859,12 @@ var galleryLoaded = {}; //Variable to store the loaded galleries(photos, art) so
 registerOnPageLoad(miscPage, function () {
     var xPosition = xPositions["menu-art"] ? xPositions["menu-art"] : window.innerWidth * (0.671); //!!IMPORTANT 
     var loadGallery = function (galleryId, data) {
+        var closePhoto = function () {
+            animStack.pop(); //Enable scrolling again
+            $("#misc-photo-container").fadeOut(400);
+            loadCurrentSection();
+            bindMouseWheel(miscPage, defaultMouseWheelHandler);
+        };
         $(galleryId).galereya({
             wave: false,
             slideShowSpeed: 4000,
@@ -846,12 +876,6 @@ registerOnPageLoad(miscPage, function () {
                 console.log("Gallery", e.target.parentNode.getElementsByTagName("img")[0].src);
                 $("#misc-photo").width(xPosition - 60);
                 $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
-                var closePhoto = function () {
-                    animStack.pop(); //Enable scrolling again
-                    $("#misc-photo-container").fadeOut(400);
-                    loadCurrentSection();
-                    bindMouseWheel(miscPage, defaultMouseWheelHandler);
-                };
                 $("#misc-photo-close").click(closePhoto);
                 $("#misc-photo-container").click(closePhoto);
             },
@@ -859,6 +883,7 @@ registerOnPageLoad(miscPage, function () {
                 next(data);
             }
         });
+
     };
 
     var loadWriting = function (item) {
@@ -878,8 +903,6 @@ registerOnPageLoad(miscPage, function () {
         });
     };
 
-
-
     var transformToIdMap = function (data) {
         var returnObj = {};
         data.forEach(function (item) {
@@ -887,10 +910,7 @@ registerOnPageLoad(miscPage, function () {
         });
         return returnObj;
     }
-    var writingData = [
-        { title: "Hue You", image: "../img/writing-hue.png", id: "hue" },
-        { title: "2 Dots", image: "../img/writing-2-dots.png", id: "dots" },
-    ];
+    var writingData = webData.misc.writings;
 
     var sampleWriting = `<p>What you think,  what you feel. <br>
     What you believe in and what believes in you.  <br>
@@ -908,10 +928,12 @@ registerOnPageLoad(miscPage, function () {
     Two daughters? Two sisters? 4 gaping holes?<br>
     And for those 4 holes, these 4 people will push themselves in pain.. For what? </p> `;
 
-    var writings = {
-        "hue": sampleWriting,
-        "dots": sampleWriting
-    };
+    var writings = {};
+
+    //Transforming data for UI
+    writingData.forEach(function (item) {
+        writings[item.id] = item.writing;
+    });
 
     var loadWritingDeck = function (data) {
         data.forEach(function (item) {
@@ -928,34 +950,11 @@ registerOnPageLoad(miscPage, function () {
         if (galleryLoaded[section]) return;
         switch (section) {
             case "#misc-photos":
-                var data = [
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/b.jpg", "fullsrc": "img/b.jpg", "description": "Sample" },
-                    { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
-                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
-                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
-                ];
+                var data = webData.misc.photos;
                 loadGallery("#misc-gallery", data);
                 break;
             case "#misc-art":
-                var data = [
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample", id: "test" },
-                    { "lowsrc": "img/b.jpg", "fullsrc": "img/b.jpg", "description": "Sample" },
-                    { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
-                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/b.jpg", "fullsrc": "img/b.jpg", "description": "Sample" },
-                    { "lowsrc": "img/c.jpg", "fullsrc": "img/c.jpg", "description": "Sample" },
-                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/perf-a.jpg", "fullsrc": "img/perf-a.jpg", "description": "Sample" },
-                    { "lowsrc": "img/a.jpg", "fullsrc": "img/a.jpg", "description": "Sample" },
-                ];
+                var data = webData.misc.art;
                 loadGallery("#misc-art-gallery", data);
                 break;
             case "#misc-writing":
@@ -1120,10 +1119,10 @@ registerOnPageLoad(dancePage, function () {
     topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
     bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
     bottomPath.lineTo(xPosition, window.innerHeight);
-    var danceSections = ["Performance A", "Performance B", "Performance C"];
-    var danceDescriptions = [fireDescription, fireDescription, fireDescription];
-    var danceImages = ["../img/perf-a.jpg", "../img/profile.jpg", "../img/perf-a.jpg"];
-    var danceImagesArray = [["../img/perf-a.jpg", "../img/menu-dance.png", "../img/drone1.png"], ["../img/profile.jpg", "../img/menu-dance.png"], ["../img/perf-a.jpg", "../img/menu-dance.png"]]
+    var danceSections = webData.dance.performances;
+    var danceDescriptions = webData.dance.danceDescriptions;
+    var danceImages = webData.dance.images;
+    var danceImagesArray = webData.dance.imageArray;
     var setGalleryImages = function (images) {
         $("#dance-images").html('');
         images.forEach(function (image, index) {
@@ -1290,13 +1289,3 @@ registerOnPageLoad("about", function () {
         drawGoldenRatio();
     });
 });
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,193 @@
+{
+    "projects": {
+        "Drone": {
+            "image": "../img/drone1.png",
+            "images": [
+                "img/drone1.png",
+                "img/c.jpg"
+            ],
+            "description": "<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>"
+        },
+        "Emoi": {
+            "image": "../img/b.jpg",
+            "images": [
+                "img/a.jpg",
+                "img/c.jpg"
+            ],
+            "description": "<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>"
+        },
+        "Testimonial Map": {
+            "image": "../img/a.jpg",
+            "images": [
+                "img/a.jpg",
+                "img/c.jpg"
+            ],
+            "description": "<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>"
+        },
+        "Other": {
+            "image": "../img/c.jpg",
+            "images": [
+                "img/a.jpg",
+                "img/c.jpg"
+            ],
+            "description": "<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>"
+        }
+    },
+    "misc": {
+        "writings": [
+            {
+                "title": "Hue You",
+                "image": "../img/writing-hue.png",
+                "id": "hue",
+                "writing": "<p>What you think,  what you feel. <br>    What you believe in and what believes in you.  <br>    Where your heart goes and where you take your heart.  <br>     Whether you are here or there.. Or nowhere.. Or maybe everywhere.  <br>     Whether you are a myth or reality. <br>     It doesn’t Matter. <br>     Whether you live for someone or allow somebody to live for you.<br>     It doesn’t Matter.  <br>     Actually, that's not too apt. All these things do matter. <br>     You don't. <br>     What can happen if you leave today, right at this moment? <br>    Sure, some will be hurt. But how many?  3? 4?<br>    And for how long? Should they even suffer for whatever duration they force on themselves? What could be lost?<br>    Two daughters? Two sisters? 4 gaping holes?<br>    And for those 4 holes, these 4 people will push themselves in pain.. For what? </p>"
+            },
+            {
+                "title": "2 Dots",
+                "image": "../img/writing-2-dots.png",
+                "id": "dots",
+                "writing": "<p>What you think,  what you feel. <br>    What you believe in and what believes in you.  <br>    Where your heart goes and where you take your heart.  <br>     Whether you are here or there.. Or nowhere.. Or maybe everywhere.  <br>     Whether you are a myth or reality. <br>     It doesn’t Matter. <br>     Whether you live for someone or allow somebody to live for you.<br>     It doesn’t Matter.  <br>     Actually, that's not too apt. All these things do matter. <br>     You don't. <br>     What can happen if you leave today, right at this moment? <br>    Sure, some will be hurt. But how many?  3? 4?<br>    And for how long? Should they even suffer for whatever duration they force on themselves? What could be lost?<br>    Two daughters? Two sisters? 4 gaping holes?<br>    And for those 4 holes, these 4 people will push themselves in pain.. For what? </p>"
+            }
+        ],
+        "photos": [
+            {
+                "lowsrc": "img/a.jpg",
+                "fullsrc": "img/a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/b.jpg",
+                "fullsrc": "img/b.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/c.jpg",
+                "fullsrc": "img/c.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/perf-a.jpg",
+                "fullsrc": "img/perf-a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/c.jpg",
+                "fullsrc": "img/c.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/perf-a.jpg",
+                "fullsrc": "img/perf-a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/a.jpg",
+                "fullsrc": "img/a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/perf-a.jpg",
+                "fullsrc": "img/perf-a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/a.jpg",
+                "fullsrc": "img/a.jpg",
+                "description": "Sample"
+            }
+        ],
+        "art": [
+            {
+                "lowsrc": "img/a.jpg",
+                "fullsrc": "img/a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/b.jpg",
+                "fullsrc": "img/b.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/c.jpg",
+                "fullsrc": "img/c.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/perf-a.jpg",
+                "fullsrc": "img/perf-a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/a.jpg",
+                "fullsrc": "img/a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/a.jpg",
+                "fullsrc": "img/a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/b.jpg",
+                "fullsrc": "img/b.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/c.jpg",
+                "fullsrc": "img/c.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/perf-a.jpg",
+                "fullsrc": "img/perf-a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/a.jpg",
+                "fullsrc": "img/a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/perf-a.jpg",
+                "fullsrc": "img/perf-a.jpg",
+                "description": "Sample"
+            },
+            {
+                "lowsrc": "img/a.jpg",
+                "fullsrc": "img/a.jpg",
+                "description": "Sample"
+            }
+        ]
+    },
+    "dance": {
+        "performances": [
+            "Performance A",
+            "Performance B",
+            "Performance C"
+        ],
+        "danceDescriptions": [
+            "<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>",
+            "<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>",
+            "<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>"
+        ],
+        "images": [
+            "../img/perf-a.jpg",
+            "../img/profile.jpg",
+            "../img/perf-a.jpg"
+        ],
+        "imageArray": [
+            [
+                "../img/perf-a.jpg",
+                "../img/menu-dance.png",
+                "../img/drone1.png"
+            ],
+            [
+                "../img/profile.jpg",
+                "../img/menu-dance.png"
+            ],
+            [
+                "../img/perf-a.jpg",
+                "../img/menu-dance.png"
+            ]
+        ]
+    }
+}
