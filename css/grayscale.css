@@ -1436,3 +1436,11 @@ Dance Page
   text-decoration: none;
   cursor: pointer;
 }
+#scroll-message {
+  display: none;
+  position: fixed;
+  bottom: 3%;
+  right: 50%;
+  color: white;
+  font-family: Courier New, Courier, monospace;
+}

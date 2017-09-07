@@ -371,6 +371,21 @@ var registerModal = function (modalId, buttonId) {
     }
 };
 
+var showScrollMessage = function (x) {
+    $("#scroll-message").width(200);
+    if (!x) {
+        $("#scroll-message").css("right", "50%");
+    }
+    else {
+        $("#scroll-message").css("left", x);
+    }
+    $("#scroll-message").fadeIn(400, function () {
+        setTimeout(function () {
+            $("#scroll-message").fadeOut(400);
+        }, 5000);
+    });
+};
+
 /**
  * I. First Page animations
  */
@@ -468,9 +483,6 @@ var transition = function (anim, toPage, fromPage) {
     var animObj = {};
     animObj[property] = "-100%";
 };
-
-
-
 
 /**
  * Project Page 
@@ -621,7 +633,7 @@ registerOnPageLoad(projectPage, function () {
     var currentHeading = 0;
     var negativeCounter = 0;
     var nextHeading = 1;
-
+    showScrollMessage(xPosition + 20);
     projectPaper.view.onFrame = function (event) {
     }
 
@@ -858,6 +870,8 @@ $('#misc').mouseleave(function () { MOUSE_OVER = false; });
 var galleryLoaded = {}; //Variable to store the loaded galleries(photos, art) so as to not load them again.
 registerOnPageLoad(miscPage, function () {
     var xPosition = xPositions["menu-art"] ? xPositions["menu-art"] : window.innerWidth * (0.671); //!!IMPORTANT 
+    showScrollMessage(xPosition + 20);
+
     var loadGallery = function (galleryId, data) {
         var closePhoto = function () {
             animStack.pop(); //Enable scrolling again
@@ -1111,6 +1125,7 @@ registerOnPageLoad(dancePage, function () {
     var negativeCounter = 0;
     var nextHeading = 1;
     var xPosition = xPositions["menu-dance"] ? xPositions["menu-dance"] : window.innerWidth * (0.671);
+    showScrollMessage(xPosition + 20);
     $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
     $("#dance-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
     $("#dance-main-image").css({ width: window.innerWidth - (window.innerWidth - xPosition) });
@@ -1237,9 +1252,9 @@ registerOnPageLoad(dancePage, function () {
         bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
         bottomPath.lineTo(xPosition, window.innerHeight - 25);
     });
-
 });
 
+var aboutBgSlideShowTimer = null;
 registerOnPageLoad("about", function () {
     var aboutCanvas = document.getElementById('about-canvas');
     var aboutPaper = new paper.PaperScope();
@@ -1250,6 +1265,21 @@ registerOnPageLoad("about", function () {
     var path3 = new aboutPaper.Path();
     var path4 = new aboutPaper.Path();
     var xPosition = xPositions["menu-about"] ? xPositions["menu-about"] : window.innerWidth / 2;
+    var startBackgroundSlideShow = function () {
+        var images = ['../img/menu-about.png', '../img/menu-dance.png'];
+        var imageIndex = 1;
+        clearInterval(aboutBgSlideShowTimer);
+        aboutBgSlideShowTimer = setInterval(function () {
+            var img = images[imageIndex];
+            console.log(img);
+            imageIndex = (imageIndex + 1) % images.length;
+            $("#about-image").fadeOut(400, function () {
+                $("#about-image").css("background-image", "url(" + img + ")");
+                $("#about-image").fadeIn(400);
+            });
+        }, 4000);
+    };
+    startBackgroundSlideShow();
     console.log(xPosition, window.innerWidth);
     topPath.moveTo(xPosition, 0);
     topPath.lineTo(xPosition, window.innerHeight);
