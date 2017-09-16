@@ -1,6 +1,7 @@
 /**
  * Common
  */
+var localStorage = window.localStorage;
 var landingPage = "home";
 var menuPage = "menu";
 var projectPage = "project";
@@ -24,6 +25,15 @@ pageIds.forEach(function (p) {
 
 var customLogicPostLoad = [];
 var customLogicPreLoad = [];
+
+var findObjectByAttribute = function(items, attribute, value) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i][attribute] === value) {
+      return items[i];
+    }
+  }
+  return null;
+}
 
 /**
  * Register global post page load function
@@ -131,8 +141,8 @@ var pagePostLoaders = [];
 
 /**
  * Register function callback on page load
- * @param {string} page 
- * @param {function} fn 
+ * @param {string} page Unique name of the page.
+ * @param {function} fn Callback function to be called on page load.
  */
 var registerOnPageLoad = function (page, fn) {
     pageRefreshPipeline[page] = fn;
@@ -177,6 +187,7 @@ registerGlobalFunctionPostPageLoad(function () {
         case "menu":
         case "home":
             $("#main-menu").hide();
+            $("#scroll-message").fadeOut(400);
             break;
         default:
             $("#main-menu").fadeIn('slow');
@@ -377,11 +388,11 @@ var showScrollMessage = function (x) {
         $("#scroll-message").css("right", "50%");
     }
     else {
-        $("#scroll-message").css("left", x);
+        $("#scroll-message").css("left", x - 110);
     }
     $("#scroll-message").fadeIn(400, function () {
         setTimeout(function () {
-            $("#scroll-message").fadeOut(400);
+            //$("#scroll-message").fadeOut(400);
         }, 5000);
     });
 };
@@ -871,11 +882,12 @@ var galleryLoaded = {}; //Variable to store the loaded galleries(photos, art) so
 registerOnPageLoad(miscPage, function () {
     var xPosition = xPositions["menu-art"] ? xPositions["menu-art"] : window.innerWidth * (0.671); //!!IMPORTANT 
     showScrollMessage(xPosition + 20);
-
+    var currentGallery = '';
     var loadGallery = function (galleryId, data) {
         var closePhoto = function () {
             animStack.pop(); //Enable scrolling again
             $("#misc-photo-container").fadeOut(400);
+            $("#misc-description-container").fadeOut(400);
             loadCurrentSection();
             bindMouseWheel(miscPage, defaultMouseWheelHandler);
         };
@@ -886,8 +898,14 @@ registerOnPageLoad(miscPage, function () {
             onCellClick: function (e) {
                 animStack.push(true);
                 hideAllSections();
-                $("#misc-photo-container").fadeIn(200);
-                console.log("Gallery", e.target.parentNode.getElementsByTagName("img")[0].src);
+                $("#misc-photo-container").fadeIn(400);
+                var imgSrc = e.target.parentNode.getElementsByTagName("img")[0].src;
+                var galleryArray = webData.misc[currentGallery];
+                var imageObject = findObjectByAttribute(galleryArray, "fullsrc", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));  
+                $("#misc-description").text(imageObject.fullDescription);              
+                $("#misc-desc-title").text(imageObject.description);  
+                $("#misc-description-container").fadeIn(400);          
+                console.log("Gallery", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));
                 $("#misc-photo").width(xPosition - 60);
                 $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
                 $("#misc-photo-close").click(closePhoto);
@@ -926,22 +944,6 @@ registerOnPageLoad(miscPage, function () {
     }
     var writingData = webData.misc.writings;
 
-    var sampleWriting = `<p>What you think,  what you feel. <br>
-    What you believe in and what believes in you.  <br>
-    Where your heart goes and where you take your heart.  <br>
-    Whether you are here or there.. Or nowhere.. Or maybe everywhere.  <br>
-    Whether you are a myth or reality. <br>
-    It doesn’t Matter. <br>
-    Whether you live for someone or allow somebody to live for you.<br>
-    It doesn’t Matter.  <br>
-    Actually, that's not too apt. All these things do matter. <br>
-    You don't. <br>
-    What can happen if you leave today, right at this moment? <br>
-    Sure, some will be hurt. But how many?  3? 4?<br>
-    And for how long? Should they even suffer for whatever duration they force on themselves? What could be lost?<br>
-    Two daughters? Two sisters? 4 gaping holes?<br>
-    And for those 4 holes, these 4 people will push themselves in pain.. For what? </p> `;
-
     var writings = {};
 
     //Transforming data for UI
@@ -964,14 +966,17 @@ registerOnPageLoad(miscPage, function () {
         if (galleryLoaded[section]) return;
         switch (section) {
             case "#misc-photos":
+                currentGallery = "photos";
                 var data = webData.misc.photos;
                 loadGallery("#misc-gallery", data);
                 break;
             case "#misc-art":
+                currentGallery = "art";
                 var data = webData.misc.art;
                 loadGallery("#misc-art-gallery", data);
                 break;
             case "#misc-writing":
+                currentGallery = "writing";
                 var data = writingData;
                 loadWritingDeck(data);
                 break;
@@ -1244,6 +1249,7 @@ registerOnPageLoad(dancePage, function () {
     }
 
     registerPagePostLoad(dancePage, function () {
+        preventScrollBehaviorOnElement('dance-side-description');
         $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
         topPath.removeSegments();
         bottomPath.removeSegments();

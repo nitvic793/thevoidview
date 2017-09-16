@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Josefin Slab">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Bellefair">
 
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -114,7 +114,12 @@
     <div class="void-page  non-default" id="misc">
         <canvas class="canvas" id="misc-canvas" resize></canvas>
         <div class="misc-image" id="misc-image"></div>
-        <div id="misc-side-image"></div>
+        <div id="misc-side-image">
+            <div id="misc-description-container">
+                <h4 id="misc-desc-title"></h4>
+                <p id="misc-description"></p>
+            </div>
+        </div>
         <div class="misc-side-title" id="misc-side-title">heading</div>
         <div id="misc-menu-heading">title</div>
         <div class="misc-section" id="misc-photos">
@@ -183,7 +188,7 @@
         <!-- <div class="project-image" id="dance-image"></div> -->
         <div class="project-details" id="dance-details"> </div>
         <div id="dance-side-title">heading</div>
-        <div id="dance-side-description">heading</div>
+        <div id="dance-side-description" class="scroll-bar">heading</div>
         <div id="dance-main-image"></div>
         <div id="dance-menu-heading">test</div>
         <span class="title">Dance</span>

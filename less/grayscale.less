@@ -4,7 +4,7 @@
 body {
     width: 100%;
     height: 100%;
-    font-family: 'Roboto', sans-serif;;
+    font-family: 'Bellefair';
     color: white;
     background-color: black;
     overflow: hidden;
@@ -682,6 +682,24 @@ body {
     webkit-tap-highlight-color: fade(white, 20%);
 }
 
+.scroll-bar{
+    margin: inherit;
+}
+
+
+.scroll-bar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.scroll-bar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+.scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #4F4949;
+  outline: 1px solid slategrey;
+}
+
 /**
 Page 3 CSS
 */
@@ -695,7 +713,7 @@ Page 3 CSS
 .projectName{
     top:20%;
     position: absolute;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     color:grey;
     width:200px;
     text-align: center;
@@ -715,7 +733,7 @@ Page 3 CSS
     position: absolute;
     top:48%;
     color: gray;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     width:20%;
     text-align: center;
     font-size: 32pt;
@@ -746,7 +764,7 @@ Page 3 CSS
 
 .project-details{
     position: absolute;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     float:right;
     width:50%;
     margin: 10px;
@@ -822,7 +840,7 @@ Menu page
 .about-menu{
     font-size: 16pt;
     float:left;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     color:grey;
     margin-left: 10px;
     margin-right:10px;
@@ -1090,6 +1108,8 @@ Misc. Page
   outline: 1px solid slategrey;
 }
 
+
+
 #misc-photo{
     width: 50%;
     margin: 10px;
@@ -1102,6 +1122,27 @@ Misc. Page
     position: fixed;
     top:10px;
     left:10px;
+}
+
+#misc-description-container{
+    height:25%;
+    position: absolute;
+    top:60%;
+    color:grey;
+    width: 100%;
+
+}
+
+#misc-description{
+    padding-left: 80px;
+    padding-right: 80px;
+    overflow-y:auto;
+    z-index: 5000;
+    height:100%;
+}
+
+#misc-desc-title{
+    text-align: center;
 }
 
 #writing-desk{
@@ -1123,7 +1164,7 @@ Misc. Page
 }
 
 #writing-content{
-    p{font-family: Courier New, Courier, monospace;
+    p{font-family: 'Bellefair';
     margin-top:20px;
     line-height: 200%;
     }
@@ -1153,7 +1194,7 @@ Misc. Page
 #misc-side-title{
     top:50%;
     right:0;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     color:grey;
     font-size:22pt;
     text-align: center;
@@ -1175,7 +1216,7 @@ Misc. Page
 }
 
 #misc-menu-heading{
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     top:15%;
     color: grey;
     position: absolute;
@@ -1189,7 +1230,7 @@ footer{
     position: absolute;
     bottom: 0;
     padding: 5px;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     color: grey;
     width:100%;
     text-align: right;
@@ -1203,13 +1244,13 @@ footer{
     color:grey;
     top:2%;
     position: absolute;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     right: 10px;
 }
 
 #help-context{
     color:grey;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     bottom:1%;
     position: absolute;
     width: 100%;
@@ -1263,7 +1304,7 @@ About Page
     opacity: 0.3;
 }
 #about-details{
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     margin-top:100px;
     float: right;
     width: 50%;
@@ -1295,7 +1336,7 @@ Dance Page
 **/
 
 #dance-menu-heading{
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     top:15%;
     color: grey;
     position: absolute;
@@ -1306,7 +1347,7 @@ Dance Page
 #dance-side-title{
     top:20%;
     right:0;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     color:grey;
     font-size:16pt;
     text-align: center;
@@ -1316,11 +1357,29 @@ Dance Page
 #dance-side-description{
     top:27%;
     right:0;
-    font-family: Courier New, Courier, monospace;
+    font-family: 'Bellefair';
     color:grey;
-    text-align: center;
     position: absolute;
-    padding: 20px;
+    padding: 30px;
+    height: 400px;
+    overflow: hidden;
+}
+
+#dance-side-description:hover{
+    overflow-y: auto;
+}
+
+#dance-side-description::-webkit-scrollbar {
+    width: 4px;
+}
+
+#dance-side-description::-webkit-scrollbar-track, #dance-side-description::scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+#dance-side-description::-webkit-scrollbar-thumb, #dance-side-description::scrollbar-track {
+  background-color: #4F4949;
+  outline: 1px solid slategrey;
 }
 
 #dance-main-image{
@@ -1332,10 +1391,10 @@ Dance Page
     z-index: -2;
     background:url(../img/perf-a.jpg) no-repeat  center scroll;
     background-color: black;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: contain;
     -webkit-animation: fadeinBg 3s; /* Safari, Chrome and Opera > 12.1 */
     -moz-animation: fadein 3s; /* Firefox < 16 */
      -ms-animation: fadein 3s; /* Internet Explorer */
@@ -1416,9 +1475,14 @@ Dance Page
 #scroll-message{
     display: none;
     position: fixed;
-    bottom:3%;
+    bottom:5%;
     right:50%;
-    color:white;
-    font-family: Courier New, Courier, monospace;
+    color:grey;
+    font-family: 'Bellefair';
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
