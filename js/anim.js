@@ -388,7 +388,7 @@ var showScrollMessage = function (x) {
         $("#scroll-message").css("right", "50%");
     }
     else {
-        $("#scroll-message").css("left", x - 110);
+        $("#scroll-message").css("left", x);
     }
     $("#scroll-message").fadeIn(400, function () {
         setTimeout(function () {
