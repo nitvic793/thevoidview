@@ -26,13 +26,13 @@ pageIds.forEach(function (p) {
 var customLogicPostLoad = [];
 var customLogicPreLoad = [];
 
-var findObjectByAttribute = function(items, attribute, value) {
-  for (var i = 0; i < items.length; i++) {
-    if (items[i][attribute] === value) {
-      return items[i];
+var findObjectByAttribute = function (items, attribute, value) {
+    for (var i = 0; i < items.length; i++) {
+        if (items[i][attribute] === value) {
+            return items[i];
+        }
     }
-  }
-  return null;
+    return null;
 }
 
 /**
@@ -901,10 +901,10 @@ registerOnPageLoad(miscPage, function () {
                 $("#misc-photo-container").fadeIn(400);
                 var imgSrc = e.target.parentNode.getElementsByTagName("img")[0].src;
                 var galleryArray = webData.misc[currentGallery];
-                var imageObject = findObjectByAttribute(galleryArray, "fullsrc", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));  
-                $("#misc-description").text(imageObject.fullDescription);              
-                $("#misc-desc-title").text(imageObject.description);  
-                $("#misc-description-container").fadeIn(400);          
+                var imageObject = findObjectByAttribute(galleryArray, "fullsrc", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));
+                $("#misc-description").text(imageObject.fullDescription);
+                $("#misc-desc-title").text(imageObject.description);
+                $("#misc-description-container").fadeIn(400);
                 console.log("Gallery", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));
                 $("#misc-photo").width(xPosition - 60);
                 $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
@@ -1130,7 +1130,7 @@ registerOnPageLoad(dancePage, function () {
     var negativeCounter = 0;
     var nextHeading = 1;
     var xPosition = xPositions["menu-dance"] ? xPositions["menu-dance"] : window.innerWidth * (0.671);
-    showScrollMessage(xPosition + 20);
+    //showScrollMessage(xPosition + 20);
     $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
     $("#dance-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
     $("#dance-main-image").css({ width: window.innerWidth - (window.innerWidth - xPosition) });
@@ -1180,7 +1180,7 @@ registerOnPageLoad(dancePage, function () {
         animStack.push();
         $("#dance-menu-heading").fadeOut(100, function () {
             var heading = danceSections[nextHeading];
-            $("#dance-menu-heading").text(heading);
+            $("#dance-menu-heading").text('Next: ' + heading);
             $("#dance-menu-heading").fadeIn(400, function () {
                 animStack.pop();
             });
@@ -1249,7 +1249,7 @@ registerOnPageLoad(dancePage, function () {
     }
 
     registerPagePostLoad(dancePage, function () {
-        preventScrollBehaviorOnElement('dance-side-description');
+        //preventScrollBehaviorOnElement('dance-side-description');
         $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
         topPath.removeSegments();
         bottomPath.removeSegments();
