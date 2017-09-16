@@ -598,7 +598,7 @@ a:focus {
   overflow: hidden;
   margin-top: 15px;
   padding: 10px;
-  border: 1px solid rgba(192, 192, 192, 0.3);
+  border: 0px solid rgba(192, 192, 192, 0.3);
   border-radius: 25px!important;
   align-content: center;
   color: grey;
@@ -606,6 +606,11 @@ a:focus {
   -webkit-transition: background 0.3s ease-in-out;
   -moz-transition: background 0.3s ease-in-out;
   transition: background 0.3s ease-in-out;
+  height: auto;
+  width: auto;
+  outline: none;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
 }
 .btn-circle:hover,
 .btn-circle:focus,

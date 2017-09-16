@@ -504,7 +504,7 @@ a {
     overflow:hidden;
     margin-top: 15px;
     padding: 10px;
-    border: 1px solid rgba(192,192,192,0.3);
+    border: 0px solid rgba(192,192,192,0.3);
     border-radius: 25px!important; 
     align-content: center;
     color: grey;
@@ -512,6 +512,11 @@ a {
     -webkit-transition: background .3s ease-in-out;
     -moz-transition: background .3s ease-in-out;
     transition: background .3s ease-in-out;
+    height: auto;
+    width: auto;               
+    outline: none;
+    color: white;
+    background: fade(white, 10%);
     &:hover,
     &:focus, .hover_effect {
         height: auto;
