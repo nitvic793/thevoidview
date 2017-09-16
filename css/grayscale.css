@@ -464,7 +464,6 @@ a:focus {
   top: 92%;
   margin: 5px;
   padding: 5px;
-  font-family: "Courier New";
   font-size: 22pt;
   opacity: 0.7;
   color: "grey";
@@ -765,6 +764,9 @@ body {
   background-color: #4F4949;
   outline: 1px solid slategrey;
 }
+.small {
+  font-size: 10pt;
+}
 /**
 Page 3 CSS
 */
@@ -776,7 +778,7 @@ Page 3 CSS
   text-align: center;
 }
 .projectName {
-  top: 20%;
+  top: 80%;
   position: absolute;
   font-family: 'Bellefair';
   color: grey;
@@ -1234,7 +1236,7 @@ Misc. Page
 }
 #misc-menu-heading {
   font-family: 'Bellefair';
-  top: 15%;
+  top: 80%;
   color: grey;
   position: absolute;
   z-index: 3;

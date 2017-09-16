@@ -644,7 +644,7 @@ registerOnPageLoad(projectPage, function () {
     var currentHeading = 0;
     var negativeCounter = 0;
     var nextHeading = 1;
-    showScrollMessage(xPosition + 20);
+    //showScrollMessage(xPosition + 20);
     projectPaper.view.onFrame = function (event) {
     }
 
@@ -689,7 +689,7 @@ registerOnPageLoad(projectPage, function () {
         setGalleryImages(project.images);
 
         $("#next-project").fadeOut(100, function () {
-            $("#next-project").text(menuItems[nextHeading].text);
+            $("#next-project").html('<span class="small">Next: </span>' + menuItems[nextHeading].text);
             $("#next-project").fadeIn(200, function (e) {
             });
         });
@@ -881,7 +881,7 @@ $('#misc').mouseleave(function () { MOUSE_OVER = false; });
 var galleryLoaded = {}; //Variable to store the loaded galleries(photos, art) so as to not load them again.
 registerOnPageLoad(miscPage, function () {
     var xPosition = xPositions["menu-art"] ? xPositions["menu-art"] : window.innerWidth * (0.671); //!!IMPORTANT 
-    showScrollMessage(xPosition + 20);
+    //showScrollMessage(xPosition + 20);
     var currentGallery = '';
     var loadGallery = function (galleryId, data) {
         var closePhoto = function () {
@@ -1035,7 +1035,7 @@ registerOnPageLoad(miscPage, function () {
         ids.forEach(function (id) {
             animStack.push(true);
             $(id).fadeOut(200, function () {
-                $("#misc-menu-heading").text(headings[nextHeading]);
+                $("#misc-menu-heading").html('<span class="small">Next: </span>' + headings[nextHeading]);
                 $("#misc-menu-heading").css("left", xPosition - $("#misc-menu-heading").width() / 2);
                 $("#misc-side-title").text(headings[currentHeading]);
                 $(id).fadeIn(400, function () {
@@ -1105,11 +1105,12 @@ registerOnPageLoad(miscPage, function () {
     registerPagePostLoad(miscPage, function () {
         //loadSectionGallery("#misc-photos");
         topPath.removeSegments();
-        bottomPath.removeSegments();
+
         topPath.moveTo(xPosition, 20);
         topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);
+        bottomPath.removeSegments();
         bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
-        bottomPath.lineTo(xPosition, window.innerHeight - 25);
+        bottomPath.lineTo(xPosition, window.innerHeight - 20);
     });
 });
 
@@ -1180,7 +1181,7 @@ registerOnPageLoad(dancePage, function () {
         animStack.push();
         $("#dance-menu-heading").fadeOut(100, function () {
             var heading = danceSections[nextHeading];
-            $("#dance-menu-heading").text('Next: ' + heading);
+            $("#dance-menu-heading").html('<span class="small">Next: </span>' + heading);
             $("#dance-menu-heading").fadeIn(400, function () {
                 animStack.pop();
             });
