@@ -598,7 +598,7 @@ a:focus {
   overflow: hidden;
   margin-top: 15px;
   padding: 10px;
-  border: 2px solid grey;
+  border: 0px solid grey;
   border-radius: 25px!important;
   align-content: center;
   color: grey;
