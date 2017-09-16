@@ -1007,11 +1007,11 @@ registerOnPageLoad(miscPage, function () {
     miscPaper.view.onFrame = function () {
     };
 
-    var headings = ["Photography", "Art", "Writing"];
+    var headings = ["Photography", "Sketches", "Writing"];
     var sideImages = ["../img/side-image.png", "../img/side-image-art.png", "../img/side-image-writing.png"]
     var headingIdMap = {
         Photography: "#misc-photos",
-        Art: "#misc-art",
+        Sketches: "#misc-art",
         Writing: "#misc-writing"
     };
     var currentHeading = 0;
