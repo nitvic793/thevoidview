@@ -1171,7 +1171,7 @@ registerOnPageLoad(dancePage, function () {
             currentIndex = (currentIndex + 1) % images.length;
             var image = images[currentIndex];
             $("#dance-main-image").fadeOut(100, function (e) {
-                $("#dance-main-image").css("background-image", "url(" + image + ")");
+                $("#dance-main-image").css("background-image", "url('" + image + "')");
                 $("#dance-main-image").fadeIn(400, function (e) {
                 });
             });
