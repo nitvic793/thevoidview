@@ -1273,7 +1273,7 @@ registerOnPageLoad("about", function () {
     var path4 = new aboutPaper.Path();
     var xPosition = xPositions["menu-about"] ? xPositions["menu-about"] : window.innerWidth / 2;
     var startBackgroundSlideShow = function () {
-        var images = ['../img/menu-about.png', '../img/menu-dance.png'];
+        var images = ['../img/about/about1.png', '../img/about/about2.png', '../img/about/about3.png', '../img/about/about5.png'];
         var imageIndex = 1;
         clearInterval(aboutBgSlideShowTimer);
         aboutBgSlideShowTimer = setInterval(function () {
