@@ -1188,7 +1188,7 @@ registerOnPageLoad(dancePage, function () {
         });
 
         $("#dance-main-image").fadeOut(100, function (e) {
-            $("#dance-main-image").css("background-image", "url(" + danceImages[currentHeading] + ")");
+            $("#dance-main-image").css("background-image", "url(" + danceImagesArray[currentHeading][0] + ")");
             $("#dance-main-image").fadeIn(400, function (e) {
             });
             clearInterval(slideShowTimer);
