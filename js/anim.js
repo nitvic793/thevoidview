@@ -100,7 +100,7 @@ window.onhashchange = function () {
     }
     removeLoader();
 }
-var apiUrl = "http://the-void-view-backend.herokuapp.com/data";
+var apiUrl = "https://the-void-view-backend.herokuapp.com/data";
 var onLoad = function () {
     if (getCurrentPage() == null) {
         directLoad(landingPage)

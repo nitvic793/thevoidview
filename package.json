@@ -4,7 +4,8 @@
   "description": "The Void View Website",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "postinstall": "bower install"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,8 @@
   },
   "dependencies": {
     "cors": "^2.8.4",
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "bower":"^1.8.2"
   },
   "devDependencies": {
     "bootstrap": "^3.3.7",
