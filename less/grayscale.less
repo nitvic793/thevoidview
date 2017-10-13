@@ -693,15 +693,18 @@ body {
 
 .scroll-bar::-webkit-scrollbar {
     width: 4px;
+    z-index: 100;
 }
 
 .scroll-bar::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    z-index: 100;
 }
  
 .scroll-bar::-webkit-scrollbar-thumb {
   background-color: #4F4949;
   outline: 1px solid slategrey;
+  z-index: 100;
 }
 
 .small{
@@ -782,7 +785,7 @@ Page 3 CSS
     top:15%;
     right: 50px;    
     color:grey;
-    height: 55%;;
+    max-height: 55%;
     overflow: auto;
 }
 
@@ -855,6 +858,9 @@ Menu page
     color:grey;
     margin-left: 10px;
     margin-right:10px;
+    @media(max-width:1045px){
+        font-size: 12pt;
+    }
 }
 
 a>i{
@@ -1015,14 +1021,20 @@ Misc. Page
 .galereya:hover { overflow: auto; }
 
 .galereya::-webkit-scrollbar {
-    width: 4px;
+    z-index: 100;
+    position: absolute;
+    width: 1px;
 }
  
 .galereya::-webkit-scrollbar-track {
+    z-index: 100;
+    position: absolute;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
  
 .galereya::-webkit-scrollbar-thumb {
+  z-index: 100;
+  position: absolute;
   background-color: #4F4949;
   outline: 1px solid slategrey;
 }
@@ -1106,21 +1118,26 @@ Misc. Page
 
 #misc-photo-container::-webkit-scrollbar {
     width: 4px;
+    z-index: 100;
 }
  
 #misc-photo-container::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    z-index: 100;
 }
  
 #misc-photo-container::-webkit-scrollbar-thumb {
   background-color: #4F4949;
   outline: 1px solid slategrey;
+  z-index: 100;
 }
 
 
 
 #misc-photo{
-    width: 50%;
+    max-height: 95%;
+    // max-width: 60%;
+    // width:20px;
     margin: 10px;
 }
 
@@ -1128,9 +1145,9 @@ Misc. Page
     cursor: pointer;
     display: inline-block;
     z-index: 2;
-    position: fixed;
-    top:10px;
-    left:10px;
+    position: absolute;
+    
+    right:10px;
 }
 
 #misc-description-container{
@@ -1170,6 +1187,38 @@ Misc. Page
 #writing-container{
     margin-top:50px;
     margin:30px;
+}
+
+#writing-container::-webkit-scrollbar {
+    width: 1px;
+    z-index: 100;
+}
+
+#writing-container::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+ 
+#writing-container::-webkit-scrollbar-thumb {
+  background-color: #4F4949;
+  outline: 1px solid slategrey;
+  z-index: 100;
+}
+
+#writing-desk::-webkit-scrollbar {
+    width: 2px;
+    z-index: 100;
+}
+
+#writing-desk::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+ 
+#writing-desk::-webkit-scrollbar-thumb {
+  background-color: #4F4949;
+  outline: 1px solid slategrey;
+  z-index: 100;
 }
 
 #writing-content{
@@ -1230,6 +1279,8 @@ Misc. Page
     color: grey;
     position: absolute;
     z-index: 3;
+    width:200px;
+    text-align: center;
 }
 
 .grid-item--width2 { width: 19%; }
@@ -1322,7 +1373,7 @@ About Page
 #about-details-container{    
     float: right;
     width: 100%;    
-    color:gray;
+    color:lightgray;
     padding:20px;
     p{
         font-size: 12pt;
@@ -1494,5 +1545,9 @@ Dance Page
     // -o-transform: rotate(90deg);
     // -ms-transform: rotate(90deg);
     // transform: rotate(90deg);
+}
+
+.highlight{
+    color:white;
 }
 

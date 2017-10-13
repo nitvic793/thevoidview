@@ -132,9 +132,7 @@ var onProjectPageLoad = function () {
     console.log('Loaded page 3');
 }
 
-var onMenuPageLoad = function () {
-    console.log('Loaded menu page');
-}
+
 
 var pageRefreshPipeline = [];
 var pagePostLoaders = [];
@@ -183,6 +181,7 @@ var runOnPagePostLoadFunctions = function () {
 };
 
 registerGlobalFunctionPostPageLoad(function () {
+   
     switch (getCurrentPage()) {
         case "menu":
         case "home":
@@ -194,18 +193,32 @@ registerGlobalFunctionPostPageLoad(function () {
     }
 });
 
-registerGlobalFunctionPrePageLoad(function () {
-
-    if (getCurrentPage() == aboutPage) {
-        console.log('fadein');
-
-    }
+/**
+ * Highlight top menu
+ */
+registerGlobalFunctionPrePageLoad(function() {
+    pageIds.forEach(function(page){
+        var menuId = "#" + page + "-link";
+        if(page == getCurrentPage()){           
+            $(menuId).addClass("highlight");  
+        }
+        else{
+            $(menuId).removeClass("highlight");
+        }
+    });
+    
 });
 
 registerOnPageLoad(landingPage, function () {
     $("#footer").hide();
     $("#main-menu").hide();
+    
     setTimeout(typeFallSeven, 2000);
+    if(typingCallbackCalled){
+        $("#voidwaybtn").animate({ width: "150px" }, 'fast', function () {
+            $("#btnContent").html('<span class="fadein">the void way -><span>');
+        });
+    }
 });
 
 registerOnPageLoad(projectPage, onProjectPageLoad);
@@ -440,7 +453,6 @@ var typingCallbackCalled = false;
 
 function doneTypingCallback() {
     console.log('Done Typing...');
-
     if (getCurrentPage() == landingPage && !typingCallbackCalled) {
         typingCallbackCalled = true;
         setTimeout(routeToFade.bind(routeToFade, menuPage, landingPage), 800);
@@ -770,9 +782,16 @@ var animateLine = false;
 var menuItemClicked = null;
 menuPaper.view.onFrame = function (e) {
     if (animateLine) {
+        if(menuItemClicked == "menu-home"){
+            console.log(menuItemClicked);
+            animateLine = false;
+            path.removeSegments();
+            return;
+        }
         path.segments[1].point = path.segments[1].point.add(new Point(0, 10));
         if (path.segments[1].point.y > window.innerHeight) {
             animateLine = false;
+            path.removeSegments();
             switch (menuItemClicked) {
                 case 'menu-projects':
                     routeToSlideUp(projectPage, menuPage);
@@ -815,8 +834,8 @@ menuPageItems.forEach(function (item) {
     });
 
     $("#" + item).hover(function () {
-        animateLine = false;
-        path.removeSegments();
+        // animateLine = false;
+        //path.removeSegments();
     });
 });
 
@@ -836,6 +855,11 @@ menuPageItems.forEach(function (val, i) {
         };
     });
 });
+
+var onMenuPageLoad = function () {
+    animateLine = false;
+    path.removeSegments();
+}
 
 /**
  * Misc Page
@@ -906,8 +930,12 @@ registerOnPageLoad(miscPage, function () {
                 $("#misc-desc-title").text(imageObject.description);
                 $("#misc-description-container").fadeIn(400);
                 console.log("Gallery", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));
-                $("#misc-photo").width(xPosition - 60);
+                
+               // $("#misc-photo").width(xPosition - 60);
                 $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
+                if( $("#misc-photo").width()>(xPosition - 60)){
+                    $("#misc-photo").width(xPosition - 60);
+                }
                 $("#misc-photo-close").click(closePhoto);
                 $("#misc-photo-container").click(closePhoto);
             },
@@ -1035,7 +1063,7 @@ registerOnPageLoad(miscPage, function () {
         ids.forEach(function (id) {
             animStack.push(true);
             $(id).fadeOut(200, function () {
-                $("#misc-menu-heading").html('<span class="small">Next: </span>' + headings[nextHeading]);
+                $("#misc-menu-heading").html( headings[nextHeading]);
                 $("#misc-menu-heading").css("left", xPosition - $("#misc-menu-heading").width() / 2);
                 $("#misc-side-title").text(headings[currentHeading]);
                 $(id).fadeIn(400, function () {
@@ -1107,9 +1135,9 @@ registerOnPageLoad(miscPage, function () {
         topPath.removeSegments();
 
         topPath.moveTo(xPosition, 20);
-        topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);
+        topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top);
         bottomPath.removeSegments();
-        bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
+        bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 20);
         bottomPath.lineTo(xPosition, window.innerHeight - 20);
     });
 });
@@ -1278,7 +1306,6 @@ registerOnPageLoad("about", function () {
         clearInterval(aboutBgSlideShowTimer);
         aboutBgSlideShowTimer = setInterval(function () {
             var img = images[imageIndex];
-            console.log(img);
             imageIndex = (imageIndex + 1) % images.length;
             $("#about-image").fadeOut(400, function () {
                 $("#about-image").css("background-image", "url(" + img + ")");
