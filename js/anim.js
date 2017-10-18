@@ -181,7 +181,7 @@ var runOnPagePostLoadFunctions = function () {
 };
 
 registerGlobalFunctionPostPageLoad(function () {
-   
+
     switch (getCurrentPage()) {
         case "menu":
         case "home":
@@ -196,25 +196,25 @@ registerGlobalFunctionPostPageLoad(function () {
 /**
  * Highlight top menu
  */
-registerGlobalFunctionPrePageLoad(function() {
-    pageIds.forEach(function(page){
+registerGlobalFunctionPrePageLoad(function () {
+    pageIds.forEach(function (page) {
         var menuId = "#" + page + "-link";
-        if(page == getCurrentPage()){           
-            $(menuId).addClass("highlight");  
+        if (page == getCurrentPage()) {
+            $(menuId).addClass("highlight");
         }
-        else{
+        else {
             $(menuId).removeClass("highlight");
         }
     });
-    
+
 });
 
 registerOnPageLoad(landingPage, function () {
     $("#footer").hide();
     $("#main-menu").hide();
-    
+
     setTimeout(typeFallSeven, 2000);
-    if(typingCallbackCalled){
+    if (typingCallbackCalled) {
         $("#voidwaybtn").animate({ width: "150px" }, 'fast', function () {
             $("#btnContent").html('<span class="fadein">the void way -><span>');
         });
@@ -602,46 +602,37 @@ var drawArrow = function (x, y, paperScope) {
 registerOnPageLoad(projectPage, function () {
     //lightGallery(document.getElementById('project-images'));
     preventScrollBehaviorOnElement("project-details");
-    var menuItems = [
-        {
-            id: 1,
-            top: 25,
-            text: "Drone",
-            middle: false,
-            element: null
-        },
-        {
-            id: 2,
-            top: 50,
-            text: "Emoi",
-            middle: true,
-            element: null
-        },
-        {
-            id: 3,
-            top: 75,
-            text: "Testimonial Map",
-            middle: false,
-            element: null
-        },
-        {
-            id: 4,
-            top: 100,
-            text: "Other",
-            middle: false,
-            element: null
-        }
-    ];
     projects = webData.projects;
-    menuItems = [];
+    var menuItems = [];
     var idIndex = 1;
     for (var key in projects) {
         menuItems.push({
             id: idIndex,
             text: key
         });
+        var currentIndex = idIndex;
+        $("#project-list").append(`<li id="pli-${idIndex}">${key}</li>`);
+        $(`#pli-${idIndex}`).click(function () {
+
+            var id = $(this).attr('id');
+            console.log(id.substr(id.indexOf('pli-') + 4, 1));
+            id = id.substr(id.indexOf('pli-') + 4, 1);
+            currentHeading = id - 1;
+            nextHeading = (currentHeading + 1) % menuItems.length;
+            negativeCounter = currentHeading - 1;
+            if (negativeCounter < 0)
+                negativeCounter = menuItems.length;
+            loadProjectMenu();
+        });
         idIndex++;
     }
+    $("#project-list-container").mouseenter(function (e) {
+        $("#project-list").slideDown("fast");
+    });
+    $("#project-list-container").mouseleave(function (e) {
+        $("#project-list").slideUp("fast");
+
+    });
 
     var canvas = document.getElementById('project-canvas');
     var projectPaper = new paper.PaperScope();
@@ -782,7 +773,7 @@ var animateLine = false;
 var menuItemClicked = null;
 menuPaper.view.onFrame = function (e) {
     if (animateLine) {
-        if(menuItemClicked == "menu-home"){
+        if (menuItemClicked == "menu-home") {
             console.log(menuItemClicked);
             animateLine = false;
             path.removeSegments();
@@ -912,16 +903,18 @@ registerOnPageLoad(miscPage, function () {
             animStack.pop(); //Enable scrolling again
             $("#misc-photo-container").fadeOut(400);
             $("#misc-description-container").fadeOut(400);
-            loadCurrentSection();
+            //loadCurrentSection();
             bindMouseWheel(miscPage, defaultMouseWheelHandler);
         };
+        console.log("Emptying...");
+        $(galleryId).empty();
         $(galleryId).galereya({
             wave: false,
             slideShowSpeed: 4000,
             disableSliderOnClick: true,
             onCellClick: function (e) {
                 animStack.push(true);
-                hideAllSections();
+                //hideAllSections();
                 $("#misc-photo-container").fadeIn(400);
                 var imgSrc = e.target.parentNode.getElementsByTagName("img")[0].src;
                 var galleryArray = webData.misc[currentGallery];
@@ -930,10 +923,11 @@ registerOnPageLoad(miscPage, function () {
                 $("#misc-desc-title").text(imageObject.description);
                 $("#misc-description-container").fadeIn(400);
                 console.log("Gallery", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));
-                
-               // $("#misc-photo").width(xPosition - 60);
+
+                // $("#misc-photo").width(xPosition - 60);
+                $("#misc-photo-container").width(xPosition-20);
                 $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
-                if( $("#misc-photo").width()>(xPosition - 60)){
+                if ($("#misc-photo").width() > (xPosition - 60)) {
                     $("#misc-photo").width(xPosition - 60);
                 }
                 $("#misc-photo-close").click(closePhoto);
@@ -980,6 +974,7 @@ registerOnPageLoad(miscPage, function () {
     });
 
     var loadWritingDeck = function (data) {
+        $("#writing-deck").empty();
         data.forEach(function (item) {
             var html = `<div class="module mid" id="${item.id}">
                 <h2>${item.title}</h2>
@@ -991,7 +986,7 @@ registerOnPageLoad(miscPage, function () {
     };
 
     var loadSectionGallery = function (section) {
-        if (galleryLoaded[section]) return;
+        //if (galleryLoaded[section]) return;
         switch (section) {
             case "#misc-photos":
                 currentGallery = "photos";
@@ -1063,7 +1058,7 @@ registerOnPageLoad(miscPage, function () {
         ids.forEach(function (id) {
             animStack.push(true);
             $(id).fadeOut(200, function () {
-                $("#misc-menu-heading").html( headings[nextHeading]);
+                $("#misc-menu-heading").html(headings[nextHeading]);
                 $("#misc-menu-heading").css("left", xPosition - $("#misc-menu-heading").width() / 2);
                 $("#misc-side-title").text(headings[currentHeading]);
                 $(id).fadeIn(400, function () {
@@ -1083,6 +1078,7 @@ registerOnPageLoad(miscPage, function () {
             $(section).fadeOut(200);
         });
         $(currentSection).fadeIn(400, function () {
+            console.log("Load ", currentSection);
             loadSectionGallery(currentSection);
         });
     };
