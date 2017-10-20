@@ -927,6 +927,7 @@ registerOnPageLoad(miscPage, function () {
 
                 // $("#misc-photo").width(xPosition - 60);
                 $("#misc-photo-container").width(xPosition - 20);
+                $("#misc-photo").css("width","auto");
                 $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
                 if ($("#misc-photo").width() > (xPosition - 60)) {
                     $("#misc-photo").width(xPosition - 60);
