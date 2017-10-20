@@ -605,6 +605,7 @@ registerOnPageLoad(projectPage, function () {
     projects = webData.projects;
     var menuItems = [];
     var idIndex = 1;
+    $("#project-list").empty();
     for (var key in projects) {
         menuItems.push({
             id: idIndex,
@@ -925,7 +926,7 @@ registerOnPageLoad(miscPage, function () {
                 console.log("Gallery", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));
 
                 // $("#misc-photo").width(xPosition - 60);
-                $("#misc-photo-container").width(xPosition-20);
+                $("#misc-photo-container").width(xPosition - 20);
                 $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
                 if ($("#misc-photo").width() > (xPosition - 60)) {
                     $("#misc-photo").width(xPosition - 60);
@@ -956,6 +957,38 @@ registerOnPageLoad(miscPage, function () {
             bindMouseWheel(miscPage, defaultMouseWheelHandler);
         });
     };
+
+    /**
+     * Art page main menu sections
+     */
+    var headings = ["Photography", "Sketches", "Writing"];
+    var loadSideMenu = function () {
+        var miscMenuItems = headings;
+        $("#misc-list").empty();
+        for (var i = 0; i < miscMenuItems.length; ++i) {
+            var key = miscMenuItems[i];
+            var currentIndex = i;
+            $("#misc-list").append(`<li id="mli-${currentIndex}">${key}</li>`);
+            $(`#mli-${currentIndex}`).click(function () {
+                var id = $(this).attr('id');
+                console.log(id.substr(id.indexOf('mli-') + 4, 1));
+                id = id.substr(id.indexOf('mli-') + 4, 1);
+                currentHeading = id;
+                nextHeading = (currentHeading + 1) % miscMenuItems.length;
+                negativeCounter = currentHeading - 1;
+                if (negativeCounter < 0)
+                    negativeCounter = miscMenuItems.length;
+                setMenuHeading();
+            });
+        }
+        $("#misc-list-container").mouseenter(function (e) {
+            $("#misc-list").slideDown("fast");
+        });
+        $("#misc-list-container").mouseleave(function (e) {
+            $("#misc-list").slideUp("fast");
+        });
+    };
+    //loadSideMenu();
 
     var transformToIdMap = function (data) {
         var returnObj = {};
@@ -1030,7 +1063,7 @@ registerOnPageLoad(miscPage, function () {
     miscPaper.view.onFrame = function () {
     };
 
-    var headings = ["Photography", "Sketches", "Writing"];
+    
     var sideImages = ["../img/side-image.png", "../img/side-image-art.png", "../img/side-image-writing.png"]
     var headingIdMap = {
         Photography: "#misc-photos",
@@ -1155,6 +1188,34 @@ registerOnPageLoad(dancePage, function () {
     var negativeCounter = 0;
     var nextHeading = 1;
     var xPosition = xPositions["menu-dance"] ? xPositions["menu-dance"] : window.innerWidth * (0.671);
+    preventScrollBehaviorOnElement("dance-side-description");
+    var loadSideMenu = function () {
+        $("#dance-list").empty();
+        for (var i = 0; i < webData.dance.performances.length; ++i) {
+            var key = webData.dance.performances[i];
+            var currentIndex = i;
+            $("#dance-list").append(`<li id="dli-${currentIndex}">${key}</li>`);
+            $(`#dli-${currentIndex}`).click(function () {
+                var id = $(this).attr('id');
+                console.log(id.substr(id.indexOf('dli-') + 4, 1));
+                id = id.substr(id.indexOf('dli-') + 4, 1);
+                currentHeading = id;
+                nextHeading = (currentHeading + 1) % webData.dance.performances.length;
+                negativeCounter = currentHeading - 1;
+                if (negativeCounter < 0)
+                    negativeCounter = webData.dance.performances.length;
+                setMenuHeading();
+            });
+        }
+        $("#dance-list-container").mouseenter(function (e) {
+            $("#dance-list").slideDown("fast");
+        });
+        $("#dance-list-container").mouseleave(function (e) {
+            $("#dance-list").slideUp("fast");
+        });
+    };
+
+    loadSideMenu();
     //showScrollMessage(xPosition + 20);
     $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
     $("#dance-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });

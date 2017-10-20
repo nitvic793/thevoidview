@@ -10,7 +10,7 @@ body {
   color: white;
   background-color: black;
   overflow: hidden;
-  font-size: 14pt;
+  font-size: 15pt;
 }
 html {
   width: 100%;
@@ -28,13 +28,13 @@ h6 {
 }
 p {
   margin: 0 0 25px;
-  font-size: 14pt;
+  font-size: 15pt;
   line-height: 1.5;
 }
 @media (min-width: 768px) {
   p {
     margin: 0 0 35px;
-    font-size: 14pt;
+    font-size: 15pt;
     line-height: 1.6;
   }
 }
@@ -817,14 +817,42 @@ Page 3 CSS
   text-align: center;
   font-size: 32pt;
 }
+.list-container {
+  margin: 10px;
+  max-width: 100px;
+  color: gray;
+  z-index: 9999;
+}
+ul.item-list {
+  display: none;
+  color: gray;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 400px;
+  list-style: none;
+}
+.item-list li {
+  font-size: 12pt;
+  margin: 2px;
+  padding: 2px;
+  border-color: gray;
+  border-bottom: 1px;
+  cursor: pointer;
+}
+.item-list li:hover {
+  color: white;
+}
+.item-list-btn {
+  color: gray;
+}
 #project-list-container {
   margin: 10px;
+  max-width: 100px;
   color: gray;
 }
 ul#project-list {
   display: none;
   color: gray;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.3);
   width: 400px;
   list-style: none;
 }
@@ -873,7 +901,7 @@ ul#project-list {
   float: right;
   width: 50%;
   margin: 10px;
-  font-size: 14pt;
+  font-size: 15pt;
   top: 15%;
   right: 50px;
   color: grey;
@@ -915,7 +943,7 @@ ul#project-list {
 Menu page
 **/
 .horizontal-line {
-  margin-top: 1.0em;
+  margin-top: 0.8em;
   margin-bottom: 0.5em;
   margin-left: auto;
   margin-right: auto;
@@ -943,7 +971,7 @@ Menu page
 }
 @media (max-width: 1045px) {
   .about-menu {
-    font-size: 14pt;
+    font-size: 15pt;
   }
 }
 a > i {
@@ -1199,7 +1227,7 @@ Misc. Page
 }
 #misc-photo {
   max-height: 95%;
-  margin: 10px;
+  margin: 10px auto;
   margin-top: 20px;
 }
 #misc-photo-close {
@@ -1294,6 +1322,7 @@ Misc. Page
   background-color: black;
   position: absolute;
   top: 0;
+  text-align: center;
 }
 #misc-side-title {
   top: 50%;
@@ -1423,7 +1452,7 @@ About Page
   padding: 20px;
 }
 #about-details-container p {
-  font-size: 14pt;
+  font-size: 15pt;
 }
 #about-details-container h3 {
   font-family: Courier New, Courier, monospace;
