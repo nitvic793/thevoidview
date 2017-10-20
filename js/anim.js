@@ -699,6 +699,10 @@ registerOnPageLoad(projectPage, function () {
         });
     };
 
+    $("#next-project").click(function(){
+        menuDown();
+    });
+
     var loadProjectMenu = function () {
         console.log("Project Menu loading");
         $("#next-project").css("left", xPosition - $("#next-project").width() / 2);
@@ -1123,6 +1127,9 @@ registerOnPageLoad(miscPage, function () {
     bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
     bottomPath.lineTo(xPosition, window.innerHeight);
 
+    $("#misc-menu-heading").click(function(){
+        miscPageMenuDown();
+    });
 
     var miscPageMenuUp = function () {
         nextHeading = currentHeading;
@@ -1167,7 +1174,7 @@ registerOnPageLoad(miscPage, function () {
         topPath.moveTo(xPosition, 20);
         topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top);
         bottomPath.removeSegments();
-        bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 20);
+        bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 30);
         bottomPath.lineTo(xPosition, window.innerHeight - 20);
     });
 });
@@ -1218,6 +1225,9 @@ registerOnPageLoad(dancePage, function () {
 
     loadSideMenu();
     //showScrollMessage(xPosition + 20);
+    $("#dance-menu-heading").click(function(){
+        dancePageMenuDown();
+    })
     $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
     $("#dance-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
     $("#dance-main-image").css({ width: window.innerWidth - (window.innerWidth - xPosition) });

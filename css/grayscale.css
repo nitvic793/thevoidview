@@ -460,6 +460,9 @@ a:focus {
   z-index: -1;
   opacity: 0.9;
 }
+.clickable {
+  cursor: pointer;
+}
 .title {
   position: absolute;
   top: 92%;
