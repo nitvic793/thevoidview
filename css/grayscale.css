@@ -799,6 +799,9 @@ Page 3 CSS
   width: 200px;
   text-align: center;
 }
+.projectName:hover {
+  color: white;
+}
 .vertical-line {
   color: white;
   width: 1px;
