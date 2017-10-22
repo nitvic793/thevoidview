@@ -718,19 +718,6 @@ registerOnPageLoad(projectPage, function () {
 
     var menuDown = function () {
         currentHeading = (currentHeading + 1) % menuItems.length;
-
-        // if (currentHeading == 0) {
-        //     currentHeading = menuItems.length - 1;
-        // }
-        // else {
-        //     currentHeading = currentHeading - 1;
-        // }
-        /**** */
-        // negativeCounter = negativeCounter - 1;
-        // if (Math.abs(negativeCounter) == menuItems.length) {
-        //     negativeCounter = 0;
-        // }
-        // currentHeading = Math.abs(negativeCounter);
         nextHeading = (currentHeading + 1) % menuItems.length;
         loadProjectMenu();
     }
@@ -742,9 +729,6 @@ registerOnPageLoad(projectPage, function () {
         else {
             currentHeading = currentHeading - 1;
         }
-        // nextHeading = currentHeading;
-        // currentHeading = (currentHeading + 1) % menuItems.length;
-        // negativeCounter = currentHeading;
         nextHeading = (currentHeading + 1) % menuItems.length;
         loadProjectMenu();
     }
@@ -1148,18 +1132,18 @@ registerOnPageLoad(miscPage, function () {
     });
 
     var miscPageMenuUp = function () {
-        nextHeading = currentHeading;
-        currentHeading = (currentHeading + 1) % headings.length;
-        negativeCounter = currentHeading;
+        if (currentHeading == 0) {
+            currentHeading = headings.length - 1;
+        }
+        else {
+            currentHeading = currentHeading - 1;
+        }
+        nextHeading = (currentHeading + 1) % headings.length;
         setMenuHeading();
     }
 
     var miscPageMenuDown = function () {
-        negativeCounter = negativeCounter - 1;
-        if (Math.abs(negativeCounter) == headings.length) {
-            negativeCounter = 0;
-        }
-        currentHeading = Math.abs(negativeCounter);
+        currentHeading = (currentHeading + 1) % headings.length;
         nextHeading = (currentHeading + 1) % headings.length;
         setMenuHeading();
     }
@@ -1325,18 +1309,18 @@ registerOnPageLoad(dancePage, function () {
     setMenuHeading();
     //On scroll up
     var dancePageMenuUp = function () {
-        nextHeading = currentHeading;
-        currentHeading = (currentHeading + 1) % danceSections.length;
-        negativeCounter = currentHeading;
+        if (currentHeading == 0) {
+            currentHeading = danceSections.length - 1;
+        }
+        else {
+            currentHeading = currentHeading - 1;
+        }
+        nextHeading = (currentHeading + 1) % danceSections.length;
         setMenuHeading();
     }
     //On scroll down
     var dancePageMenuDown = function () {
-        negativeCounter = negativeCounter - 1;
-        if (Math.abs(negativeCounter) == danceSections.length) {
-            negativeCounter = 0;
-        }
-        currentHeading = Math.abs(negativeCounter);
+        currentHeading = (currentHeading + 1) % danceSections.length;
         nextHeading = (currentHeading + 1) % danceSections.length;
         setMenuHeading();
     }
