@@ -624,8 +624,8 @@ registerOnPageLoad(projectPage, function () {
     projectPaper.view.onFrame = function (event) {
     }
 
-    
-    var drawSideLines = function(){
+
+    var drawSideLines = function () {
         topPath.removeSegments();
         bottomPath.removeSegments();
         topPath.moveTo(xPosition, 20);
@@ -1034,6 +1034,14 @@ registerOnPageLoad(miscPage, function () {
     miscPaper.setup(miscCanvas);
     var topPath = new miscPaper.Path();
     var bottomPath = new miscPaper.Path();
+    var drawSideLines = function(){
+        topPath.removeSegments();
+        bottomPath.removeSegments();
+        topPath.moveTo(xPosition, 20);
+        topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top - 10);        
+        bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 10);
+        bottomPath.lineTo(xPosition, window.innerHeight - 20);
+    };
 
     $("#misc-side-image").css({ width: window.innerWidth - xPosition });
     $("#misc-side-title").css({ width: window.innerWidth - xPosition, height: window.innerHeight / 2 });
@@ -1075,6 +1083,7 @@ registerOnPageLoad(miscPage, function () {
                 $("#misc-menu-heading").css("left", xPosition - $("#misc-menu-heading").width() / 2);
                 $("#misc-side-title").text(headings[currentHeading]);
                 $(id).fadeIn(400, function () {
+                    drawSideLines();
                     animStack.pop();
                 });
             })
@@ -1144,13 +1153,7 @@ registerOnPageLoad(miscPage, function () {
 
     registerPagePostLoad(miscPage, function () {
         //loadSectionGallery("#misc-photos");
-        topPath.removeSegments();
-
-        topPath.moveTo(xPosition, 20);
-        topPath.lineTo(xPosition, $("#misc-menu-heading").offset().top);
-        bottomPath.removeSegments();
-        bottomPath.moveTo(xPosition, $("#misc-menu-heading").offset().top + $("#misc-menu-heading").height() + 30);
-        bottomPath.lineTo(xPosition, window.innerHeight - 20);
+        drawSideLines();
     });
 });
 
@@ -1211,10 +1214,20 @@ registerOnPageLoad(dancePage, function () {
     topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
     bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
     bottomPath.lineTo(xPosition, window.innerHeight);
+    var drawSideLines = function () {
+        topPath.removeSegments();
+        bottomPath.removeSegments();
+        topPath.moveTo(xPosition, 20);
+        topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
+        bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
+        bottomPath.lineTo(xPosition, window.innerHeight - 25);
+    }
+
     var danceSections = webData.dance.performances;
     var danceDescriptions = webData.dance.danceDescriptions;
     var danceImages = webData.dance.images;
     var danceImagesArray = webData.dance.imageArray;
+
     var setGalleryImages = function (images) {
         $("#dance-images").html('');
         images.forEach(function (image, index) {
@@ -1254,6 +1267,7 @@ registerOnPageLoad(dancePage, function () {
             var heading = danceSections[nextHeading];
             $("#dance-menu-heading").html('<span class="small">Next: </span>' + heading);
             $("#dance-menu-heading").fadeIn(400, function () {
+                drawSideLines();
                 animStack.pop();
             });
         });
@@ -1320,15 +1334,11 @@ registerOnPageLoad(dancePage, function () {
         onDownScroll: dancePageMenuDown
     }
 
+
     registerPagePostLoad(dancePage, function () {
         //preventScrollBehaviorOnElement('dance-side-description');
         $("#dance-menu-heading").css("left", xPosition - $("#dance-menu-heading").width() / 2);
-        topPath.removeSegments();
-        bottomPath.removeSegments();
-        topPath.moveTo(xPosition, 20);
-        topPath.lineTo(xPosition, $("#dance-menu-heading").offset().top - 10);
-        bottomPath.moveTo(xPosition, $("#dance-menu-heading").offset().top + $("#dance-menu-heading").height() + 10);
-        bottomPath.lineTo(xPosition, window.innerHeight - 25);
+        drawSideLines();
     });
 });
 
