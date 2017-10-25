@@ -551,35 +551,7 @@ $('#' + projectPage).mouseleave(function () { MOUSE_OVER = false; });
 
 $('#' + projectPage).bind('mousewheel', defaultMouseWheelHandler);
 
-
-var fireDescription = `<p>I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason. I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
-I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.
-I am writing this because I needed to give an impression of some random text. Just to see how it looks. This one is called Fire, for some weird reason.</p>
-`;
-
-
-var projects = {
-    Drone: {
-        image: "../img/drone1.png",
-        images: ["img/drone1.png", "img/c.jpg"],
-        description: fireDescription + "</p>Some random drone text. </p>" + fireDescription + fireDescription
-    },
-    Emoi: {
-        image: "../img/b.jpg",
-        images: ["img/a.jpg", "img/c.jpg"],
-        description: fireDescription + "<p> New paragraph, for testing </p>"
-    },
-    "Testimonial Map": {
-        image: "../img/a.jpg",
-        images: ["img/a.jpg", "img/c.jpg"],
-        description: fireDescription + "<p> New paragraph, for testing </p>"
-    },
-    Other: {
-        image: "../img/c.jpg",
-        images: ["img/a.jpg", "img/c.jpg"],
-        description: fireDescription + "<p> New paragraph, for testing </p>"
-    },
-};
+var projects = {};
 
 var animStack = [];
 
@@ -652,6 +624,16 @@ registerOnPageLoad(projectPage, function () {
     projectPaper.view.onFrame = function (event) {
     }
 
+    
+    var drawSideLines = function(){
+        topPath.removeSegments();
+        bottomPath.removeSegments();
+        topPath.moveTo(xPosition, 20);
+        topPath.lineTo(xPosition, $("#next-project").offset().top - 10);
+        bottomPath.moveTo(xPosition, $("#next-project").offset().top + $("#next-project").height() + 10);
+        bottomPath.lineTo(xPosition, window.innerHeight - 30);
+    }
+
     var setGalleryImages = function (images) {
         $("#project-images").fadeOut(100, function () {
             $("#project-images").html('');
@@ -695,6 +677,7 @@ registerOnPageLoad(projectPage, function () {
         $("#next-project").fadeOut(100, function () {
             $("#next-project").html('<span class="small">Next: </span>' + menuItems[nextHeading].text);
             $("#next-project").fadeIn(200, function (e) {
+                drawSideLines();
             });
         });
     };
@@ -753,14 +736,10 @@ registerOnPageLoad(projectPage, function () {
         }
     }
 
+
     registerPagePostLoad(projectPage, function () {
         //Re draw lines because the next project element 
-        topPath.removeSegments();
-        bottomPath.removeSegments();
-        topPath.moveTo(xPosition, 20);
-        topPath.lineTo(xPosition, $("#next-project").offset().top - 10);
-        bottomPath.moveTo(xPosition, $("#next-project").offset().top + $("#next-project").height() + 10);
-        bottomPath.lineTo(xPosition, window.innerHeight - 30);
+        drawSideLines();
         $("#project-title").css("width", xPosition);
     });
 });
@@ -808,10 +787,6 @@ menuPaper.view.onFrame = function (e) {
 }
 
 var menuPageItems = ['menu-home', 'menu-projects', 'menu-about', 'menu-dance', 'menu-art', 'menu-contact'];
-
-$("#menu-projects").click(function () {
-    //route(projectPage, menuPage);
-});
 
 var xPositions = {};
 
