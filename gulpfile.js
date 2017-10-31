@@ -17,7 +17,7 @@ var banner = ['/*!\n',
 
 // Compile LESS files from /less into /css
 gulp.task('less', function () {
-    return gulp.src('less/grayscale.less')
+    return gulp.src(['less/grayscale.less', 'less/grayscale.mobile.less'])
         .pipe(less())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(gulp.dest('css'))
@@ -28,7 +28,7 @@ gulp.task('less', function () {
 
 // Minify compiled CSS
 gulp.task('minify-css', ['less'], function () {
-    return gulp.src('css/grayscale.css')
+    return gulp.src(['css/grayscale.css',,'css/grayscale.mobile.css'])
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('css'))
@@ -39,7 +39,7 @@ gulp.task('minify-css', ['less'], function () {
 
 // Minify JS
 gulp.task('minify-js', function () {
-    return gulp.src('js/anim.js')
+    return gulp.src(['js/anim.js', 'js/anim.mobile.js'])
         .pipe(uglify().on('error', gulpUtil.log))
         .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
