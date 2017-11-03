@@ -481,6 +481,29 @@ String.prototype.trunc = function (n, useWordBoundary) {
         : subString) + "&hellip;";
 };
 
+var addAfterStyleSheetRule = function (id, image) {
+    var template = `content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+
+    background-image: url(${image});
+    background-size: cover;
+    opacity: 0.2;`;
+    // Create a new style tag
+    var style = document.createElement("style");
+
+    // Append the style tag to head
+    document.head.appendChild(style);
+
+    // Grab the stylesheet object
+    sheet = style.sheet
+
+    sheet.insertRule(id + `::after { ${template} }`, 0);
+};
+
 registerOnPageLoad(projectPage, function () {
     //$("#project-list").fullpage();
     projects = webData.projects;
@@ -490,28 +513,7 @@ registerOnPageLoad(projectPage, function () {
         $("#project-list").animate({ scrollTop: 0 });
     });
 
-    var addStyleSheetRule = function (id, image) {
-        var template = `content: "";
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        height: 100%;
 
-        background-image: url(${image});
-        background-size: cover;
-        opacity: 0.2;`;
-        // Create a new style tag
-        var style = document.createElement("style");
-
-        // Append the style tag to head
-        document.head.appendChild(style);
-
-        // Grab the stylesheet object
-        sheet = style.sheet
-
-        sheet.insertRule(id + `::after { ${template} }`, 0);
-    }
 
     var addProjectToList = function (title, image, text, images, nextProject, id) {
         var shortDesc = text.trunc(100, true);
@@ -536,7 +538,7 @@ registerOnPageLoad(projectPage, function () {
         console.log($("#pt" + id).attr("background-url"));
         //$("#pt" + id).css("background", "url(" + image + ") no-repeat  center center"); //change background image
         //$("#pt" + id).css("background-size", "cover");        
-        addStyleSheetRule("#pt" + id, image);
+        addAfterStyleSheetRule("#pt" + id, image);
         var readMoreToggle = function (textFirst, a) {
             var imageId = "#pi" + id;
             var shortDescId = `#pshort${id}`;
@@ -759,18 +761,84 @@ registerOnPageLoad(miscPage, function () {
     });
 });
 
-$('#dance').mouseenter(function () { MOUSE_OVER = true; });
-$('#dance').mouseleave(function () { MOUSE_OVER = false; });
 
 var slideShowTimer = null;
 registerOnPageLoad(dancePage, function () {
-
 
     var danceSections = webData.dance.performances;
     var danceDescriptions = webData.dance.danceDescriptions;
     var danceImages = webData.dance.images;
     var danceImagesArray = webData.dance.imageArray;
 
+    var addDanceToList = function (title, image, text, images, next, id) {
+        var shortDesc = text.trunc(100, true);
+        var template = ` <div class="project-container" id="dance${id}">
+            <div class="project-card">
+            <div class="project-name">${title}</div>
+            <div class="project-image" id="di${id}"></div>
+            <div class="project-short-desc" id="dshort${id}">${shortDesc} <a>${text.length > 100 ? "more" : ""}</a></div>
+            <div class="project-text" id="dt${id}">
+            <div class="project-text-internal" id="dtext${id}">${text}</div>
+            </div>
+            <!--div class="read-more" id="dr${id}">...</div-->
+            <div class="project-gallery" id="dgallery${id}"><span class="glyphicon glyphicon-th"></span></div>
+            </div>
+            <div class="vertical-line"></div>
+            <div class="horizontal-line"></div>
+            <div class="next-project-name" id="nextd${id}">${next}</div>
+            </div>`;
+        $("#dance-list").append(template);
+        $("#di" + id).css("background", "url('" + image + "') no-repeat  center center"); //change background image
+        $("#di" + id).css("background-size", "cover");
+        addAfterStyleSheetRule("#dt" + id, image);
+        var readMoreToggle = function (textFirst, a) {
+            var imageId = "#di" + id;
+            var shortDescId = `#dshort${id}`;
+            var fullTextId = `#dt${id}`;
+            if (textFirst == 'textFirst') {
+                $(fullTextId).fadeToggle("fast", function () {
+                    $(imageId).fadeToggle("fast");
+                    $(shortDescId).fadeToggle("fast");
+                });
+            }
+            else {
+                $(shortDescId).fadeToggle("fast");
+                $(imageId).fadeToggle("fast", function () {
+                    $(fullTextId).fadeToggle("fast");
+                });
+            }
+        };
+
+        $("#di" + id).click(readMoreToggle);
+
+        $("#dshort" + id).click(readMoreToggle);
+        $("#dr" + id).click(readMoreToggle);
+        $("#dt" + id).click(readMoreToggle.bind(null, "textFirst"));
+
+        $("#nextd" + id).click(function () {
+            console.log("nextp" + id);
+            $('#dance-list').stop().animate({ scrollTop: $("#dance" + id).height() * (id + 1) }, 800);
+        });
+    };
+
+    var loadDances = function () {
+        $("#dance-list").empty();
+        var danceList = webData.dance.performances;
+        var count = 0;
+        for (var i = 0; i < danceList.length; ++i) {
+            var next;
+            if (count + 1 > danceList.length - 1) {
+                next = danceList[count + 1];
+            }
+            else {
+                next = '';
+            }
+            addDanceToList(danceList[i], danceImagesArray[i][0], danceDescriptions[i], danceImagesArray[i], danceList[count + 1] ? danceList[count + 1] : "End", count);
+            count++;
+        }
+    };
+
+    loadDances();
 
     //Defining page handlers for currentPage
     pageHandlers[dancePage] = {

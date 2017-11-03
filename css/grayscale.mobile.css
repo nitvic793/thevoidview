@@ -1015,6 +1015,17 @@ Project Page
   padding-right: 8px;
 }
 /**
+Dance Page
+**/
+#dance-list {
+  position: absolute;
+  top: 10%;
+  width: 90%;
+  left: 5%;
+  height: 100%;
+  overflow-y: scroll;
+}
+/**
 Misc. Page
 **/
 /**Gallery override CSS**/
