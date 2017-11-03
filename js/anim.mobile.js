@@ -764,7 +764,9 @@ registerOnPageLoad(miscPage, function () {
 
 var slideShowTimer = null;
 registerOnPageLoad(dancePage, function () {
-
+    $("#dance-title").click(function () {
+        $("#dance-list").animate({ scrollTop: 0 });
+    });
     var danceSections = webData.dance.performances;
     var danceDescriptions = webData.dance.danceDescriptions;
     var danceImages = webData.dance.images;
