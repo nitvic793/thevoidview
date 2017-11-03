@@ -473,43 +473,98 @@ var animStack = [];
 
 var empty = function () { };
 
-registerOnPageLoad(projectPage, function () {
+String.prototype.trunc = function (n, useWordBoundary) {
+    if (this.length <= n) { return this; }
+    var subString = this.substr(0, n - 1);
+    return (useWordBoundary
+        ? subString.substr(0, subString.lastIndexOf(' '))
+        : subString) + "&hellip;";
+};
 
+registerOnPageLoad(projectPage, function () {
     //$("#project-list").fullpage();
     projects = webData.projects;
     var menuItems = [];
     var idIndex = 1;
-    $(".page-title").click(function(){
-       $("#project-list").animate({scrollTop:0});
+    $(".page-title").click(function () {
+        $("#project-list").animate({ scrollTop: 0 });
     });
+
+    var addStyleSheetRule = function (id, image) {
+        var template = `content: "";
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+
+        background-image: url(${image});
+        background-size: cover;
+        opacity: 0.2;`;
+        // Create a new style tag
+        var style = document.createElement("style");
+
+        // Append the style tag to head
+        document.head.appendChild(style);
+
+        // Grab the stylesheet object
+        sheet = style.sheet
+
+        sheet.insertRule(id + `::after { ${template} }`, 0);
+    }
+
     var addProjectToList = function (title, image, text, images, nextProject, id) {
+        var shortDesc = text.trunc(100, true);
         var template = ` <div class="project-container" id="project${id}">
             <div class="project-card">
             <div class="project-name">${title}</div>
             <div class="project-image" id="pi${id}"></div>
-            <div class="project-text" id="pt${id}">${text}</div>
-            <div class="read-more" id="pr${id}">...</div>
+            <div class="project-short-desc" id="pshort${id}">${shortDesc} <a>${text.length > 100 ? "more" : ""}</a></div>
+            <div class="project-text" id="pt${id}">
+            <div class="project-text-internal" id="ptext${id}">${text}</div>
+            </div>
+            <!--div class="read-more" id="pr${id}">...</div-->
+            <div class="project-gallery" id="pgallery${id}"><span class="glyphicon glyphicon-th"></span></div>
             </div>
             <div class="vertical-line"></div>
             <div class="horizontal-line"></div>
             <div class="next-project-name" id="nextp${id}">${nextProject}</div>
             </div>`;
         $("#project-list").append(template);
-        $("#pi" + id).css("background-image", "url(" + image + ")"); //change background image
+        $("#pi" + id).css("background", "url(" + image + ") no-repeat  center center"); //change background image
+        $("#pi" + id).css("background-size", "cover");
+        console.log($("#pt" + id).attr("background-url"));
+        //$("#pt" + id).css("background", "url(" + image + ") no-repeat  center center"); //change background image
+        //$("#pt" + id).css("background-size", "cover");        
+        addStyleSheetRule("#pt" + id, image);
+        var readMoreToggle = function (textFirst, a) {
+            var imageId = "#pi" + id;
+            var shortDescId = `#pshort${id}`;
+            var fullTextId = `#pt${id}`;
+            if (textFirst == 'textFirst') {
+                $(fullTextId).fadeToggle("fast", function () {
+                    $(imageId).fadeToggle("fast");
+                    $(shortDescId).fadeToggle("fast");
+                });
+            }
+            else {
+                $(shortDescId).fadeToggle("fast");
+                $(imageId).fadeToggle("fast", function () {
+                    $(fullTextId).fadeToggle("fast");
+                });
+            }
 
-        $("#pr" + id).click(function () {
-            $(`#pt${id}`).fadeToggle("fast");
-            //$("#pr"+id).fadeOut("fast");
-            // $(`#project${id}`).click(function(){
-            //     $(`#pt${id}`).fadeToggle("fast");
-            //     $("#pr"+id).fadeIn("fast");
-            //     $(`#project${id}`).unbind('click');
-            // });
-        })
+        };
+
+        $("#pi" + id).click(readMoreToggle);
+
+        $("#pshort" + id).click(readMoreToggle);
+        $("#pr" + id).click(readMoreToggle);
+        $("#pt" + id).click(readMoreToggle.bind(null, "textFirst"));
 
         $("#nextp" + id).click(function () {
-            console.log("nextp"+id);
-            $('#project-list').stop().animate({ scrollTop: $("#project"+id).height() * (id+1) }, 800);
+            console.log("nextp" + id);
+            $('#project-list').stop().animate({ scrollTop: $("#project" + id).height() * (id + 1) }, 800);
         });
     };
 
@@ -529,7 +584,7 @@ registerOnPageLoad(projectPage, function () {
             else {
                 next = '';
             }
-            addProjectToList(key, project.image, project.description, project.images, projectList[count + 1]?projectList[count + 1]:"End", count);
+            addProjectToList(key, project.image, project.description, project.images, projectList[count + 1] ? projectList[count + 1] : "End", count);
             count++;
         }
     };

@@ -30,7 +30,8 @@ h6 {
 
 p {
     margin: 0 0 25px;
-    font-size: 15pt;
+    font-size: 16pt;
+    font-size: 4vw;
     line-height: 1.5;
     @media(min-width:768px) {
         margin: 0 0 35px;
@@ -905,36 +906,65 @@ Project Page
 
 .project-name{
     z-index: 5;
-    font-size:20pt;
+    font-size:24pt;
     padding: 8px;
     width: 100%;
-    font-size: 5vw;
+    font-size: 6vw;
+}
+
+.project-short-desc{
+    color:grey;
+    font-size: 16pt;
+    font-size: 4vw;
+    padding: 5px;
+    padding-top: 10px;
+    height: 20%;
 }
 
 .project-image{
     -webkit-background-size: contain;
     -moz-background-size: cover;
-    background-size: 50% 50%;
+    background-size: 80% 80%;
     -o-background-size: cover;
     background:url("https://thevoidview.nyc3.digitaloceanspaces.com/Projects/Emoi/emoibg.png") no-repeat  center center;
-    position: absolute;
     height: 60%;
-    width:90%;
-    left:5%;
-    right:5%;
 }
 
 .project-text{
-    background-color: black;
     display: none;
     padding: 8px;
     height: 78%;
-    overflow-y: auto;
+    
     position: relative;
     margin: 1px;
+    font-size: 16pt;
+    font-size: 4vw;
+    color: grey;
 }
 
+.project-text-internal{
+    font-size: 16pt;
+    font-size: 4vw;
+    color: grey;
+    overflow-y: auto;
+    position: relative;
+    height: 100%;
+    z-index: 99;
+}
+
+
+
+
 .read-more{
+    top:75%;
+    position: absolute;
+    width: 100%;
+    vertical-align: bottom;
+    text-align: right;
+    padding-right: 8px;
+}
+
+.project-gallery{
     top:75%;
     position: absolute;
     width: 100%;
