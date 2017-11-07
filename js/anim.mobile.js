@@ -723,8 +723,6 @@ registerOnPageLoad(menuPage, onMenuPageLoad);
 
 var galleryLoaded = {}; //Variable to store the loaded galleries(photos, art) so as to not load them again.
 registerOnPageLoad(miscPage, function () {
-
-
     var transformToIdMap = function (data) {
         var returnObj = {};
         data.forEach(function (item) {
@@ -741,9 +739,68 @@ registerOnPageLoad(miscPage, function () {
         writings[item.id] = item.writing;
     });
 
-    var data = webData.misc.photos;
-    var data1 = webData.misc.art;
-    var data2 = writingData;
+    var photoData = webData.misc.photos;
+    var artData = webData.misc.art;
+    var writing = writingData;
+
+    var loadGallery = function (galleryId, data, currentGallery) {
+        var closePhoto = function () {
+            animStack.pop(); //Enable scrolling again
+            $("#misc-photo-container").fadeOut(400);
+            $("#misc-description-container").fadeOut(400);
+            //loadCurrentSection();
+            bindMouseWheel(miscPage, defaultMouseWheelHandler);
+        };
+
+        $(galleryId).empty();
+        $(galleryId).galereya({
+            spacing:0,
+            wave: false,
+            slideShowSpeed: 2000,
+           // disableSliderOnClick: true,
+            // onCellClick: function (e) {
+            //     animStack.push(true);
+            //     //hideAllSections();
+            //     $("#misc-photo-container").fadeIn(400);
+            //     var imgSrc = e.target.parentNode.getElementsByTagName("img")[0].src;
+            //     var galleryArray = webData.misc[currentGallery];
+            //     var imageObject = findObjectByAttribute(galleryArray, "fullsrc", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));
+            //     $("#misc-description").text(imageObject.fullDescription);
+            //     $("#misc-desc-title").text(imageObject.description);
+            //     $("#misc-description-container").fadeIn(400);
+            //     console.log("Gallery", imgSrc.substr(imgSrc.indexOf("/img") + 1, imgSrc.length));
+
+            //     // $("#misc-photo").width(xPosition - 60);
+            //     $("#misc-photo-container").width(xPosition - 20);
+            //     $("#misc-photo").css("width", "auto");
+            //     $("#misc-photo").attr("src", e.target.parentNode.getElementsByTagName("img")[0].src);
+            //     if ($("#misc-photo").width() > (xPosition - 60)) {
+            //         $("#misc-photo").width(xPosition - 60);
+            //     }
+            //     $("#misc-photo-close").click(closePhoto);
+            //     $("#misc-photo-container").click(closePhoto);
+            // },
+            load: function (next) {
+                next(data);
+            }
+        });
+
+    };
+
+    loadGallery("#photo-gallery", photoData, "photos");
+    loadGallery("#sketch-gallery", artData, "art");   
+
+    $("#next-art0").click(function () {
+        $('#art-list').stop().animate({ scrollTop: $("#art-0").height() * (0 + 1) }, 800);
+    });
+
+    $("#next-art1").click(function () {
+        $('#art-list').stop().animate({ scrollTop: $("#art-1").height() * (1 + 1) }, 800);
+    });
+
+    $("#art-title").click(function () {
+        $("#art-list").animate({ scrollTop: 0 });
+    });
 
     pageHandlers[miscPage] = {
         onPageResize: function () {

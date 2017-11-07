@@ -311,24 +311,6 @@ a {
     }
 }
 
-.grain {
-    width:inherit;
-}
-
-.grain:after {
-  background: url("//3.bp.blogspot.com/-VIcdc6-UELg/V2Trt4CWVWI/AAAAAAAAIhI/lqCVm0dgFs4X3r8j4CTHLlG070KHI7tWACLcB/s1600/");
-  content: "";
-  left: -100%;
-  top: -103%;
-  width: 300%;
-  height: 300%;
-  z-index: 1;
-  display: block;
-  position: absolute;
-  animation: grain .5s steps(1) infinite;
-  -webkit-animation: grain .5s steps(1) infinite;
-}
-
 
 @keyframes grain{0%,100%{-moz-transform:translate(0,0);-ms-transform:translate(0,0);-webkit-transform:translate(0,0);transform:translate(0,0)}10%{-moz-transform:translate(-5%,-10%);-ms-transform:translate(-5%,-10%);-webkit-transform:translate(-5%,-10%);transform:translate(-5%,-10%)}20%{-moz-transform:translate(-15%,5%);-ms-transform:translate(-15%,5%);-webkit-transform:translate(-15%,5%);transform:translate(-15%,5%)}30%{-moz-transform:translate(7%,-25%);-ms-transform:translate(7%,-25%);-webkit-transform:translate(7%,-25%);transform:translate(7%,-25%)}40%{-moz-transform:translate(-5%,25%);-ms-transform:translate(-5%,25%);-webkit-transform:translate(-5%,25%);transform:translate(-5%,25%)}50%{-moz-transform:translate(-15%,10%);-ms-transform:translate(-15%,10%);-webkit-transform:translate(-15%,10%);transform:translate(-15%,10%)}60%{-moz-transform:translate(15%,0%);-ms-transform:translate(15%,0%);-webkit-transform:translate(15%,0%);transform:translate(15%,0%)}70%{-moz-transform:translate(0%,15%);-ms-transform:translate(0%,15%);-webkit-transform:translate(0%,15%);transform:translate(0%,15%)}80%{-moz-transform:translate(3%,35%);-ms-transform:translate(3%,35%);-webkit-transform:translate(3%,35%);transform:translate(3%,35%)}90%{-moz-transform:translate(-10%,10%);-ms-transform:translate(-10%,10%);-webkit-transform:translate(-10%,10%);transform:translate(-10%,10%)}}
 
@@ -913,7 +895,7 @@ Project Page
 }
 
 .project-short-desc{
-    color:grey;
+    color:lightgray;
     font-size: 16pt;
     font-size: 4vw;
     padding: 5px;
@@ -945,7 +927,7 @@ Project Page
 .project-text-internal{
     font-size: 16pt;
     font-size: 4vw;
-    color: grey;
+    color: lightgray;
     overflow-y: auto;
     position: relative;
     height: 100%;
@@ -999,13 +981,18 @@ Misc. Page
 
 .art-gallery{
     height: 90%;
+    -webkit-background-size: contain;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    background:url("../img/loading.png") no-repeat  center center;
 }
 
 /**Gallery override CSS**/
 .galereya{
-    height: 800px;
-    overflow-y: hidden;
-    padding: 5px;
+    height: 85%;
+    overflow-y: auto;
+ 
 }
 .galereya:hover { overflow: auto; }
 
@@ -1030,7 +1017,6 @@ Misc. Page
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,900);
 
-/**Writing cards**/
 
 
 footer{

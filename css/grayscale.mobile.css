@@ -358,22 +358,6 @@ a:focus {
     background-position: right -200px center;
   }
 }
-.grain {
-  width: inherit;
-}
-.grain:after {
-  background: url("//3.bp.blogspot.com/-VIcdc6-UELg/V2Trt4CWVWI/AAAAAAAAIhI/lqCVm0dgFs4X3r8j4CTHLlG070KHI7tWACLcB/s1600/");
-  content: "";
-  left: -100%;
-  top: -103%;
-  width: 300%;
-  height: 300%;
-  z-index: 1;
-  display: block;
-  position: absolute;
-  animation: grain 0.5s steps(1) infinite;
-  -webkit-animation: grain 0.5s steps(1) infinite;
-}
 @keyframes grain {
   0%,
   100% {
@@ -964,7 +948,7 @@ Project Page
   font-size: 6vw;
 }
 .project-short-desc {
-  color: grey;
+  color: lightgray;
   font-size: 16pt;
   font-size: 4vw;
   padding: 5px;
@@ -992,7 +976,7 @@ Project Page
 .project-text-internal {
   font-size: 16pt;
   font-size: 4vw;
-  color: grey;
+  color: lightgray;
   overflow-y: auto;
   position: relative;
   height: 100%;
@@ -1038,12 +1022,16 @@ Misc. Page
 }
 .art-gallery {
   height: 90%;
+  -webkit-background-size: contain;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  background: url("../img/loading.png") no-repeat center center;
 }
 /**Gallery override CSS**/
 .galereya {
-  height: 800px;
-  overflow-y: hidden;
-  padding: 5px;
+  height: 85%;
+  overflow-y: auto;
 }
 .galereya:hover {
   overflow: auto;
@@ -1064,7 +1052,6 @@ Misc. Page
   background-color: #4F4949;
   outline: 1px solid slategrey;
 }
-/**Writing cards**/
 footer {
   position: absolute;
   bottom: 0;
