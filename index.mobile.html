@@ -118,20 +118,60 @@
                 <div class="horizontal-line"></div>
                 <div class="next-project-name">Next project</div>
             </div>
-          
+
         </div>
     </div>
 
     <div class="void-page  non-default" id="misc">
-        <div class="misc-image" id="misc-image"></div>
-        Art
-        <!--End of dialog boxes-->
-        <!-- <div id="misc-list-container" class="list-container">
-            <div>
-                <div id="misc-list-btn" class="glyphicon glyphicon-menu-hamburger item-list-btn" ></div>
-                <ul id="misc-list" class="item-list"> </ul>
+        <div class="menu-burger">
+            <a href="#!/menu">
+                <i class="glyphicon glyphicon-menu-hamburger"></i>
+            </a>
+        </div>
+        <div class="page-title" id="dance-title">Art</div>
+        <div id="art-list">
+            <div class="project-container" id="art-photos">
+                <div class="project-card">
+                    <div class="project-name">Photos</div>
+                    <div class="art-gallery" id="photo-gallery">Test</div>
+                    <div class="project-text" id="dt${id}">
+                        <div class="project-text-internal" id="dtext${id}">${text}</div>
+                    </div>
+                </div>
+                <div class="vertical-line"></div>
+                <div class="horizontal-line"></div>
+                <div class="next-project-name" id="nextd${id}">Sketches</div>
             </div>
-        </div> -->
+            <div class="project-container" id="art-sketches">
+                <div class="project-card">
+                    <div class="project-name">Sketches</div>
+                    <div class="art-gallery" id="photo-gallery">Test</div>
+                    
+                    <div class="project-text" id="dt${id}">
+                        <div class="project-text-internal" id="dtext${id}">${text}</div>
+                    </div>
+
+                </div>
+                <div class="vertical-line"></div>
+                <div class="horizontal-line"></div>
+                <div class="next-project-name" id="nextd${id}">Writing</div>
+            </div>
+            <div class="project-container" id="art-writing">
+                <div class="project-card">
+                    <div class="project-name">Writing</div>
+                    <div class="project-image" id="di${id}"></div>
+                    <div class="project-short-desc" id="dshort${id}">${shortDesc}
+                        <a>${text.length > 100 ? "more" : ""}</a>
+                    </div>
+                    <div class="project-text" id="dt${id}">
+                        <div class="project-text-internal" id="dtext${id}">${text}</div>
+                    </div>
+                </div>
+                <div class="vertical-line"></div>
+                <div class="horizontal-line"></div>
+                <div class="next-project-name" id="nextd${id}">Sketches</div>
+            </div>
+        </div>
     </div>
 
     <div class="void-page  non-default" id="about">
@@ -182,7 +222,6 @@
                 <div class="horizontal-line"></div>
                 <div class="next-project-name">Next project</div>
             </div>
-          
         </div>
     </div>
 

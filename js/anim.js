@@ -1028,6 +1028,7 @@ registerOnPageLoad(miscPage, function () {
     });
 
     preventScrollBehaviorOnElement("misc-art-gallery");
+    preventScrollBehaviorOnElement("writing-deck");
 
     var miscCanvas = document.getElementById('misc-canvas');
     var miscPaper = new paper.PaperScope();

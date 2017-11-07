@@ -513,7 +513,24 @@ registerOnPageLoad(projectPage, function () {
         $("#project-list").animate({ scrollTop: 0 });
     });
 
+    var setGalleryImages = function (galleryId, images) {
+        $('#' + galleryId).html('');
+        images.forEach(function (image, index) {
+            if (index == 0) {
+                var html = `<a href="${image}"><span class="glyphicon glyphicon-th"></span>
+                </a>`;
+            }
+            else {
+                var html = `<a href="${image}" class="hidden">${index + 1}
+                </a>`;
+            }
+            $('#' + galleryId).append(html);
 
+        });
+        lightGallery(document.getElementById(galleryId), {
+            download: false
+        });
+    };
 
     var addProjectToList = function (title, image, text, images, nextProject, id) {
         var shortDesc = text.trunc(100, true);
@@ -535,9 +552,7 @@ registerOnPageLoad(projectPage, function () {
         $("#project-list").append(template);
         $("#pi" + id).css("background", "url(" + image + ") no-repeat  center center"); //change background image
         $("#pi" + id).css("background-size", "cover");
-        console.log($("#pt" + id).attr("background-url"));
-        //$("#pt" + id).css("background", "url(" + image + ") no-repeat  center center"); //change background image
-        //$("#pt" + id).css("background-size", "cover");        
+
         addAfterStyleSheetRule("#pt" + id, image);
         var readMoreToggle = function (textFirst, a) {
             var imageId = "#pi" + id;
@@ -587,6 +602,7 @@ registerOnPageLoad(projectPage, function () {
                 next = '';
             }
             addProjectToList(key, project.image, project.description, project.images, projectList[count + 1] ? projectList[count + 1] : "End", count);
+            setGalleryImages(`pgallery${count}`, project.images);
             count++;
         }
     };
@@ -729,13 +745,6 @@ registerOnPageLoad(miscPage, function () {
     var data1 = webData.misc.art;
     var data2 = writingData;
 
-
-    $('body').unbind('mousewheel');
-    $('body').bind('mousewheel', function (e) {
-        return true;
-    });
-
-
     pageHandlers[miscPage] = {
         onPageResize: function () {
             //window.location.reload(true);
@@ -771,6 +780,25 @@ registerOnPageLoad(dancePage, function () {
     var danceDescriptions = webData.dance.danceDescriptions;
     var danceImages = webData.dance.images;
     var danceImagesArray = webData.dance.imageArray;
+
+    var setGalleryImages = function (galleryId, images) {
+        $('#' + galleryId).html('');
+        images.forEach(function (image, index) {
+            if (index == 0) {
+                var html = `<a href="${image}"><span class="glyphicon glyphicon-th"></span>
+                </a>`;
+            }
+            else {
+                var html = `<a href="${image}" class="hidden">${index + 1}
+                </a>`;
+            }
+            $('#' + galleryId).append(html);
+
+        });
+        lightGallery(document.getElementById(galleryId), {
+            download: false
+        });
+    };
 
     var addDanceToList = function (title, image, text, images, next, id) {
         var shortDesc = text.trunc(100, true);
@@ -836,6 +864,7 @@ registerOnPageLoad(dancePage, function () {
                 next = '';
             }
             addDanceToList(danceList[i], danceImagesArray[i][0], danceDescriptions[i], danceImagesArray[i], danceList[count + 1] ? danceList[count + 1] : "End", count);
+            setGalleryImages(`dgallery${i}`, danceImagesArray[i]);
             count++;
         }
     };

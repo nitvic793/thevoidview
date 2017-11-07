@@ -1028,6 +1028,17 @@ Dance Page
 /**
 Misc. Page
 **/
+#art-list {
+  position: absolute;
+  top: 10%;
+  width: 90%;
+  left: 5%;
+  height: 100%;
+  overflow-y: scroll;
+}
+.art-gallery {
+  height: 90%;
+}
 /**Gallery override CSS**/
 .galereya {
   height: 800px;
