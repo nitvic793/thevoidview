@@ -957,15 +957,7 @@ registerOnPageLoad(dancePage, function () {
 
 var aboutBgSlideShowTimer = null;
 registerOnPageLoad("about", function () {
-    var aboutCanvas = document.getElementById('about-canvas');
-    var aboutPaper = new paper.PaperScope();
-    aboutPaper.setup(aboutCanvas);
-    var topPath = new aboutPaper.Path();
-    var path1 = new aboutPaper.Path();
-    var path2 = new aboutPaper.Path();
-    var path3 = new aboutPaper.Path();
-    var path4 = new aboutPaper.Path();
-    var xPosition = xPositions["menu-about"] ? xPositions["menu-about"] : window.innerWidth / 2;
+
     var startBackgroundSlideShow = function () {
         var images = ['../img/about/about1.png', '../img/about/about2.png', '../img/about/about3.png', '../img/about/about5.png'];
         var imageIndex = 1;
@@ -980,42 +972,10 @@ registerOnPageLoad("about", function () {
         }, 4000);
     };
     startBackgroundSlideShow();
-    console.log(xPosition, window.innerWidth);
-    topPath.moveTo(xPosition, 0);
-    topPath.lineTo(xPosition, window.innerHeight);
-    topPath.strokeColor = 'grey'
-    path1.strokeColor = 'grey';
-    path2.strokeColor = path3.strokeColor = path4.strokeColor = 'grey';
-    pageHandlers[aboutPage] = {
-        onPageResize: function () {
-            window.location.reload();
-        }
-    };
-    var clearPaths = function () {
-        path1.removeSegments();
-        path2.removeSegments();
-        path3.removeSegments();
-        path4.removeSegments();
-    }
-    var drawGoldenRatio = function () {
-        path1.moveTo(xPosition, window.innerHeight / 2);
-        path1.lineTo(window.innerWidth, window.innerHeight / 2);
-        path2.moveTo(xPosition + window.innerWidth / 4, window.innerHeight / 2);
-        path2.lineTo(xPosition + window.innerWidth / 4, window.innerHeight);
-        path3.moveTo(xPosition + window.innerWidth / 4, 3 * window.innerHeight / 4);
-        path3.lineTo(xPosition, 3 * window.innerHeight / 4);
-        path4.moveTo(xPosition + window.innerWidth / 8, 3 * window.innerHeight / 4);
-        path4.lineTo(xPosition + window.innerWidth / 8, window.innerHeight / 2);
-    }
 
-    drawGoldenRatio();
+
 
     registerPagePostLoad(aboutPage, function () {
-        xPosition = window.innerWidth / 2 - 20;
-        topPath.removeSegments();
-        topPath.moveTo(xPosition, 0);
-        topPath.lineTo(xPosition, window.innerHeight);
-        clearPaths();
-        drawGoldenRatio();
+
     });
 });
