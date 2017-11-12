@@ -754,10 +754,10 @@ registerOnPageLoad(miscPage, function () {
 
         $(galleryId).empty();
         $(galleryId).galereya({
-            spacing:0,
+            spacing: 0,
             wave: false,
             slideShowSpeed: 2000,
-           // disableSliderOnClick: true,
+            // disableSliderOnClick: true,
             // onCellClick: function (e) {
             //     animStack.push(true);
             //     //hideAllSections();
@@ -787,8 +787,40 @@ registerOnPageLoad(miscPage, function () {
 
     };
 
+    $("#writing-text").click(function(){
+        $("#writing-text").fadeOut("fast", function(){
+            $("#writing-gallery").fadeIn("fast");
+        });
+    });
+
+    var loadWriting = function () {
+        $("#writing-gallery").empty();
+        writingData.forEach(function (item) {
+            var template = `<div class="writing-card" id="${item.id}">
+                    <div class="writing-title">${item.title}</div>
+                </div>`;
+            $("#writing-gallery").append(template);
+            $("#" + item.id).css("background", `linear-gradient(
+                rgba(0, 0, 0, 0.7),
+                rgba(0, 0, 0, 0.7)
+              ),
+              url('${item.image}') no-repeat`);
+            $("#" + item.id).css("background-size", "100% 90%");
+            $("#" + item.id).click(function(e){
+                console.log("test");
+                $("#writing-gallery").fadeOut("fast", function(){
+                    $("#writing-text").html(item.writing);
+                    $("#writing-text").fadeIn();
+                });
+            });
+            
+        });
+       
+    }
+
+    loadWriting();
     loadGallery("#photo-gallery", photoData, "photos");
-    loadGallery("#sketch-gallery", artData, "art");   
+    loadGallery("#sketch-gallery", artData, "art");
 
     $("#next-art0").click(function () {
         $('#art-list').stop().animate({ scrollTop: $("#art-0").height() * (0 + 1) }, 800);

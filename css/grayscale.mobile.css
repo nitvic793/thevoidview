@@ -687,8 +687,19 @@ ul.banner-social-buttons {
     margin-bottom: 0;
   }
 }
+footer a {
+  font-size: 5vw;
+  margin-right: 5px;
+  margin-left: 5px;
+}
 footer p {
   margin: 0;
+}
+#email-contact {
+  font-size: 4.2vw;
+}
+#linkedin-contact {
+  margin-right: 10px;
 }
 ::-moz-selection {
   text-shadow: none;
@@ -1026,7 +1037,30 @@ Misc. Page
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
-  background: url("../img/loading.png") no-repeat center center;
+  background: url("../img/loader.gif") no-repeat center center;
+}
+.writing-list {
+  height: 88%;
+  overflow-y: auto;
+}
+.writing-card {
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(../img/writing-hue.png) no-repeat;
+  width: 100%;
+  height: 90%;
+  padding: 5px;
+  opacity: 1;
+}
+.writing-text {
+  height: 85%;
+  overflow-y: auto;
+  display: none;
+  padding: 5px;
+}
+.writing-title {
+  position: relative;
+  top: 45%;
+  font-size: 6vw;
+  text-align: center;
 }
 /**Gallery override CSS**/
 .galereya {
@@ -1051,6 +1085,24 @@ Misc. Page
   position: absolute;
   background-color: #4F4949;
   outline: 1px solid slategrey;
+}
+.galereya-slider-slide {
+  background-color: black;
+  background-image: url('');
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .galereya-slider-slide {
+    background-color: black;
+    background-image: url('');
+  }
+}
+.galereya-slider-slide.current {
+  background-color: black;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .galereya-slider-slide.current {
+    background-color: black;
+  }
 }
 footer {
   position: absolute;
