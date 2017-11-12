@@ -787,8 +787,8 @@ registerOnPageLoad(miscPage, function () {
 
     };
 
-    $("#writing-text").click(function(){
-        $("#writing-text").fadeOut("fast", function(){
+    $("#writing-text").click(function () {
+        $("#writing-text").fadeOut("fast", function () {
             $("#writing-gallery").fadeIn("fast");
         });
     });
@@ -806,16 +806,22 @@ registerOnPageLoad(miscPage, function () {
               ),
               url('${item.image}') no-repeat`);
             $("#" + item.id).css("background-size", "100% 90%");
-            $("#" + item.id).click(function(e){
+            $("#" + item.id).click(function (e) {
                 console.log("test");
-                $("#writing-gallery").fadeOut("fast", function(){
+                $("#writing-gallery").fadeOut("fast", function () {
                     $("#writing-text").html(item.writing);
+                    $("#writing-text").css("background", `linear-gradient(
+                        rgba(0, 0, 0, 0.8),
+                        rgba(0, 0, 0, 0.8)
+                      ),
+                      url('${item.image}') no-repeat`);
+                    $("#writing-text").css("background-size", "cover");
                     $("#writing-text").fadeIn();
                 });
             });
-            
+
         });
-       
+
     }
 
     loadWriting();
