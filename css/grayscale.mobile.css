@@ -1104,6 +1104,12 @@ Misc. Page
     background-color: black;
   }
 }
+.galereya-cell-img {
+  width: 100px;
+}
+.galereya-cell {
+  width: 100px;
+}
 footer {
   position: absolute;
   bottom: 0;

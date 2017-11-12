@@ -805,7 +805,7 @@ registerOnPageLoad(miscPage, function () {
                 rgba(0, 0, 0, 0.7)
               ),
               url('${item.image}') no-repeat`);
-            $("#" + item.id).css("background-size", "100% 90%");
+            $("#" + item.id).css("background-size", "cover");
             $("#" + item.id).click(function (e) {
                 console.log("test");
                 $("#writing-gallery").fadeOut("fast", function () {
