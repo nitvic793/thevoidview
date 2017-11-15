@@ -1065,6 +1065,25 @@ Misc. Page
   text-align: center;
 }
 /**Gallery override CSS**/
+.galereya-slider-close {
+  top: 94%;
+  left: 5px;
+  width: 36px;
+  height: 36px;
+}
+.galereya-slider-close,
+.galereya-slider-play {
+  opacity: 0.3;
+}
+.galereya-slider-play {
+  top: 94%;
+  right: 5px;
+  width: 36px;
+  height: 36px;
+}
+.galereya-slider-nav {
+  opacity: 0.3;
+}
 .galereya {
   height: 85%;
   overflow-y: auto;
@@ -1145,6 +1164,9 @@ footer i {
 /**
 About Page
 **/
+.project-container.about {
+  overflow-y: auto;
+}
 #about-bg-video {
   position: fixed;
   min-width: 100%;
@@ -1204,7 +1226,8 @@ About Page
   padding: 20px;
 }
 #about-details-container p {
-  font-size: 15pt;
+  font-size: 16pt;
+  font-size: 5vw;
 }
 #about-details-container h3 {
   font-family: Courier New, Courier, monospace;

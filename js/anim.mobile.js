@@ -26,6 +26,7 @@ pageIds.forEach(function (p) {
 
 var customLogicPostLoad = [];
 var customLogicPreLoad = [];
+var pageStack = [];
 
 var findObjectByAttribute = function (items, attribute, value) {
     for (var i = 0; i < items.length; i++) {
@@ -83,7 +84,13 @@ var getCurrentPage = function () {
     if (!currentPage) {
         return landingPage;
     }
-    return currentPage;
+    
+    var page = currentPage.substr(0, currentPage.indexOf("/") == -1 ? currentPage.length : currentPage.indexOf("/"));
+    if (currentPage.indexOf("/") != -1) {
+        window.history.replaceState("Object", page, "#!/"+page);
+    }
+
+    return page;
 }
 
 var previousPage = getCurrentPage();
@@ -92,6 +99,11 @@ var previousPage = getCurrentPage();
  * On url change. Usually called when back button is pressed.
  */
 window.onhashchange = function () {
+    if (pageStack.length > 0) {
+        var fn = pageStack.pop();
+        fn();
+        return;
+    }
     console.log("Hash change", getCurrentPage());
     if (getCurrentPage() == null || getCurrentPage() == '') {
         routeToFade(landingPage)
@@ -101,6 +113,11 @@ window.onhashchange = function () {
     }
     removeLoader();
 }
+
+var pushPageStack = function (fn) {
+    pageStack.push(fn);
+}
+
 var apiUrl = "https://the-void-view-backend.herokuapp.com/data";
 var onLoad = function () {
     if (getCurrentPage() == null) {
@@ -753,10 +770,11 @@ registerOnPageLoad(miscPage, function () {
         };
 
         $(galleryId).empty();
-        $(galleryId).galereya({
+        var gallery = $(galleryId).galereya({
             spacing: 0,
             wave: false,
             slideShowSpeed: 2000,
+            disableSliderOnClick: false,
             // disableSliderOnClick: true,
             // onCellClick: function (e) {
             //     animStack.push(true);
@@ -782,45 +800,64 @@ registerOnPageLoad(miscPage, function () {
             // },
             load: function (next) {
                 next(data);
+            },
+            onCellClick: function (e) {
+                pushStateHistory("misc/gallery");
+                pushPageStack(closeGallery);
             }
         });
 
+        var closeGallery = function () {
+            gallery.closeSlider();
+        }
     };
 
-    $("#writing-text").click(function () {
+    var closeWritingText = function () {
         $("#writing-text").fadeOut("fast", function () {
             $("#writing-gallery").fadeIn("fast");
         });
+    }
+    $("#writing-text").click(function () {
+        closeWritingText();
+        window.history.replaceState('Object', "misc", '#!/' + "misc");
     });
+
+    var appendWritingCard = function (item) {
+        var template = `<div class="writing-card" id="${item.id}">
+            <div class="writing-title">${item.title}</div>
+            </div>`;
+        $("#writing-gallery").append(template);
+        $("#" + item.id).css("background", `linear-gradient(
+            rgba(0, 0, 0, 0.7),
+            rgba(0, 0, 0, 0.7)
+            ),
+            url('${item.image}') no-repeat`);
+        $("#" + item.id).css("background-size", "cover");
+        $("#" + item.id).click(function (e) {
+            console.log("test");
+            pushStateHistory("misc/writing");
+            pushPageStack(closeWritingText);
+            $("#writing-gallery").fadeOut("fast", function () {
+                $("#writing-text").html(item.writing);
+                $("#writing-text").css("background", `linear-gradient(
+                    rgba(0, 0, 0, 0.8),
+                    rgba(0, 0, 0, 0.8)
+                    ),
+                     url('${item.image}') no-repeat`);
+                $("#writing-text").css("background-size", "cover");
+                $("#writing-text").fadeIn();
+            });
+        });
+    }
 
     var loadWriting = function () {
         $("#writing-gallery").empty();
-        writingData.forEach(function (item) {
-            var template = `<div class="writing-card" id="${item.id}">
-                    <div class="writing-title">${item.title}</div>
-                </div>`;
-            $("#writing-gallery").append(template);
-            $("#" + item.id).css("background", `linear-gradient(
-                rgba(0, 0, 0, 0.7),
-                rgba(0, 0, 0, 0.7)
-              ),
-              url('${item.image}') no-repeat`);
-            $("#" + item.id).css("background-size", "cover");
-            $("#" + item.id).click(function (e) {
-                console.log("test");
-                $("#writing-gallery").fadeOut("fast", function () {
-                    $("#writing-text").html(item.writing);
-                    $("#writing-text").css("background", `linear-gradient(
-                        rgba(0, 0, 0, 0.8),
-                        rgba(0, 0, 0, 0.8)
-                      ),
-                      url('${item.image}') no-repeat`);
-                    $("#writing-text").css("background-size", "cover");
-                    $("#writing-text").fadeIn();
-                });
-            });
-
-        });
+        for (var i = 0; i < writingData.length; ++i) {
+            var item = writingData[i];
+            appendWritingCard(item);
+        }
+        // writingData.forEach(function (item) {
+        // });
 
     }
 
