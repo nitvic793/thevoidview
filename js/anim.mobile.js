@@ -84,10 +84,10 @@ var getCurrentPage = function () {
     if (!currentPage) {
         return landingPage;
     }
-    
+
     var page = currentPage.substr(0, currentPage.indexOf("/") == -1 ? currentPage.length : currentPage.indexOf("/"));
     if (currentPage.indexOf("/") != -1) {
-        window.history.replaceState("Object", page, "#!/"+page);
+        window.history.replaceState("Object", page, "#!/" + page);
     }
 
     return page;
@@ -530,11 +530,16 @@ registerOnPageLoad(projectPage, function () {
         $("#project-list").animate({ scrollTop: 0 });
     });
 
+    var closeGallery = function () {
+        $(".lg-close.lg-icon").click();
+        window.history.replaceState("Object", "project", "#!/project");
+    }
+
     var setGalleryImages = function (galleryId, images) {
         $('#' + galleryId).html('');
         images.forEach(function (image, index) {
             if (index == 0) {
-                var html = `<a href="${image}"><span class="glyphicon glyphicon-th"></span>
+                var html = `<a id="pr-gallery-open${galleryId}" href="${image}"><span class="glyphicon glyphicon-th"></span>
                 </a>`;
             }
             else {
@@ -544,6 +549,11 @@ registerOnPageLoad(projectPage, function () {
             $('#' + galleryId).append(html);
 
         });
+        $("#pr-gallery-open" + galleryId).click(function (e) {
+            pushStateHistory("project/gallery");
+            pageStack.push(closeGallery);
+        });
+
         lightGallery(document.getElementById(galleryId), {
             download: false
         });
@@ -904,6 +914,7 @@ registerOnPageLoad(miscPage, function () {
 
 
 var slideShowTimer = null;
+var lg = null;
 registerOnPageLoad(dancePage, function () {
     $("#dance-title").click(function () {
         $("#dance-list").animate({ scrollTop: 0 });
@@ -913,11 +924,16 @@ registerOnPageLoad(dancePage, function () {
     var danceImages = webData.dance.images;
     var danceImagesArray = webData.dance.imageArray;
 
+    var closeGallery = function () {
+        $(".lg-close.lg-icon").click();
+        window.history.replaceState("Object", "dance", "#!/dance");
+    }
+
     var setGalleryImages = function (galleryId, images) {
         $('#' + galleryId).html('');
         images.forEach(function (image, index) {
             if (index == 0) {
-                var html = `<a href="${image}"><span class="glyphicon glyphicon-th"></span>
+                var html = `<a id="gallery-open${galleryId}" href="${image}"><span class="glyphicon glyphicon-th"></span>
                 </a>`;
             }
             else {
@@ -925,8 +941,12 @@ registerOnPageLoad(dancePage, function () {
                 </a>`;
             }
             $('#' + galleryId).append(html);
-
         });
+        $("#gallery-open" + galleryId).click(function (e) {
+            pushStateHistory("dance/gallery");
+            pageStack.push(closeGallery);
+        });
+
         lightGallery(document.getElementById(galleryId), {
             download: false
         });
