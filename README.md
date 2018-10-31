@@ -1,3 +1,4 @@
+# DO NOT TAKE
 # [the void view](http://thevoidview.com.com/)
 
 The main UI and design for http://thevoidview.com
