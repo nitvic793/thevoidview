@@ -5,11 +5,12 @@ var localStorage = window.localStorage;
 var landingPage = "home";
 var menuPage = "menu";
 var projectPage = "project";
+var projectLandingPage = "projectLanding";
 var dancePage = "dance";
 var aboutPage = "about";
 var miscPage = "misc";
 
-var pageIds = [landingPage, menuPage, projectPage, "misc", "about", "dance"];
+var pageIds = [landingPage, menuPage, projectPage, projectLandingPage, "misc", "about", "dance"];
 
 var pageHandlers = {};
 var basicHandler = {
@@ -132,6 +133,10 @@ var onProjectPageLoad = function () {
     console.log('Loaded page 3');
 }
 
+var onProjectLandingPageLoad = function () {
+    console.log('Loaded project landing page');
+}
+
 
 
 var pageRefreshPipeline = [];
@@ -222,6 +227,7 @@ registerOnPageLoad(landingPage, function () {
 });
 
 registerOnPageLoad(projectPage, onProjectPageLoad);
+registerOnPageLoad(projectLandingPage, onProjectLandingPageLoad);
 registerOnPageLoad(menuPage, onMenuPageLoad);
 
 var hasLoadedOnce = false;
@@ -571,6 +577,16 @@ var drawArrow = function (x, y, paperScope) {
     rightLine.lineTo(x, y);
 }
 
+registerOnPageLoad(projectLandingPage, function(){
+    var projectCanvas = document.getElementById('project-canvas');
+    var projectPaper = new paper.PaperScope();
+    projectPaper.setup(projectCanvas);
+    $("#projectList").text("ClickHere");
+    $("#projectList").click(function(){
+        console.log('loading projects soon..')
+    })
+});
+
 registerOnPageLoad(projectPage, function () {
     //lightGallery(document.getElementById('project-images'));
     preventScrollBehaviorOnElement("project-details");
@@ -578,6 +594,7 @@ registerOnPageLoad(projectPage, function () {
     var menuItems = [];
     var idIndex = 1;
     $("#project-list").empty();
+    $("#project-list").append(`<li> Hello World </li>`)
     for (var key in projects) {
         menuItems.push({
             id: idIndex,
@@ -769,7 +786,8 @@ menuPaper.view.onFrame = function (e) {
             path.removeSegments();
             switch (menuItemClicked) {
                 case 'menu-projects':
-                    routeToSlideUp(projectPage, menuPage);
+                    //routeToSlideUp(projectPage, menuPage);
+                    routeToSlideUp(projectLandingPage, menuPage);
                     break;
                 case 'menu-art':
                     routeToSlideUp('misc', menuPage);
